@@ -108,6 +108,13 @@
 
 <div id="panel">
   <!-- 📍ボタンの横あたりに追加してください -->
+  <!-- 🆕 お狐様のメッセージコーナーをここに配置 -->
+  <div style="background-color: #fffde6; border: 2px solid #f1c40f; border-radius: 8px; padding: 10px; margin: 10px 0; display: flex; align-items: center; gap: 10px;">
+    <span style="font-size: 30px;">🦊</span>
+    <p id="fox-message" style="margin: 0; color: #d35400; font-weight: bold; font-size: 14px;">
+      お狐様「そなたの旅を案内するぞ。右上の足跡ボタンから記録を始めてみよ！」
+    </p>
+  </div>
   
   <div id="stamps"></div>
   <button onclick="resetStamps()" style="margin-top: 20px; background-color: #ffcccc;">🗑 スタンプ帳をリセット</button>
@@ -386,20 +393,21 @@ let myNewWatchId = null;       // 重複を避けるため名前を変えまし�
 let myNewTrackDots = [];       // 重複を避けるため名前を変えました
 let myNewLastDotTime = 0;      // 重複を避けるため名前を変えました
 
+// === 🆕 ⑥ お狐様のセリフが切り替わる足跡コントロール関数 ===
 function handleTrackRadio(mode) {
   const iconStatus = document.getElementById('track-icon-status');
-  //const messageEl = document.getElementById('message');
+  const foxMsg = document.getElementById('fox-message'); // お狐様メッセージの部屋
 
   if (mode === 'start') {
-    startNewTracking(); // 🟢 新しい追跡関数を呼び出す
+    startNewTracking(); // 🟢 GPS追跡スタート
     if (iconStatus) iconStatus.innerText = "🟢"; 
-    //if (messageEl) messageEl.textContent = "🟢 足跡の記録を開始しました！30秒ごとに点を打ちます。";
+    if (foxMsg) foxMsg.innerHTML = `お狐様「🟢 よし、記録を開始したぞ！歩いた道に赤い足跡がポツポツと刻まれていくはずじゃ」`;
   } 
   
   else if (mode === 'pause') {
-    pauseNewTracking(); // 🟡 新しい一時停止関数を呼び出す
+    pauseNewTracking(); // 🟡 GPS追跡を一時停止
     if (iconStatus) iconStatus.innerText = "🟡"; 
-    //if (messageEl) messageEl.textContent = "🟡 足跡の記録をひとやすみしています。";
+    if (foxMsg) foxMsg.innerHTML = `お狐様「🟡 ひとやすみ中じゃな。コンビニやお団子屋さんでのんびりするがよい。再開するときはまたスタートをな！」`;
   } 
   
   else if (mode === 'stop') {
@@ -408,16 +416,17 @@ function handleTrackRadio(mode) {
       if (confirm("これまでに記録した歩いた足跡（てんてん）をすべて消去しますか？")) {
         myNewTrackDots.forEach(dot => map.removeLayer(dot));
         myNewTrackDots = [];
-        localStorage.removeItem("saved_breadcrumbs"); // 👈 これを追記して保存データも消します
         myNewLastDotTime = 0;
+        localStorage.removeItem("saved_breadcrumbs");
         if (myNewWatchId !== null) {
           navigator.geolocation.clearWatch(myNewWatchId);
           myNewWatchId = null;
         }
         if (iconStatus) iconStatus.innerText = "👣"; 
-        //if (messageEl) messageEl.textContent = "⚪ 足跡をリセットしました。";
+        if (foxMsg) foxMsg.innerHTML = `お狐様「⚪ 足跡をきれいに片付けたぞ。またいつでも新しい旅を始めようぞ！」`;
         alert("⚪ 軌跡をリセットしました。");
       } else {
+        // キャンセルされたらボタンのチェックを戻す
         if (myNewWatchId !== null) {
           document.getElementById('opt_start').checked = true;
           if (iconStatus) iconStatus.innerText = "🟢";
@@ -432,11 +441,10 @@ function handleTrackRadio(mode) {
         myNewWatchId = null;
       }
       if (iconStatus) iconStatus.innerText = "👣"; 
-      //if (messageEl) messageEl.textContent = "⚪ 記録は停止しています。";
+      if (foxMsg) foxMsg.innerHTML = `お狐様「⚪ 記録は止まっておるぞ。歩くときはスタートを押すのじゃ」`;
     }
   }
 }
-
 // === 🟢 【新システム】足跡スタート（30秒おき） ===
 function startNewTracking() {
   if (!navigator.geolocation) {
