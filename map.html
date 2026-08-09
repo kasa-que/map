@@ -109,8 +109,6 @@
 <div id="panel">
   <!-- 📍ボタンの横あたりに追加してください -->
   
-  <button onclick="checkLocation()">📍 現在地をチェック</button>
-  <p id="message" style="color: blue; font-weight: bold;"></p>
   <div id="stamps"></div>
   <button onclick="resetStamps()" style="margin-top: 20px; background-color: #ffcccc;">🗑 スタンプ帳をリセット</button>
 </div>
@@ -354,6 +352,34 @@ const CustomTrackControl = L.Control.extend({
   }
 });
 map.addControl(new CustomTrackControl());
+
+
+// === 🆕 ⑧ 自作「現在地チェック四角パネル」を左下に配置 ===
+const CustomLocationControl = L.Control.extend({
+  options: { position: 'bottomleft' }, // 👈 ご要望通り「左下」に配置します
+  onAdd: function () {
+    const container = L.DomUtil.create('div');
+    
+    // 普段は「📍」、触ると「現在地を取得」というメニューがフワッと開きます
+    container.innerHTML = `
+      <div class="control-icon">📍</div>
+      <div class="control-content">
+        <h4 style="margin: 0; padding: 0; border: none; cursor: pointer;" onclick="checkLocation()">📍 現在地をチェック</h4>
+      </div>
+    `;
+    setupControlToggle(container); // 🗺や👣と全く同じ開閉システムを使い回します
+    return container;
+  }
+});
+map.addControl(new CustomLocationControl());
+  
+
+
+
+
+
+
+  
 /////////
 // === 🆕 ⑥ 【新システム】名前がぶつからない足跡記録変数 ===
 let myNewWatchId = null;       // 重複を避けるため名前を変えました
@@ -362,18 +388,18 @@ let myNewLastDotTime = 0;      // 重複を避けるため名前を変えまし�
 
 function handleTrackRadio(mode) {
   const iconStatus = document.getElementById('track-icon-status');
-  const messageEl = document.getElementById('message');
+  //const messageEl = document.getElementById('message');
 
   if (mode === 'start') {
     startNewTracking(); // 🟢 新しい追跡関数を呼び出す
     if (iconStatus) iconStatus.innerText = "🟢"; 
-    if (messageEl) messageEl.textContent = "🟢 足跡の記録を開始しました！30秒ごとに点を打ちます。";
+    //if (messageEl) messageEl.textContent = "🟢 足跡の記録を開始しました！30秒ごとに点を打ちます。";
   } 
   
   else if (mode === 'pause') {
     pauseNewTracking(); // 🟡 新しい一時停止関数を呼び出す
     if (iconStatus) iconStatus.innerText = "🟡"; 
-    if (messageEl) messageEl.textContent = "🟡 足跡の記録をひとやすみしています。";
+    //if (messageEl) messageEl.textContent = "🟡 足跡の記録をひとやすみしています。";
   } 
   
   else if (mode === 'stop') {
@@ -389,7 +415,7 @@ function handleTrackRadio(mode) {
           myNewWatchId = null;
         }
         if (iconStatus) iconStatus.innerText = "👣"; 
-        if (messageEl) messageEl.textContent = "⚪ 足跡をリセットしました。";
+        //if (messageEl) messageEl.textContent = "⚪ 足跡をリセットしました。";
         alert("⚪ 軌跡をリセットしました。");
       } else {
         if (myNewWatchId !== null) {
@@ -406,7 +432,7 @@ function handleTrackRadio(mode) {
         myNewWatchId = null;
       }
       if (iconStatus) iconStatus.innerText = "👣"; 
-      if (messageEl) messageEl.textContent = "⚪ 記録は停止しています。";
+      //if (messageEl) messageEl.textContent = "⚪ 記録は停止しています。";
     }
   }
 }
