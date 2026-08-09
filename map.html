@@ -134,8 +134,7 @@
     <img src="fox.png" alt="お狐様" style="width: 50px; height: 50px; object-fit: contain; flex-shrink: 0;">
     
   <p id="fox-message" style="margin: 0; color: #d35400;  line-height: 1.4; font-family: 'Yuji Syuku', serif; font-size: 16px; letter-spacing: 0.5px;">
-    地図の中の行きたいところを探してね！<br/>
-    現在地をチェックできるよ！
+    地図の中のピンをタッチして行きたいところを探してね！<br/>
   </p>
   </div>
   
@@ -297,11 +296,26 @@ originalMapGroup.addTo(map);
 // === 5. 右上の切り替えボタンに3つの選択肢を登録 ===
 // === 🆕 ① スマホでも絶対に誤作動しない「四角パネル自動開閉システム」 ===
 function setupControlToggle(container) {
-  // 最初は「最小化（collapsed）」状態にする
-  container.classList.add('custom-map-control', 'collapsed');
+  // 最初からexpandedが付いている（左下）場合はcollapsedをつけない
+  if (!container.classList.contains('expanded')) {
+    container.classList.add('custom-map-control', 'collapsed');
+  } else {
+    container.classList.add('custom-map-control');
+  }
+
+  // 【新ロジック】すべての自作四角パネルを一度「閉じる」共通の命令
+  const closeAllPanels = () => {
+    const allPanels = document.querySelectorAll('.custom-map-control');
+    allPanels.forEach(p => {
+      p.classList.remove('expanded');
+      p.classList.add('collapsed');
+    });
+  };
 
   // アイコンをタップ、またはマウスが乗ったら「開く」
   const expand = () => {
+    // 自分が開く前に、まずは他のすべてのパネルを綺麗に閉じさせる
+    closeAllPanels();
     container.classList.remove('collapsed');
     container.classList.add('expanded');
   };
