@@ -107,11 +107,13 @@
 
 
 <div id="panel">
-  <!-- 📍ボタンの横あたりに追加してください -->
-  <!-- 🆕 お狐様のメッセージコーナーをここに配置 -->
-  <div style="background-color: #fffde6; border: 2px solid #f1c40f; border-radius: 8px; padding: 10px; margin: 10px 0; display: flex; align-items: center; gap: 10px;">
-    <span style="font-size: 30px;">🦊</span>
-    <p id="fox-message" style="margin: 0; color: #d35400; font-weight: bold; font-size: 14px;">
+  <!-- 🆕 お狐様を絵文字からオリジナルイラスト（PNG）に変更 -->
+  <div style="background-color: #fffde6; border: 2px solid #f1c40f; border-radius: 8px; padding: 10px; margin: 10px 0; display: flex; align-items: center; gap: 12px;">
+    
+    <!-- 👈 ここを画像（fox.png）に差し替えました！大きさを縦横50pxにして正方形に保ちます -->
+    <img src="fox.png" alt="お狐様" style="width: 50px; height: 50px; object-fit: contain; flex-shrink: 0;">
+    
+    <p id="fox-message" style="margin: 0; color: #d35400; font-weight: bold; font-size: 14px; line-height: 1.4;">
       お狐様「そなたの旅を案内するぞ。右上の足跡ボタンから記録を始めてみよ！」
     </p>
   </div>
