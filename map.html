@@ -387,26 +387,33 @@ const CustomTrackControl = L.Control.extend({
 map.addControl(new CustomTrackControl());
 
 
-// === 🆕 ⑧ 自作「現在地チェック四角パネル」を左下に配置 ===
+// === ⑧ 自作「現在地チェック四角パネル」を左下に配置（初期展開版） ===
 const CustomLocationControl = L.Control.extend({
-  options: { position: 'bottomleft' }, // 👈 ご要望通り「左下」に配置します
+  options: { position: 'bottomleft' },
   onAdd: function () {
     const container = L.DomUtil.create('div');
     
-    // 普段は「📍」、触ると「現在地を取得」というメニューがフワッと開きます
     container.innerHTML = `
       <div class="control-icon">📍</div>
       <div class="control-content">
         <h4 style="margin: 0; padding: 0; border: none; cursor: pointer;" onclick="checkLocation()">📍 現在地をチェック</h4>
       </div>
     `;
-    setupControlToggle(container); // 🗺や👣と全く同じ開閉システムを使い回します
+    
+    // 【新ロジック】共通の開閉システムを呼び出す前に、
+    // あらかじめ「展開（expanded）」のクラスをつけて、最初から文字が見えるようにします
+    container.classList.add('expanded');
+    
+    setupControlToggle(container); 
+    
+    // 開閉システムを動かした後は、自動的に「最小化（collapsed）」のクラスがついてしまうのを防ぐため、
+    // 一度だけ「最小化（collapsed）」クラスを外して、完全に開いた状態からスタートさせます
+    container.classList.remove('collapsed');
+    
     return container;
   }
 });
 map.addControl(new CustomLocationControl());
-  
-
 
 
 
