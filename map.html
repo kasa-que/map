@@ -7,7 +7,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Yuji+Mai&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&display=swap" rel="stylesheet">
   
   <!-- Leaflet（地図ライブラリ） -->
   <link
@@ -41,8 +41,8 @@
       filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.3));
     }
 
-.yuji-mai-regular {
-  font-family: "Yuji Mai", serif;
+.yuji-syuku-regular {
+  font-family: "Yuji Syuku", serif;
   font-weight: 400;
   font-style: normal;
 }
@@ -123,7 +123,7 @@
     <!-- 👈 ここを画像（fox.png）に差し替えました！大きさを縦横50pxにして正方形に保ちます -->
     <img src="fox.png" alt="お狐様" style="width: 50px; height: 50px; object-fit: contain; flex-shrink: 0;">
     
-  <p id="fox-message" style="margin: 0; color: #d35400;  line-height: 1.4; font-family: 'Yuji Mai', serif; font-size: 16px; letter-spacing: 0.5px;">
+  <p id="fox-message" style="margin: 0; color: #d35400;  line-height: 1.4; font-family: 'Yuji Syuku', serif; font-size: 16px; letter-spacing: 0.5px;">
     右上の『👣』ボタンで足跡の記録ができるよ！
   </p>
   </div>
@@ -327,7 +327,10 @@ const CustomLayersControl = L.Control.extend({
   onAdd: function () {
     const container = L.DomUtil.create('div');
     container.innerHTML = `
-      <div class="control-icon">🗺</div>
+      <!-- ⭕️ 絵文字の「🗺」を削除し、オリジナル画像（icon_map.png）を表示する設定に変更しました -->
+      <div class="control-icon">
+        <img src="icon_map.png" alt="地図" style="width: 20px; height: 20px; object-fit: contain; display: block;">
+      </div>
       <div class="control-content">
         <h4>地図の切り替え</h4>
         <label><input type="radio" name="layer_opt" checked onclick="handleLayerRadio('original')">オリジナル地図</label>
