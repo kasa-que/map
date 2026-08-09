@@ -134,7 +134,8 @@
     <img src="fox.png" alt="お狐様" style="width: 50px; height: 50px; object-fit: contain; flex-shrink: 0;">
     
   <p id="fox-message" style="margin: 0; color: #d35400;  line-height: 1.4; font-family: 'Yuji Syuku', serif; font-size: 16px; letter-spacing: 0.5px;">
-    右上の『👣』ボタンで足跡の記録ができるよ！
+    地図の中の行きたいところを探してね！<br/>
+    
   </p>
   </div>
   
@@ -682,28 +683,63 @@ function checkLocation() {
 }
 
 // === 個別のスタンプ判定機能（追加） ===
+// === ⭕️ メッセージ修正 ＆ 自動現在地チェック付きのスタンプ判定機能 ===
 function tryGetStamp(id) {
-  // まだ現在地がチェックされていない場合
-  if (currentLat === null || currentLng === null) {
-    alert("まずは「📍 現在地をチェック」ボタンを押して、マップ上に現在地を表示させてください！");
-    return;
-  }
+  const foxMsg = document.getElementById('fox-message'); // お狐様メッセージの部屋
 
   // 対象のスポットデータを特定
   const s = spots.find(spot => spot.id === id);
-  
-  // 現在地とスポットの距離を判定
+
+  // 【新ロジック】もし足跡機能（myNewWatchId）がオフで、現在地データがまだ無い場合、
+  // あるいは足跡はオフだけど「いきなり押された」場合は、その場で自動的に現在地をチェックする
+  if (myNewWatchId === null) {
+    if (foxMsg) foxMsg.innerHTML = `お狐様「そなたの今の居場所を、裏でサッと確認してあげるぞよ。少々お待ちを…」`;
+
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        // 現在地を自動で更新
+        currentLat = pos.coords.latitude;
+        currentLng = pos.coords.longitude;
+
+        // マップ上の青丸マークも自動で移動・表示
+        if (currentLocationMarker) {
+          currentLocationMarker.setLatLng([currentLat, currentLng]);
+        } else {
+          currentLocationMarker = L.circleMarker([currentLat, currentLng], {
+            radius: 8, color: "blue", fillColor: "blue", fillOpacity: 0.8
+          }).addTo(map);
+        }
+
+        // 位置が取れたので、そのまま即座に距離判定を実行！
+        processStampVerification(s);
+      },
+      err => {
+        // 位置情報自体がスマホの設定等で完全にブロックされている場合のアラート
+        alert("位置情報の取得に失敗しました。右上の『👣』で足跡スタートをオンにするか、端末のGPS設定をご確認くだされ！");
+        if (foxMsg) foxMsg.innerHTML = `お狐様「おや、GPSの電波が届かぬぞよ。端末の位置情報設定や、右上の『👣』ボタンを確認してくりゃれ」`;
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+  } else {
+    // 足跡機能がすでにオン（🟢）なら、常に最新位置が手元にあるので、そのまま即座に判定
+    processStampVerification(s);
+  }
+}
+
+// 実際に距離を測ってスタンプを付与する共通の処理
+function processStampVerification(s) {
   if (isNear(currentLat, currentLng, s.lat, s.lng, s.radius)) {
     localStorage.setItem("stamp_" + s.id, "true");
     alert("🎉 スタンプGET！：" + s.name);
     
-    updateMapMarkers(); // マーカーの色を緑に変える
-    showStamps();       // スタンプ帳のボタンを「獲得済」に変える
+    updateMapMarkers(); // マーカーのイラストを緑に変える
+    showStamps();       // スタンプ帳の表示を更新
   } else {
     alert("🥲 残念！まだ「" + s.name + "」の近くにいません。もっと近づいてからもう一度押してね。");
   }
 }
 
+  
 // === スタンプ表示（個別ボタン付きに改造） ===
 function showStamps() {
   const div = document.getElementById("stamps");
