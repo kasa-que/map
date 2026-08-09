@@ -46,7 +46,6 @@
   font-weight: 400;
   font-style: normal;
 }
-
     
     /* 自作四角パネルの共通スタイル */
     .custom-map-control {
@@ -61,13 +60,24 @@
     
     /* 最小化（閉じている時）の見た目（34px四方の正方形） */
     .custom-map-control.collapsed {
-      width: 34px;
-      height: 34px;
+      width: 36px;          /* ボタンの大きさを少しだけ（2px）広げました */
+      height: 36px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;     /* 画像が四角い枠からはみ出さないようにガード */
     }
+    /* 枠いっぱいにイラストを広げるための専用設定 */
+    .custom-map-control.collapsed .control-icon,
+    .custom-map-control.collapsed .control-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;    /* 👈 隙間なく目一杯に広げる魔法の設定です */
+      display: block;
+    }
+
+    
     .custom-map-control.collapsed .control-icon {
       font-size: 16px;
       display: block;
@@ -329,7 +339,7 @@ const CustomLayersControl = L.Control.extend({
     container.innerHTML = `
       <!-- ⭕️ 絵文字の「🗺」を削除し、オリジナル画像（icon_map.png）を表示する設定に変更しました -->
       <div class="control-icon">
-        <img src="icon_map.png" alt="地図" style="width: 20px; height: 20px; object-fit: contain; display: block;">
+        <img src="icon_map.png" alt="地図" style="width: 100%; height: 100%; object-fit: cover; display: block;">
       </div>
       <div class="control-content">
         <h4>地図の切り替え</h4>
