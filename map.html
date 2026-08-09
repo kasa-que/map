@@ -5,9 +5,9 @@
   <title>スタンプラリー</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="preconnect" href="https://googleapis.com">
-<link rel="preconnect" href="https://gstatic.com" crossorigin>
-<link href="https://googleapis.com/css2?family=Yuji+Boku&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yuji+Boku&display=swap" rel="stylesheet">
   
   <!-- Leaflet（地図ライブラリ） -->
   <link
@@ -17,7 +17,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
-    body { margin: 0; font-family: 'Yuji Boku', serif, sans-serif; }
+    body { margin: 0; font-family: "Yuji Boku", serif, sans-serif; }
     #map { height: 60vh; }
     #panel { padding: 10px; }
     button { font-size: 16px; padding: 8px 12px; cursor: pointer; }
@@ -40,6 +40,12 @@
       color: #f1c40f;
       filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.3));
     }
+
+.yuji-boku-regular {
+  font-family: "Yuji Boku", serif;
+  font-weight: 400;
+  font-style: normal;
+}
 
     
     /* 自作四角パネルの共通スタイル */
@@ -118,7 +124,7 @@
     <img src="fox.png" alt="お狐様" style="width: 50px; height: 50px; object-fit: contain; flex-shrink: 0;">
     
   <p id="fox-message" style="margin: 0; color: #d35400; font-weight: bold; line-height: 1.4; font-family: 'Yuji Boku', serif; font-size: 16px; letter-spacing: 0.5px;">
-    お狐様「そなたの旅の案内を務めるぞよ。右上の『👣』ボタンから足跡の記録を始めてみよ！」
+    「右上の『👣』ボタンで足跡の記録ができるよ！」
   </p>
   </div>
   
