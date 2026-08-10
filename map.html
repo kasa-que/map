@@ -54,7 +54,7 @@
 
 .custom-map-control {
   /* background: #ffffff; 👈 古い白背景を消して、下の透過設定に変更します */
-  background: rgba(255, 255, 255, 0.85); /* ★背景を「85%」の不透明度（うっすらシースルー）にします */
+  background: rgba(255, 255, 255, 0.65); /* ★背景を「85%」の不透明度（うっすらシースルー）にします */
   backdrop-filter: blur(4px); /* ボタンの後ろの地図をほんのりボカして高級感を出します */
   border-radius: 4px;
   box-shadow: 0 1px 5px rgba(0,0,0,0.3);
@@ -391,9 +391,6 @@ const CustomLayersControl = L.Control.extend({
   onAdd: function () {
     const container = L.DomUtil.create('div');
     container.innerHTML = `
-      <div class="control-icon">
-        <img src="icon_map.png" alt="地図" style="width: 100%; height: 100%; object-fit: contain; display: block;">
-      </div>
       <div class="control-content">
         <h4>地図の切り替え</h4> <!-- ⭕️ テキストだけにスッキリさせました -->
         <label><input type="radio" name="layer_opt" checked onclick="handleLayerRadio('original')">オリジナル地図</label>
@@ -424,9 +421,6 @@ const CustomTrackControl = L.Control.extend({
   onAdd: function () {
     const container = L.DomUtil.create('div');
     container.innerHTML = `
-      <div class="control-icon" id="track-icon-status">
-        <img src="icon_track.png" alt="足跡" style="width: 100%; height: 100%; object-fit: contain; display: block;">
-      </div>
       <div class="control-content">
         <h4>足跡の記録</h4> <!-- ⭕️ テキストだけにスッキリさせました -->
         <label><input type="radio" name="track_opt" id="opt_start" onclick="handleTrackRadio('start')">🟢 足跡スタート</label>
@@ -452,15 +446,17 @@ const CustomBottomLeftControl = L.Control.extend({
     
     // --- 1つ目のボタン：現在地チェック ---
     const locContainer = L.DomUtil.create('div', '', mainWrapper);
+    // 💡 style="display: flex; align-items: center;" を入れて、中のイラストと文字を強制的に横並びにします
     locContainer.innerHTML = `
-      <div class="control-icon">
-        <img src="icon_location.png" alt="現在地" style="width: 100%; height: 100%; object-fit: contain; display: block;">
-      </div>
-      <div class="control-content">
-        <!-- ⭕️ 小さいアイコンを消去し、縦中央を揃える設定（flex）にして文字だけにしました -->
-        <h4 style="margin: 0; padding: 0; border: none; cursor: pointer; display: flex; align-items: center; height: 28px;" onclick="checkLocation()">
-          現在地をチェック
-        </h4>
+      <div style="display: flex; align-items: center;">
+        <div class="control-icon">
+          <img src="icon_location.png" alt="現在地" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+        </div>
+        <div class="control-content" style="margin-left: 5px;">
+          <h4 style="margin: 0; padding: 0; border: none; cursor: pointer; white-space: nowrap; display: flex; align-items: center; height: 28px;" onclick="checkLocation()">
+            現在地をチェック
+          </h4>
+        </div>
       </div>
     `;
     locContainer.classList.add('expanded');
@@ -469,15 +465,17 @@ const CustomBottomLeftControl = L.Control.extend({
 
     // --- 2つ目のボタン：スタンプ帳ジャンプ ---
     const bookContainer = L.DomUtil.create('div', '', mainWrapper);
+    // 💡 こちらも同じく横並びの Flexbox を仕込みます
     bookContainer.innerHTML = `
-      <div class="control-icon">
-        <img src="icon_book.png" alt="スタンプ帳" style="width: 100%; height: 100%; object-fit: contain; display: block;">
-      </div>
-      <div class="control-content">
-        <!-- ⭕️ 小さいアイコンを消去し、縦中央を揃える設定にして文字だけにしました -->
-        <h4 style="margin: 0; padding: 0; border: none; cursor: pointer; display: flex; align-items: center; height: 28px;" onclick="scrollToStamps()">
-          スタンプ帳を見る
-        </h4>
+      <div style="display: flex; align-items: center;">
+        <div class="control-icon">
+          <img src="icon_book.png" alt="スタンプ帳" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+        </div>
+        <div class="control-content" style="margin-left: 5px;">
+          <h4 style="margin: 0; padding: 0; border: none; cursor: pointer; white-space: nowrap; display: flex; align-items: center; height: 28px;" onclick="scrollToStamps()">
+            スタンプ帳を見る
+          </h4>
+        </div>
       </div>
     `;
     setupControlToggle(bookContainer);
@@ -486,7 +484,6 @@ const CustomBottomLeftControl = L.Control.extend({
   }
 });
 map.addControl(new CustomBottomLeftControl());
-
   
   
 /////////
