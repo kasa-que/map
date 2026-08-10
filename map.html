@@ -54,7 +54,7 @@
 
 .custom-map-control {
   /* background: #ffffff; 👈 古い白背景を消して、下の透過設定に変更します */
-  background: rgba(255, 255, 255, 0.65); /* ★背景を「85%」の不透明度（うっすらシースルー）にします */
+  background: rgba(255, 255, 255, 0.85); /* ★背景を「85%」の不透明度（うっすらシースルー）にします */
   backdrop-filter: blur(4px); /* ボタンの後ろの地図をほんのりボカして高級感を出します */
   border-radius: 4px;
   box-shadow: 0 1px 5px rgba(0,0,0,0.3);
@@ -389,6 +389,9 @@ const CustomLayersControl = L.Control.extend({
   onAdd: function () {
     const container = L.DomUtil.create('div');
     container.innerHTML = `
+      <div class="control-icon">
+        <img src="icon_map.png" alt="地図" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+      </div>
       <div class="control-content">
         <h4>地図の切り替え</h4> <!-- ⭕️ テキストだけにスッキリさせました -->
         <label><input type="radio" name="layer_opt" checked onclick="handleLayerRadio('original')">オリジナル地図</label>
@@ -419,6 +422,9 @@ const CustomTrackControl = L.Control.extend({
   onAdd: function () {
     const container = L.DomUtil.create('div');
     container.innerHTML = `
+      <div class="control-icon" id="track-icon-status">
+        <img src="icon_track.png" alt="足跡" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+      </div>
       <div class="control-content">
         <h4>足跡の記録</h4> <!-- ⭕️ テキストだけにスッキリさせました -->
         <label><input type="radio" name="track_opt" id="opt_start" onclick="handleTrackRadio('start')">🟢 足跡スタート</label>
