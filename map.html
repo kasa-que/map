@@ -462,21 +462,33 @@ let myNewWatchId = null;       // 重複を避けるため名前を変えまし�
 let myNewTrackDots = [];       // 重複を避けるため名前を変えました
 let myNewLastDotTime = 0;      // 重複を避けるため名前を変えました
 
-// === 🆕 ⑥ お狐様のセリフが切り替わる足跡コントロール関数 ===
+
+  // === ⑥ 四角ボタンの画像がモードに合わせて変身する足跡コントロール関数 ===
 function handleTrackRadio(mode) {
   const iconStatus = document.getElementById('track-icon-status');
-  const foxMsg = document.getElementById('fox-message'); // お狐様メッセージの部屋
+  const foxMsg = document.getElementById('fox-message');
+
+  // お狐様のメッセージ要素を取得（もし無ければエラー防止）
+  const getFoxMsgEl = () => document.getElementById('fox-message');
 
   if (mode === 'start') {
     startNewTracking(); // 🟢 GPS追跡スタート
-    if (iconStatus) iconStatus.innerText = "🟢"; 
-    if (foxMsg) foxMsg.innerHTML = `お狐様「🟢 よし、記録を開始したぞ！歩いた道に赤い足跡がポツポツと刻まれていくはずじゃ」`;
+    
+    // 【新設定】四角ボタンの画像の中身を「🟢用のスタート画像」に差し替えます
+    if (iconStatus) {
+      iconStatus.innerHTML = `<img src="icon_start.png" alt="足跡(記録中)" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
+    }
+    if (foxMsg) foxMsg.innerHTML = `お狐様「🟢 よし、旅の記録を始めようぞ！そなたが歩いた道筋に、朱色の足跡がポツポツと刻まれていくはずじゃ。しかと励むがよい！」`;
   } 
   
   else if (mode === 'pause') {
     pauseNewTracking(); // 🟡 GPS追跡を一時停止
-    if (iconStatus) iconStatus.innerText = "🟡"; 
-    if (foxMsg) foxMsg.innerHTML = `お狐様「🟡 ひとやすみ中じゃな。コンビニやお団子屋さんでのんびりするがよい。再開するときはまたスタートをな！」`;
+    
+    // 【新設定】四角ボタンの画像の中身を「🟡用のひとやすみ画像」に差し替えます
+    if (iconStatus) {
+      iconStatus.innerHTML = `<img src="icon_pause.png" alt="足跡(ひとやすみ)" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
+    }
+    if (foxMsg) foxMsg.innerHTML = `お狐様「🟡 ひとやすみ、ひとやすみじゃ。茶屋で団子でも食うて、のんびり足を休めるがよいぞ。旅を再開するときは、また声をかけておくれ」`;
   } 
   
   else if (mode === 'stop') {
@@ -491,17 +503,25 @@ function handleTrackRadio(mode) {
           navigator.geolocation.clearWatch(myNewWatchId);
           myNewWatchId = null;
         }
-        if (iconStatus) iconStatus.innerText = "👣"; 
-        if (foxMsg) foxMsg.innerHTML = `お狐様「⚪ 足跡をきれいに片付けたぞ。またいつでも新しい旅を始めようぞ！」`;
+        
+        // 【新設定】リセットされたら、大元の「通常の足跡画像」に戻します
+        if (iconStatus) {
+          iconStatus.innerHTML = `<img src="icon_track.png" alt="足跡" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
+        }
+        if (foxMsg) foxMsg.innerHTML = `お狐様「⚪ これまでの旅路の足跡を、きれいにサッとお掃除したぞよ。またいつでも、新しい旅へ出かけるとしようぞ！」`;
         alert("⚪ 軌跡をリセットしました。");
       } else {
         // キャンセルされたらボタンのチェックを戻す
         if (myNewWatchId !== null) {
           document.getElementById('opt_start').checked = true;
-          if (iconStatus) iconStatus.innerText = "🟢";
+          if (iconStatus) {
+            iconStatus.innerHTML = `<img src="icon_start.png" alt="足跡(記録中)" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
+          }
         } else {
           document.getElementById('opt_pause').checked = true;
-          if (iconStatus) iconStatus.innerText = "🟡";
+          if (iconStatus) {
+            iconStatus.innerHTML = `<img src="icon_pause.png" alt="足跡(ひとやすみ)" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
+          }
         }
       }
     } else {
@@ -509,11 +529,15 @@ function handleTrackRadio(mode) {
         navigator.geolocation.clearWatch(myNewWatchId);
         myNewWatchId = null;
       }
-      if (iconStatus) iconStatus.innerText = "👣"; 
-      if (foxMsg) foxMsg.innerHTML = `お狐様「⚪ 記録は止まっておるぞ。歩くときはスタートを押すのじゃ」`;
+      // 最初からデータが無い時も大元の「通常の足跡画像」にする
+      if (iconStatus) {
+        iconStatus.innerHTML = `<img src="icon_track.png" alt="足跡" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
+      }
+      if (foxMsg) foxMsg.innerHTML = `お狐様「⚪ おや、足跡の記録は止まっておるぞよ。江戸の街を歩くときは、まずスタートを押すのじゃ！」`;
     }
   }
 }
+  
 // === 🟢 【新システム】足跡スタート（30秒おき） ===
 function startNewTracking() {
   if (!navigator.geolocation) {
