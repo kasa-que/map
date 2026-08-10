@@ -392,9 +392,9 @@ const CustomTrackControl = L.Control.extend({
       </div>
       <div class="control-content">
         <h4>足跡の記録</h4>
-        <label><input type="radio" name="track_opt" id="opt_start" onclick="handleTrackRadio('start')">🟢 足跡スタート</label>
-        <label><input type="radio" name="track_opt" id="opt_pause" onclick="handleTrackRadio('pause')">🟡 足跡ひとやすみ</label>
-        <label><input type="radio" name="track_opt" id="opt_stop" checked onclick="handleTrackRadio('stop')">⚪ 足跡リセット</label>
+        <label><input type="radio" name="track_opt" id="opt_start" onclick="handleTrackRadio('start')">足跡スタート</label>
+        <label><input type="radio" name="track_opt" id="opt_pause" onclick="handleTrackRadio('pause')">足跡ひとやすみ</label>
+        <label><input type="radio" name="track_opt" id="opt_stop" checked onclick="handleTrackRadio('stop')">足跡リセット</label>
       </div>
     `;
     setupControlToggle(container);
@@ -486,7 +486,7 @@ function handleTrackRadio(mode) {
     
     // 【新設定】四角ボタンの画像の中身を「🟡用のひとやすみ画像」に差し替えます
     if (iconStatus) {
-      iconStatus.innerHTML = `<img src="icon_pause.png" alt="足跡(ひとやすみ)" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
+      iconStatus.innerHTML = `<img src="icon_track.png" alt="足跡(ひとやすみ)" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
     }
     if (foxMsg) foxMsg.innerHTML = `お狐様「🟡 ひとやすみ、ひとやすみじゃ。茶屋で団子でも食うて、のんびり足を休めるがよいぞ。旅を再開するときは、また声をかけておくれ」`;
   } 
