@@ -662,12 +662,11 @@ function updateMapMarkers() {
 
     // --- 2. 手書きピンのサイズと位置の設定（文字消えしない安全な記述です） ---
     const myHandmadeIcon = L.icon({
-      iconUrl: myIconUrl,                     // 上で選んだイラスト画像を読み込む
-      iconSize: L.point(30, 30),              // イラストの表示サイズ（横30px, 縦30px）★お好みで変更してね
-      iconAnchor: L.point(15, 30),            // イラストの「一番下の尖った部分」が正確に場所を指す位置（中心, 下端）
-      popupAnchor: L.point(0, -32)            // 吹き出しがイラストのすぐ上から出るように調整
+      iconUrl: myIconUrl,                     
+      iconSize: L.point(40, 40),              // ★サイズを【縦横40px】に大きくしました！
+      iconAnchor: L.point(20, 40),            // ★位置がズレないよう、中心の根元を補正（横幅の半分, 高さ）
+      popupAnchor: L.point(0, -42)            // ★吹き出しの位置もイラストのすぐ上に自動調整
     });
-
     // --- 3. 吹き出し（ポップアップ）の中身を作成 ---
     let popupContent = `<div style="text-align: center; font-family: sans-serif; min-width: 160px;">`;
     if (got) {
