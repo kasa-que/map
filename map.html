@@ -1009,7 +1009,28 @@ function restoreBreadcrumbs() {
 
 // 起動時に足跡を復元する
 restoreBreadcrumbs();
+
+
   
+// === 🆕 ⑩ 地図をクリックしたときに正確な座標（緯度経度）を取得してお狐様がつぶやく機能 ===
+map.on('click', function(e) {
+  const foxMsg = document.getElementById('fox-message');
+  
+  // クリックした場所の緯度（lat）と経度（lng）を取得
+  const clickedLat = e.latlng.lat;
+  const clickedLng = e.latlng.lng;
+  
+  // 小数点第6位までに綺麗に丸めます（spotsデータと同じ形式）
+  const formattedLat = clickedLat.toFixed(6);
+  const formattedLng = clickedLng.toFixed(6);
+  
+  // コンソール（開発画面）にコピーしやすい形で出力しつつ、お狐様が味のある筆文字（Yuji Boku）で教えてくれます
+  console.log(`取得した座標 -> lat: ${formattedLat}, lng: ${formattedLng}`);
+  
+  if (foxMsg) {
+    foxMsg.innerHTML = `お狐様「ほう、そなたが突いたその場所の座標は、<br><span style="color:#d35400; font-size:14px; font-family:sans-serif;">lat: ${formattedLat}, lng: ${formattedLng}</span> じゃな！メモに控えるがよいぞ」`;
+  }
+});  
 </script>
 </body>
 </html>
