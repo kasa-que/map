@@ -442,25 +442,26 @@ map.addControl(new CustomTrackControl());
   
 
 // === ⑧ 🆕 自作「現在地 ＆ スタンプ帳 横並び合体四角パネル」（左下） ===
+// === ⑧ 自作「現在地 ＆ スタンプ帳 横並び合体四角パネル」（左下） ===
 const CustomBottomLeftControl = L.Control.extend({
-  options: { position: 'bottomleft' }, // 左下の位置を指定
+  options: { position: 'bottomleft' },
   onAdd: function () {
-    // 2つのボタンを横並びで包む外枠の箱（コンテナ）を作ります
     const mainWrapper = L.DomUtil.create('div');
     mainWrapper.style.display = 'flex';
-    mainWrapper.style.gap = '10px'; // ボタンとボタンの間の隙間を10pxあける設定
+    mainWrapper.style.gap = '10px';
     
     // --- 1つ目のボタン：現在地チェック ---
     const locContainer = L.DomUtil.create('div', '', mainWrapper);
     locContainer.innerHTML = `
       <div class="control-icon">
-        <img src="icon_location.png" alt="現在地" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+        <!-- ⭕️ お気に入りの画像名（icon_location.png）を指定 -->
+        <img src="icon_location.png" alt="現在地" style="width: 100%; height: 100%; object-fit: contain; display: block;">
       </div>
       <div class="control-content">
         <h4 style="margin: 0; padding: 0; border: none; cursor: pointer;" onclick="checkLocation()">📍 現在地をチェック</h4>
       </div>
     `;
-    locContainer.classList.add('expanded'); // 最初は開いた状態にする
+    locContainer.classList.add('expanded');
     setupControlToggle(locContainer); 
     locContainer.classList.remove('collapsed');
 
@@ -468,7 +469,8 @@ const CustomBottomLeftControl = L.Control.extend({
     const bookContainer = L.DomUtil.create('div', '', mainWrapper);
     bookContainer.innerHTML = `
       <div class="control-icon">
-        <img src="icon_book.png" alt="スタンプ帳" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+        <!-- ⭕️ 現在地と【完全に同じ画像名（icon_location.png）】に揃えました！ -->
+        <img src="icon_location.png" alt="スタンプ帳" style="width: 100%; height: 100%; object-fit: contain; display: block;">
       </div>
       <div class="control-content">
         <h4 style="margin: 0; padding: 0; border: none; cursor: pointer;" onclick="scrollToStamps()">📖 スタンプ帳を見る</h4>
@@ -480,15 +482,6 @@ const CustomBottomLeftControl = L.Control.extend({
   }
 });
 map.addControl(new CustomBottomLeftControl());
-
-// 📖 ボタンが押された時に、画面下のスタンプリストへ自動スクロールする関数（変更なし）
-function scrollToStamps() {
-  const target = document.getElementById('stamps');
-  if (target) {
-    target.scrollIntoView({ behavior: 'smooth' });
-  }
-}
-
 
 
 
