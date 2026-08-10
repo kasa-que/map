@@ -17,7 +17,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
-    body { margin: 0; font-family:   sans-serif,serif;   background-color: #F3E9D2;  }
+    body { margin: 0; font-family:   sans-serif,serif;   background-color: #FFFFFF;  }
     #map { height: 60vh; }
     #panel { padding: 10px; }
     button { font-size: 16px; padding: 8px 12px; cursor: pointer; }
@@ -328,19 +328,14 @@ L.imageOverlay("meijiline.png", boundsMeiji, {
 
 // 🏰【2枚目：shiro.png】のカバーする範囲（★お好みの座標に書き換えてください！）
 const boundsShiro = [
-  [36.385421, 140.271266], // 👈 shiro.png の正しい【左下】の緯度経度
-  [36.379167, 140.264953]  // 👈 shiro.png の正しい【右上】の緯度経度
+  [36.379167, 140.260343], // 👈 shiro.png の正しい【左下】の緯度経度
+  [36.386874, 140.271266]  // 👈 shiro.png の正しい【右上】の緯度経度
 ];
 
 L.imageOverlay("shiro.png", boundsShiro, {
   opacity: 1.0,     
   alt: "お城イラスト"
 }).addTo(originalMapGroup);
-
-
-
-
-
 
 
 
