@@ -117,6 +117,43 @@
       display: block;
     }
 
+
+/* ⭕️ 四角ボタンのなかに余白を作ってイラストを綺麗に収めるCSS */
+.custom-map-control.collapsed {
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff; /* ボタンの白い背景 */
+  border-radius: 4px;
+}
+
+/* 枠いっぱいきつきつに広がるのを防ぎ、上下左右に「4px」の隙間を作ります */
+.custom-map-control.collapsed .control-icon {
+  width: 28px;         /* 36pxの枠に対して、画像を28pxにちょっとだけ縮小 */
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 中のイラスト画像自体の設定 */
+.custom-map-control.collapsed .control-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* cover（無理やり広げる）から contain（形を保って収める）に変更 */
+  display: block;
+}
+
+
+
+
+
+
+
+    
   </style>
 </head>
 
