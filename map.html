@@ -240,8 +240,8 @@ const spots = [
   {
     id: "hachimandai",
     name: "八幡台櫓",
-    lat: 36.382553,
-    lng: 140.266142,
+    lat: 36.382510,
+    lng: 140.266072,
     radius: 30,
     info: "二階建ての櫓で、敵を見張れるよ！いつもは武器とかをしまっているよ！"
   },
@@ -272,7 +272,6 @@ const spots = [
 
 
 
-  
 
 ];
 
@@ -433,9 +432,9 @@ const CustomTrackControl = L.Control.extend({
       </div>
       <div class="control-content">
         <h4>足跡の記録</h4>
-        <label><input type="radio" name="track_opt" id="opt_start" onclick="handleTrackRadio('start')">🟢 足跡スタート</label>
-        <label><input type="radio" name="track_opt" id="opt_pause" onclick="handleTrackRadio('pause')">🟡 足跡ひとやすみ</label>
-        <label><input type="radio" name="track_opt" id="opt_stop" checked onclick="handleTrackRadio('stop')">⚪ 足跡リセット</label>
+        <label><input type="radio" name="track_opt" id="opt_start" onclick="handleTrackRadio('start')">足跡つけはじめる</label>
+        <label><input type="radio" name="track_opt" id="opt_pause" onclick="handleTrackRadio('pause')">足跡ひとやすみ</label>
+        <label><input type="radio" name="track_opt" id="opt_stop" checked onclick="handleTrackRadio('stop')">足跡を消す</label>
       </div>
     `;
     setupControlToggle(container);
