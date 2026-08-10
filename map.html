@@ -17,105 +17,113 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
-    body { margin: 0; font-family:   sans-serif,serif; }
-    #map { height: 60vh; }
-    #panel { padding: 10px; }
-    button { font-size: 16px; padding: 8px 12px; cursor: pointer; }
-    .stamp { font-size: 20px; margin-bottom: 10px; }
-    
-    /* ピンの色を変えるためのスタイル定義 */
-    /* ⭕️ SVGピン専用の新しい色定義 */
-    /* 未訪問（デフォルト：赤） */
-    .pin-red svg {
-      color: #ff4d4d;
-      filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.3)); /* ピンに立体的な影をつけます */
-    }
-    /* 訪問済（スタンプ獲得：緑） */
-    .pin-green svg {
-      color: #2ecc71;
-      filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.3));
-    }
-    /* 行きたい場所（📍ボタン：黄） */
-    .pin-yellow svg {
-      color: #f1c40f;
-      filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.3));
-    }
-
-.yuji-syuku-regular {
-  font-family: "Yuji Syuku", serif;
-  font-weight: 400;
-  font-style: normal;
+/* === 画面全体の古紙風リニューアル === */
+body {
+  margin: 0;
+  font-family: 'Yuji Boku', serif; /* 全体を味のある筆文字で統一 */
+  background-color: #ece0ca;      /* 画面の背景をくすんだ古紙の色に */
+  background-image: radial-gradient(#f3e9d8 15%, transparent 16%),
+                    radial-gradient(#f3e9d8 15%, transparent 16%);
+  background-size: 16px 16px;
+  background-position: 0 0, 8px 8px; /* うっすら和紙のような質感を演出 */
 }
-    
-    /* 自作四角パネルの共通スタイル */
-    .custom-map-control {
-      background: #ffffff;
-      border-radius: 4px;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.4);
-      font-family: sans-serif;
-      font-size: 13px;
-      color: #333;
-      margin-top: 10px !important; /* 👈 ここにこの1行を付け足してください */
-    }
-    
-    /* 最小化（閉じている時）の見た目（34px四方の正方形） */
-    .custom-map-control.collapsed {
-      width: 36px;          /* ボタンの大きさを少しだけ（2px）広げました */
-      height: 36px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;     /* 画像が四角い枠からはみ出さないようにガード */
-    }
-    /* 枠いっぱいにイラストを広げるための専用設定 */
-    .custom-map-control.collapsed .control-icon,
-    .custom-map-control.collapsed .control-icon img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;    /* 👈 隙間なく目一杯に広げる魔法の設定です */
-      display: block;
-    }
 
-    
-    .custom-map-control.collapsed .control-icon {
-      font-size: 16px;
-      display: block;
-    }
-    .custom-map-control.expanded .control-icon {
-      display: none;
-    }
-    
-    /* 展開している（開いている時）の見た目 */
-    .custom-map-control.expanded {
-      width: auto;
-      height: auto;
-      padding: 8px 10px;
-    }
-    .custom-map-control h4 {
-      margin: 0 0 6px 0;
-      font-size: 12px;
-      color: #666;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 3px;
-      white-space: nowrap;
-    }
-    .custom-map-control label {
-      display: block;
-      margin: 6px 0;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .custom-map-control input {
-      margin-right: 5px;
-      vertical-align: middle;
-    }
-    .custom-map-control .control-content {
-      display: none;
-    }
-    .custom-map-control.expanded .control-content {
-      display: block;
-    }
+#map {
+  height: 60vh;
+  box-shadow: inset 0 0 20px rgba(84, 58, 25, 0.4), 0 4px 10px rgba(0,0,0,0.15);
+  border-bottom: 3px double #543a19; /* 地図の境界線を古風な二本線に */
+}
+
+#panel {
+  padding: 12px;
+}
+
+button {
+  font-family: 'Yuji Boku', serif;
+  font-size: 16px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.stamp {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #2b1f11; /* 墨汁のような深い茶黒色 */
+}
+
+/* === 自作四角パネルの古紙・和風デザイン === */
+.custom-map-control {
+  background: #f4edd9; /* ボタンも渋い古紙の色に */
+  border: 1px solid #c2b396;
+  border-radius: 2px; /* カクカクさせてゲーム感をアップ */
+  box-shadow: 1px 2px 5px rgba(54, 38, 17, 0.3);
+  font-family: 'Yuji Boku', serif;
+  font-size: 14px;
+  color: #2b1f11;
+  margin-top: 10px !important;
+}
+
+/* 最小化（閉じている時）の見た目 */
+.custom-map-control.collapsed {
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* 画像を枠いっぱいに広げる設定 */
+.custom-map-control.collapsed .control-icon,
+.custom-map-control.collapsed .control-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 展開している（開いている時）の見た目 */
+.custom-map-control.expanded {
+  width: auto;
+  height: auto;
+  padding: 10px 12px;
+  border: 2px solid #543a19; /* 開いたときは濃い墨の枠線で強調 */
+}
+
+.custom-map-control h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #543a19;
+  border-bottom: 1px dashed #c2b396;
+  padding-bottom: 4px;
+  white-space: nowrap;
+}
+
+.custom-map-control label {
+  display: block;
+  margin: 6px 0;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.custom-map-control input {
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.custom-map-control .control-content {
+  display: none;
+}
+
+.custom-map-control.expanded .control-content {
+  display: block;
+}
+
+/* === 手書きピンの共通影設定 === */
+.custom-mini-pin {
+  filter: drop-shadow(1px 3px 4px rgba(0,0,0,0.4));
+}
 
   </style>
 </head>
@@ -127,17 +135,15 @@
 
 
 <div id="panel">
-  <!-- 🆕 お狐様を絵文字からオリジナルイラスト（PNG）に変更 -->
-  <div style="background-color: #fffde6; border: 2px solid #f1c40f; border-radius: 8px; padding: 10px; margin: 10px 0; display: flex; align-items: center; gap: 12px;">
-    
-    <!-- 👈 ここを画像（fox.png）に差し替えました！大きさを縦横50pxにして正方形に保ちます -->
+  <!-- ⭕️ 修正後のお狐様メッセージコーナー -->
+  <div style="background-color: #f7f1e1; border: 3px double #8e3522; border-radius: 2px; padding: 12px; margin: 10px 0; display: flex; align-items: center; gap: 12px; box-shadow: 1px 2px 6px rgba(0,0,0,0.1);">
     <img src="fox.png" alt="お狐様" style="width: 50px; height: 50px; object-fit: contain; flex-shrink: 0;">
     
-  <p id="fox-message" style="margin: 0; color: #d35400;  line-height: 1.4; font-family: 'Yuji Syuku', serif; font-size: 16px; letter-spacing: 0.5px;">
-    地図の中のピンをタッチして行きたいところを探してね！<br/>
-  </p>
-  </div>
-  
+    <!-- 文字色を墨のような #1c140a に変更しました -->
+    <p id="fox-message" style="margin: 0; color: #1c140a; font-weight: bold; line-height: 1.5; font-family: 'Yuji Boku', serif; font-size: 16px; letter-spacing: 0.5px;">
+      お狐様「そなたの旅の案内を務めるぞよ。右上の『👣』ボタンから足跡の記録を始めてみよ！」
+    </p>
+  </div>  
   <div id="stamps"></div>
   <button onclick="resetStamps()" style="margin-top: 20px; background-color: #ffcccc;">🗑 スタンプ帳をリセット</button>
 </div>
