@@ -47,78 +47,23 @@
   font-style: normal;
 }
     
-    /* 自作四角パネルの共通スタイル */
-    .custom-map-control {
-      background: #ffffff;
-      border-radius: 4px;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.4);
-      font-family: sans-serif;
-      font-size: 13px;
-      color: #333;
-      margin-top: 10px !important; /* 👈 ここにこの1行を付け足してください */
-    }
-    
-    /* 最小化（閉じている時）の見た目（34px四方の正方形） */
-    .custom-map-control.collapsed {
-      width: 36px;          /* ボタンの大きさを少しだけ（2px）広げました */
-      height: 36px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;     /* 画像が四角い枠からはみ出さないようにガード */
-    }
-    /* 枠いっぱいにイラストを広げるための専用設定 */
-    .custom-map-control.collapsed .control-icon,
-    .custom-map-control.collapsed .control-icon img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;    /* 👈 隙間なく目一杯に広げる魔法の設定です */
-      display: block;
-    }
-
-    
-    .custom-map-control.collapsed .control-icon {
-      font-size: 16px;
-      display: block;
-    }
-    .custom-map-control.expanded .control-icon {
-      display: none;
-    }
-    
-    /* 展開している（開いている時）の見た目 */
-    .custom-map-control.expanded {
-      width: auto;
-      height: auto;
-      padding: 8px 10px;
-    }
-    .custom-map-control h4 {
-      margin: 0 0 6px 0;
-      font-size: 12px;
-      color: #666;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 3px;
-      white-space: nowrap;
-    }
-    .custom-map-control label {
-      display: block;
-      margin: 6px 0;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .custom-map-control input {
-      margin-right: 5px;
-      vertical-align: middle;
-    }
-    .custom-map-control .control-content {
-      display: none;
-    }
-    .custom-map-control.expanded .control-content {
-      display: block;
-    }
 
 
-/* ⭕️ 四角ボタンのなかに余白を作ってイラストを綺麗に収めるCSS */
+
+/* === ⭕️ 四角ボタンの透過 ＆ イラストサイズ固定CSS === */
+
+.custom-map-control {
+  /* background: #ffffff; 👈 古い白背景を消して、下の透過設定に変更します */
+  background: rgba(255, 255, 255, 0.85); /* ★背景を「85%」の不透明度（うっすらシースルー）にします */
+  backdrop-filter: blur(4px); /* ボタンの後ろの地図をほんのりボカして高級感を出します */
+  border-radius: 4px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.3);
+  font-family: sans-serif;
+  font-size: 13px;
+  color: #333;
+}
+
+/* 最小化（閉じている時：36px四方の正方形） */
 .custom-map-control.collapsed {
   width: 36px;
   height: 36px;
@@ -126,32 +71,69 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #F8F3E8; /* ボタンの白い背景 */
-  border-radius: 4px;
 }
 
-/* 枠いっぱいきつきつに広がるのを防ぎ、上下左右に「4px」の隙間を作ります */
-.custom-map-control.collapsed .control-icon {
-  width: 28px;         /* 36pxの枠に対して、画像を28pxにちょっとだけ縮小 */
-  height: 28px;
+/* ★超重要：閉じている時も、開いて文字が出た時も、イラストを「縦横28px」にカチッと固定します */
+.custom-map-control .control-icon {
+  width: 28px !important;
+  height: 28px !important;
+  flex-shrink: 0 !important;   /* 👈 文字に圧迫されても、絶対に画像を縮小させない魔法の命令です */
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* 中のイラスト画像自体の設定 */
-.custom-map-control.collapsed .control-icon img {
+/* 中の手書きイラスト画像自体の設定 */
+.custom-map-control .control-icon img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* cover（無理やり広げる）から contain（形を保って収める）に変更 */
+  object-fit: contain;
   display: block;
 }
 
+/* 展開している（開いている時）の見た目 */
+.custom-map-control.expanded {
+  width: auto;
+  height: auto;
+  padding: 8px 10px;
+}
 
+.custom-map-control h4 {
+  margin: 0 0 6px 0;
+  font-size: 12px;
+  color: #666;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 3px;
+  white-space: nowrap;
+}
 
+/* 左下の合体ボタンが展開した時の中身の画像も小さくならないように固定 */
+.custom-map-control .control-content h4 img {
+  width: 20px !important;
+  height: 20px !important;
+  flex-shrink: 0 !important; /* 👈 ここも絶対に縮ませません */
+  object-fit: contain;
+}
 
+.custom-map-control label {
+  display: block;
+  margin: 6px 0;
+  cursor: pointer;
+  white-space: nowrap;
+}
 
+.custom-map-control input {
+  margin-right: 5px;
+  vertical-align: middle;
+}
 
+.custom-map-control .control-content {
+  display: none;
+}
+
+.custom-map-control.expanded .control-content {
+  display: block;
+}
 
     
   </style>
