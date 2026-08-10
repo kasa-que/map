@@ -17,7 +17,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
-    body { margin: 0; font-family:   sans-serif,serif;  }
+    body { margin: 0; font-family:   sans-serif,serif;   background-color: #F3E9D2;  }
     #map { height: 60vh; }
     #panel { padding: 10px; }
     button { font-size: 16px; padding: 8px 12px; cursor: pointer; }
@@ -126,7 +126,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #ffffff; /* ボタンの白い背景 */
+  background-color: #F8F3E8; /* ボタンの白い背景 */
   border-radius: 4px;
 }
 
@@ -165,12 +165,12 @@
 
 <div id="panel">
   <!-- 🆕 お狐様を絵文字からオリジナルイラスト（PNG）に変更 -->
-  <div style="background-color: #fffde6; border: 2px solid #f1c40f; border-radius: 8px; padding: 10px; margin: 10px 0; display: flex; align-items: center; gap: 12px;">
+  <div style="background-color: #F5EBD7; border: 2px solid #6B6254; border-radius: 8px; padding: 10px; margin: 10px 0; display: flex; align-items: center; gap: 12px;">
     
     <!-- 👈 ここを画像（fox.png）に差し替えました！大きさを縦横50pxにして正方形に保ちます -->
     <img src="fox.png" alt="お狐様" style="width: 70px; height: 70px; object-fit: contain; flex-shrink: 0;">
     
-  <p id="fox-message" style="margin: 0; color: #2f2725;  line-height: 1.4; font-family: 'Yuji Syuku', serif; font-size: 16px; letter-spacing: 0.5px;">
+  <p id="fox-message" style="margin: 0; color: #332F29;  line-height: 1.4; font-family: 'Yuji Syuku', serif; font-size: 16px; letter-spacing: 0.5px;">
     地図の中のピンをタッチして行きたいところを探してね！<br/>
   </p>
   </div>
