@@ -380,13 +380,16 @@ function handleLayerRadio(type) {
   if (type === 'satellite') satelliteMap.addTo(map);
 }
 
-// === 🆕 ④ 自作「足跡の記録四角パネル」を追加 ===
+// === ② 自作「足跡の記録四角パネル」（画像版） ===
 const CustomTrackControl = L.Control.extend({
-  options: { position: 'topright' }, // 「🗺」の下に自動で並びます
+  options: { position: 'topright' },
   onAdd: function () {
     const container = L.DomUtil.create('div');
     container.innerHTML = `
-      <div class="control-icon" id="track-icon-status">👣</div>
+      <!-- ⭕️ 枠いっぱいにオリジナル画像（icon_track.png）を表示 -->
+      <div class="control-icon" id="track-icon-status">
+        <img src="icon_track.png" alt="足跡" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+      </div>
       <div class="control-content">
         <h4>足跡の記録</h4>
         <label><input type="radio" name="track_opt" id="opt_start" onclick="handleTrackRadio('start')">🟢 足跡スタート</label>
@@ -394,41 +397,60 @@ const CustomTrackControl = L.Control.extend({
         <label><input type="radio" name="track_opt" id="opt_stop" checked onclick="handleTrackRadio('stop')">⚪ 足跡リセット</label>
       </div>
     `;
-    setupControlToggle(container); // 先ほど作った開閉の仕組みをそのまま使い回します
+    setupControlToggle(container);
     return container;
   }
 });
 map.addControl(new CustomTrackControl());
+  
 
-
-// === ⑧ 自作「現在地チェック四角パネル」を左下に配置（初期展開版） ===
-const CustomLocationControl = L.Control.extend({
-  options: { position: 'bottomleft' },
+// === ⑧ 🆕 自作「現在地 ＆ スタンプ帳 横並び合体四角パネル」（左下） ===
+const CustomBottomLeftControl = L.Control.extend({
+  options: { position: 'bottomleft' }, // 左下の位置を指定
   onAdd: function () {
-    const container = L.DomUtil.create('div');
+    // 2つのボタンを横並びで包む外枠の箱（コンテナ）を作ります
+    const mainWrapper = L.DomUtil.create('div');
+    mainWrapper.style.display = 'flex';
+    mainWrapper.style.gap = '10px'; // ボタンとボタンの間の隙間を10pxあける設定
     
-    container.innerHTML = `
-      <div class="control-icon">📍</div>
+    // --- 1つ目のボタン：現在地チェック ---
+    const locContainer = L.DomUtil.create('div', '', mainWrapper);
+    locContainer.innerHTML = `
+      <div class="control-icon">
+        <img src="icon_location.png" alt="現在地" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+      </div>
       <div class="control-content">
         <h4 style="margin: 0; padding: 0; border: none; cursor: pointer;" onclick="checkLocation()">📍 現在地をチェック</h4>
       </div>
     `;
-    
-    // 【新ロジック】共通の開閉システムを呼び出す前に、
-    // あらかじめ「展開（expanded）」のクラスをつけて、最初から文字が見えるようにします
-    container.classList.add('expanded');
-    
-    setupControlToggle(container); 
-    
-    // 開閉システムを動かした後は、自動的に「最小化（collapsed）」のクラスがついてしまうのを防ぐため、
-    // 一度だけ「最小化（collapsed）」クラスを外して、完全に開いた状態からスタートさせます
-    container.classList.remove('collapsed');
-    
-    return container;
+    locContainer.classList.add('expanded'); // 最初は開いた状態にする
+    setupControlToggle(locContainer); 
+    locContainer.classList.remove('collapsed');
+
+    // --- 2つ目のボタン：スタンプ帳ジャンプ ---
+    const bookContainer = L.DomUtil.create('div', '', mainWrapper);
+    bookContainer.innerHTML = `
+      <div class="control-icon">
+        <img src="icon_book.png" alt="スタンプ帳" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+      </div>
+      <div class="control-content">
+        <h4 style="margin: 0; padding: 0; border: none; cursor: pointer;" onclick="scrollToStamps()">📖 スタンプ帳を見る</h4>
+      </div>
+    `;
+    setupControlToggle(bookContainer);
+
+    return mainWrapper;
   }
 });
-map.addControl(new CustomLocationControl());
+map.addControl(new CustomBottomLeftControl());
 
+// 📖 ボタンが押された時に、画面下のスタンプリストへ自動スクロールする関数（変更なし）
+function scrollToStamps() {
+  const target = document.getElementById('stamps');
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth' });
+  }
+}
 
 
 
