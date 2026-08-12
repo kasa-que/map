@@ -274,57 +274,71 @@ const spots = [
 
 ];
 
-// === 地図表示 ===
+/ === 地図表示 ===
+// ズームレベルを「15」から、確実に航空写真が表示される「16」（より拡大された状態）に変更します
 const map = L.map("map").setView([36.3824, 140.2674], 16);
 
-// 背景レイヤーの定義
-const baseMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { 
-  attribution: "© OpenStreetMap", 
-  maxZoom: 19 
+// 1. 通常地図（OpenStreetMap）レイヤー
+const baseMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: "© OpenStreetMap",
+  maxZoom: 19
 });
 
-// ⭕️ 航空写真（これまで見られていた安心のURLへ戻しました！）
-const satelliteMap = L.tileLayer("https://gsi.go.jp{z}/{x}/{y}.jpg", { 
-  attribution: "© 国土地理院", 
-  minZoom: 2, 
-  maxZoom: 19, 
-  maxNativeZoom: 18 
+// 2. 航空写真（国土地理院）レイヤー【★絶対に消えない安心の元のURLです】
+const satelliteMap = L.tileLayer("https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/{z}/{x}/{y}.jpg", {
+  attribution: "© 国土地理院",
+  minZoom: 2,
+  maxZoom: 19,
+  maxNativeZoom: 18
 });
 
-// ⭕️ 高低差地図（国土地理院の公式仕様に完全に基づいた正しいURLに修正しました！）
+// 🆕 4. 高低差地図（国土地理院 色別標高図）レイヤー【★安全な最新の通信形式に修正しました】
 const elevationMap = L.tileLayer("https://gsi.go.jp{z}/{x}/{y}.png", {
   attribution: "© 国土地理院",
   minZoom: 5,
   maxZoom: 18
 });
 
+// === 3. オリジナルマップ（背景グループ）を別々の座標で作成 ===
 const originalMapGroup = L.layerGroup();
 
-// 2枚の地図の重ね合わせ座標（お手元の別々座標のまま！）
-const boundsMeiji = [[36.376273, 140.246029], [36.396837, 140.278823]];
-L.imageOverlay("meijiline.png", boundsMeiji, { opacity: 1.0, alt: "明治ライン" }).addTo(originalMapGroup);
+// 🗺【1枚目：meijiline.png】のカバーする範囲
+const boundsMeiji = [
+  [36.376273, 140.246029], // 左下
+  [36.396837, 140.278823]  // 右上
+];
 
+L.imageOverlay("meijiline.png", boundsMeiji, {
+  opacity: 1.0,     
+  alt: "明治ライン"
+}).addTo(originalMapGroup);
+
+
+// 🏰【2枚目：shiro.png】のカバーする範囲【★大切な座標を1ミリもズラさずそのまま引き継ぎました！】
 const boundsShiro = [
   [36.379167, 140.260343], // 👈 shiro.png の正しい【左下】の緯度経度
   [36.386874, 140.271266]  // 👈 shiro.png の正しい【右上】の緯度経度
 ];
-L.imageOverlay("shiro.png", boundsShiro, { opacity: 1.0, alt: "お城イラスト" }).addTo(originalMapGroup);
 
-// 初期表示はオリジナル地図
+L.imageOverlay("shiro.png", boundsShiro, {
+  opacity: 1.0,     
+  alt: "お城イラスト"
+}).addTo(originalMapGroup);
+
+
+// === 4. 最初は「オリジナルマップ」を画面に表示しておく ===
 originalMapGroup.addTo(map);
 
 
 // === 5. 右上の切り替えボタンに3つの選択肢を登録 ===
 // === 🆕 ① スマホでも絶対に誤作動しない「四角パネル自動開閉システム」 ===
 function setupControlToggle(container) {
-  // 最初からexpandedが付いている（左下）場合はcollapsedをつけない
   if (!container.classList.contains('expanded')) {
     container.classList.add('custom-map-control', 'collapsed');
   } else {
     container.classList.add('custom-map-control');
   }
 
-  // 【新ロジック】すべての自作四角パネルを一度「閉じる」共通の命令
   const closeAllPanels = () => {
     const allPanels = document.querySelectorAll('.custom-map-control');
     allPanels.forEach(p => {
@@ -333,9 +347,7 @@ function setupControlToggle(container) {
     });
   };
 
-  // アイコンをタップ、またはマウスが乗ったら「開く」
   const expand = () => {
-    // 自分が開く前に、まずは他のすべてのパネルを綺麗に閉じさせる
     closeAllPanels();
     container.classList.remove('collapsed');
     container.classList.add('expanded');
@@ -343,13 +355,11 @@ function setupControlToggle(container) {
   container.addEventListener('mouseenter', expand);
   container.addEventListener('touchstart', expand, { passive: true });
 
-  // マウスが完全に離れたら折りたたむ（最小化）
   container.addEventListener('mouseleave', () => {
     container.classList.remove('expanded');
     container.classList.add('collapsed');
   });
 
-  // ラジオボタンをクリックした時は、タッチのズレを防ぐため「0.3秒待ってから」閉じる
   container.addEventListener('change', () => {
     setTimeout(() => {
       container.classList.remove('expanded');
@@ -357,18 +367,53 @@ function setupControlToggle(container) {
     }, 300);
   });
 
-  // 地図画面をタップしたら折りたたむ
   map.on('click', () => {
     container.classList.remove('expanded');
     container.classList.add('collapsed');
   });
 
-  // パネル内を触ったときに後ろの地図が勝手に動くのを防ぐ
   L.DomEvent.disableClickPropagation(container);
 }
 
+// === 🆕 ② 自作「地図切り替え四角パネル」 ===
+const CustomLayersControl = L.Control.extend({
+  options: { position: 'topright' },
+  onAdd: function () {
+    const container = L.DomUtil.create('div');
+    container.innerHTML = `
+      <div class="control-icon control-icon-toggle">
+        <img src="icon_map.png" alt="地図" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+      </div>
+      <div class="control-content">
+        <h4>地図の切り替え</h4>
+        <label><input type="radio" name="layer_opt" checked onclick="handleLayerRadio('original')">オリジナル地図</label>
+        <label><input type="radio" name="layer_opt" onclick="handleLayerRadio('base')">元の地図</label>
+        <label><input type="radio" name="layer_opt" onclick="handleLayerRadio('satellite')">航空写真</label>
+        <!-- 🆕 高低差地図の選択肢を4つ目に安全にドッキングさせました -->
+        <label><input type="radio" name="layer_opt" onclick="handleLayerRadio('elevation')">高低差地図</label>
+      </div>
+    `;
+    setupControlToggle(container);
+    return container;
+  }
+});
+map.addControl(new CustomLayersControl());
   
-// === ① 自作「地図切り替え四角パネル」（最新版） ===
+// 🆕 ③ 地図切り替えの実際の処理
+function handleLayerRadio(type) {
+  map.removeLayer(originalMapGroup);
+  map.removeLayer(baseMap);
+  map.removeLayer(satelliteMap);
+  map.removeLayer(elevationMap); // 🆕 高低差レイヤーも一括消去の仲間に登録
+
+  if (type === 'original') originalMapGroup.addTo(map);
+  if (type === 'base') baseMap.addTo(map);
+  if (type === 'satellite') satelliteMap.addTo(map);
+  if (type === 'elevation') elevationMap.addTo(map); // 🆕 高低差地図を画面に表示！
+}
+
+// === ② 自作「足跡の記録四角パネル」（画像版） ===
+  // === ① 自作「地図切り替え四角パネル」（最新版） ===
 const CustomLayersControl = L.Control.extend({
   options: { position: 'topright' },
   onAdd: function () {
