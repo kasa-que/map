@@ -286,13 +286,13 @@ const baseMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 
 // 2. 航空写真（国土地理院）レイヤー
 // maxNativeZoomを指定することで、これ以上ズームアウト・ズームインしても画像が消えないように保護します
-const satelliteMap = L.tileLayer("https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/{z}/{x}/{y}.jpg", {
+/*const satelliteMap = L.tileLayer("https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/{z}/{x}/{y}.jpg", {
   attribution: "© 国土地理院",
   minZoom: 2,
   maxZoom: 19,
   maxNativeZoom: 18
 });
-
+*/
 
 const satelliteMap = L.tileLayer(
   "https://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png",
