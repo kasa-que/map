@@ -298,8 +298,8 @@ const elevationMap = L.tileLayer(
   "https://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png",
   {
     attribution: "© 国土地理院",
-    minZoom: 2,
-    maxZoom: 18,
+    minZoom: 5,
+    maxZoom: 19,
     maxNativeZoom: 15
   }
 );
@@ -434,8 +434,7 @@ function handleLayerRadio(type) {
   
   // 🆕 2. 「高低差地図」が押されたときの処理を、中身を空っぽ（何もしない）で作っておきます
   if (type === 'elevation') {
-    // まだ何もしません（真っ白エラーを絶対に防ぐガードです）
-    console.log("高低差地図のボタンが押されました");
+      elevationMap.addTo(map);
   }
 }
 
