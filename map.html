@@ -261,7 +261,7 @@ const spots = [
     info: "ここは駐車場です。"
   },
   {
-    id: "11",
+    id: "twn11",
     name: "大黒石",
     lat: 36.38601,
     lng: 140.26557,
@@ -676,27 +676,28 @@ function pauseNewTracking() {
   
 // マーカーの見た目を更新・初期配置する関数（吹き出し内に「行きたいボタン」を追加）
 // マーカーの見た目を更新・初期配置する関数（3種類の手書きイラスト切り替え版）
+// マーカーの見た目を更新・初期配置する関数（twn専用：透過ドット切り替え版）
 function updateMapMarkers() {
   spots.forEach(s => {
-    const got = localStorage.getItem("stamp_" + s.id);      // 獲得済（緑）
-    const wish = localStorage.getItem("wish_" + s.id);      // 行きたい（黄）
+    const got = localStorage.getItem("stamp_" + s.id);      // 獲得済
+    const wish = localStorage.getItem("wish_" + s.id);      // 行きたい
 
-    // --- 1. 状態に応じて、表示する手書きイラストのファイル名を決定 ---
-    let myIconUrl = "pin_red.png"; // ① まだ行っていない場所のイラスト名
+    // --- 1. 通常スポット用の手書きイラスト画像を決定 ---
+    let myIconUrl = "pin_red.png";
     if (got) {
-      myIconUrl = "pin_green.png"; // ② スタンプ獲得済みのイラスト名
+      myIconUrl = "pin_green.png";
     } else if (wish) {
-      myIconUrl = "pin_yellow.png"; // ③ 行きたい場所のイラスト名
+      myIconUrl = "pin_yellow.png";
     }
 
-    // --- 2. 手書きピンのサイズと位置の設定（文字消えしない安全な記述です） ---
     const myHandmadeIcon = L.icon({
       iconUrl: myIconUrl,                     
-      iconSize: L.point(40, 40),              // ★サイズを【縦横40px】に大きくしました！
-      iconAnchor: L.point(20, 40),            // ★位置がズレないよう、中心の根元を補正（横幅の半分, 高さ）
-      popupAnchor: L.point(0, -42)            // ★吹き出しの位置もイラストのすぐ上に自動調整
+      iconSize: L.point(40, 40),              
+      iconAnchor: L.point(20, 40),            
+      popupAnchor: L.point(0, -42)            
     });
-    // --- 3. 吹き出し（ポップアップ）の中身を作成 ---
+
+    // --- 2. 吹き出し（ポップアップ）の中身を作成 ---
     let popupContent = `<div style="text-align: center; font-family: sans-serif; min-width: 160px;">`;
     if (got) {
       popupContent += `
@@ -724,19 +725,60 @@ function updateMapMarkers() {
     }
     popupContent += `</div>`;
 
-    // --- 4. マーカーの配置またはイラスト・吹き出しの更新 ---
-    if (markers[s.id]) {
-      // 既にピンがある場合は、イラスト画像（Icon）と吹き出しの中身を最新状態に更新
-      markers[s.id].setIcon(myHandmadeIcon);
-      markers[s.id].setPopupContent(popupContent);
+    // --- 3. 🆕 マーカーの配置、または【手書き画像 ⇄ 透過ドット】の切り替え処理 ---
+    
+    // 【判定】もしIDが「twn」から始まる場合
+    if (s.id && s.id.startsWith("twn")) {
+      
+      // 状態に応じたお洒落な「透過ドットの色」を決定します
+      let dotColor = "#1e3799"; // ① デフォルト：深みのある紺色
+      if (got) {
+        dotColor = "#b71540";   // ② 獲得済：上品なエンジ色
+      } else if (wish) {
+        dotColor = "#f1c40f";   // ③ 行きたい：鮮やかな黄色
+      }
+
+      // ドットの見た目の設定（枠線をなくし、中身の透明度を50%にします）
+      const dotOptions = {
+        radius: 8,              // 点の大きさ（半径8px）
+        color: dotColor,        // 枠線の色
+        fillColor: dotColor,    // 塗りつぶしの色
+        fillOpacity: 0.5,       // ★ご要望通りの「透過（50%）」設定です
+        stroke: false           // 枠線を消して滑らかにする
+      };
+
+      if (markers[s.id]) {
+        // すでにピンがある場合、もし過去に「画像（L.Marker）」で作られていたら一度消去して、
+        // 新しく「ドット（L.CircleMarker）」として作り直します
+        if (typeof markers[s.id].setLatLng !== 'function' || markers[s.id].setStyle) {
+          markers[s.id].setStyle(dotOptions);
+          markers[s.id].setPopupContent(popupContent);
+        } else {
+          map.removeLayer(markers[s.id]);
+          markers[s.id] = L.circleMarker(L.latLng(s.lat, s.lng), dotOptions).addTo(map).bindPopup(popupContent);
+        }
+      } else {
+        // 最初は新しく透過ドットを地図に打ちます
+        markers[s.id] = L.circleMarker(L.latLng(s.lat, s.lng), dotOptions).addTo(map).bindPopup(popupContent);
+      }
+
     } else {
-      // 最初は新しく手書きピンを作る
-      const marker = L.marker([s.lat, s.lng], { icon: myHandmadeIcon }).addTo(map).bindPopup(popupContent);
-      markers[s.id] = marker;
+      // 【通常スポット】（IDがtwn以外）の場合は、いつもの綺麗な手書きイラストピンを表示します
+      if (markers[s.id]) {
+        if (typeof markers[s.id].setIcon === 'function') {
+          markers[s.id].setIcon(myHandmadeIcon);
+          markers[s.id].setPopupContent(popupContent);
+        } else {
+          map.removeLayer(markers[s.id]);
+          markers[s.id] = L.marker(L.latLng(s.lat, s.lng), { icon: myHandmadeIcon }).addTo(map).bindPopup(popupContent);
+        }
+      } else {
+        markers[s.id] = L.marker(L.latLng(s.lat, s.lng), { icon: myHandmadeIcon }).addTo(map).bindPopup(popupContent);
+      }
     }
+
   });
 }
-
 
 // === 🆕 「行きたい」ボタンが押された時のオンオフ処理 ===
 function toggleWish(id) {
