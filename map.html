@@ -391,7 +391,6 @@ const CustomLayersControl = L.Control.extend({
   onAdd: function () {
     const container = L.DomUtil.create('div');
     container.innerHTML = `
-      <!-- 💡 class="control-icon-toggle" を追加。これで開いた時にこの画像ごとパッと消えます -->
       <div class="control-icon control-icon-toggle">
         <img src="icon_map.png" alt="地図" style="width: 100%; height: 100%; object-fit: contain; display: block;">
       </div>
@@ -400,6 +399,8 @@ const CustomLayersControl = L.Control.extend({
         <label><input type="radio" name="layer_opt" checked onclick="handleLayerRadio('original')">オリジナル地図</label>
         <label><input type="radio" name="layer_opt" onclick="handleLayerRadio('base')">元の地図</label>
         <label><input type="radio" name="layer_opt" onclick="handleLayerRadio('satellite')">航空写真</label>
+        <!-- 🆕 1. メニューの中に、4つ目の選択肢の「文字」だけを安全に追加します -->
+        <label><input type="radio" name="layer_opt" onclick="handleLayerRadio('elevation')">高低差地図</label>
       </div>
     `;
     setupControlToggle(container);
@@ -417,10 +418,15 @@ function handleLayerRadio(type) {
   if (type === 'original') originalMapGroup.addTo(map);
   if (type === 'base') baseMap.addTo(map);
   if (type === 'satellite') satelliteMap.addTo(map);
+  
+  // 🆕 2. 「高低差地図」が押されたときの処理を、中身を空っぽ（何もしない）で作っておきます
+  if (type === 'elevation') {
+    // まだ何もしません（真っ白エラーを絶対に防ぐガードです）
+    console.log("高低差地図のボタンが押されました");
+  }
 }
 
-// === ② 自作「足跡の記録四角パネル」（画像版） ===
-
+  
 // === ② 自作「足跡の記録四角パネル」（画像版） ===
 const CustomTrackControl = L.Control.extend({
   options: { position: 'topright' },
