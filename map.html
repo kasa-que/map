@@ -433,35 +433,16 @@ map.addControl(new CustomLayersControl());
   
 // 🆕 ③ 地図切り替えの実際の処理
 function handleLayerRadio(type) {
-    // いったん全部のレイヤーを削除
-    map.removeLayer(originalMapGroup);
-    map.removeLayer(baseMap);
-    map.removeLayer(satelliteMap);
-    map.removeLayer(elevationMap);
+  map.removeLayer(originalMapGroup);
+  map.removeLayer(baseMap);
+  map.removeLayer(satelliteMap);
+  map.removeLayer(elevationMap);
 
-    // attribution もいったん全部クリア
-    map.attributionControl.clear();
-
-    // 選択されたレイヤーだけ追加
-    if (type === 'original') {
-        originalMapGroup.addTo(map);
-        map.attributionControl.addAttribution("");
-    }
-
-    if (type === 'base') {
-        baseMap.addTo(map);
-        map.attributionControl.addAttribution("© OpenStreetMap");
-    }
-
-    if (type === 'satellite') {
-        satelliteMap.addTo(map);
-        map.attributionControl.addAttribution("© 国土地理院");
-    }
-
-    if (type === 'elevation') {
-        elevationMap.addTo(map);
-        map.attributionControl.addAttribution("© 国土地理院");
-    }
+  if (type === 'original') originalMapGroup.addTo(map);
+  if (type === 'base') baseMap.addTo(map);
+  if (type === 'satellite') satelliteMap.addTo(map);
+  if (type === 'elevation') elevationMap.addTo(map);
+  
 }
 
   
