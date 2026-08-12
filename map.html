@@ -418,11 +418,11 @@ const CustomLayersControl = L.Control.extend({
       </div>
       <div class="control-content">
         <h4>地図の切り替え</h4>
-        <label><input type="radio" name="layer_opt" checked onclick="handleLayerRadio('original')">オリジナル地図</label>
-        <label><input type="radio" name="layer_opt" onclick="handleLayerRadio('base')">元の地図</label>
+        <label><input type="radio" name="layer_opt" checked onclick="handleLayerRadio('original')">クエストマップ</label>
+        <label><input type="radio" name="layer_opt" onclick="handleLayerRadio('base')">現代の地図</label>
         <label><input type="radio" name="layer_opt" onclick="handleLayerRadio('satellite')">航空写真</label>
         <!-- 🆕 1. メニューの中に、4つ目の選択肢の「文字」だけを安全に追加します -->
-        <label><input type="radio" name="layer_opt" onclick="handleLayerRadio('elevation')">高低差地図</label>
+        <label><input type="radio" name="layer_opt" onclick="handleLayerRadio('elevation')">陰影起伏図</label>
       </div>
     `;
     setupControlToggle(container);
@@ -440,8 +440,6 @@ function handleLayerRadio(type) {
   if (type === 'original') originalMapGroup.addTo(map);
   if (type === 'base') baseMap.addTo(map);
   if (type === 'satellite') satelliteMap.addTo(map);
-  
-  // 🆕 2. 「高低差地図」が押されたときの処理を、中身を空っぽ（何もしない）で作っておきます
   if (type === 'elevation') {
       elevationMap.addTo(map);
   }
