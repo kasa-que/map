@@ -294,7 +294,7 @@ const satelliteMap = L.tileLayer("https://cyberjapandata.gsi.go.jp/xyz/seamlessp
 });
 
 
-const elevationMap = L.tileLayer(
+/*const elevationMap = L.tileLayer(
   "https://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png",
   {
     attribution: "© 国土地理院",
@@ -302,9 +302,17 @@ const elevationMap = L.tileLayer(
     maxZoom: 19,
     maxNativeZoom: 15
   }
-);
+);*/
 
-  
+const elevationMap = L.tileLayer(
+  "https://cyberjapandata.gsi.go.jp/xyz/hillshademap/{z}/{x}/{y}.png",
+  {
+    attribution: "© 国土地理院",
+    minZoom: 2,
+    maxZoom: 19,
+    maxNativeZoom: 16
+  }
+);  
   
 // === 3. オリジナルマップ（背景グループ）を別々の座標で作成 ===
 const originalMapGroup = L.layerGroup();
