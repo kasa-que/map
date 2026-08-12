@@ -608,7 +608,7 @@ function startNewTracking() {
   if (!navigator.geolocation) {
     alert("お使いのブラウザは位置情報の追跡に対応していません");
     document.getElementById('opt_stop').checked = true; 
-    document.getElementById('track-icon-status').innerText = "👣";
+    document.getElementById('track-icon-status').innerText = "🐾";
     return;
   }
   if (myNewWatchId !== null) return; 
@@ -658,7 +658,7 @@ function startNewTracking() {
         myNewWatchId = null;
       }
       document.getElementById('opt_stop').checked = true;
-      document.getElementById('track-icon-status').innerText = "👣";
+      document.getElementById('track-icon-status').innerText = "🐾";
     },
     { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
   );
@@ -888,8 +888,8 @@ function tryGetStamp(id) {
       },
       err => {
         // 位置情報自体がスマホの設定等で完全にブロックされている場合のアラート
-        alert("位置情報の取得に失敗しました。右上の『👣』で足跡スタートをオンにするか、端末のGPS設定をご確認くだされ！");
-        if (foxMsg) foxMsg.innerHTML = `お狐様「おや、GPSの電波が届かぬぞよ。端末の位置情報設定や、右上の『👣』ボタンを確認してくりゃれ」`;
+        alert("位置情報の取得に失敗しました。右上の『🐾』で足跡スタートをオンにするか、端末のGPS設定をご確認くだされ！");
+        if (foxMsg) foxMsg.innerHTML = `お狐様「おや、GPSの電波が届かぬぞよ。端末の位置情報設定や、右上の『🐾』ボタンを確認してくりゃれ」`;
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
