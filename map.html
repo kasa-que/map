@@ -293,6 +293,15 @@ const satelliteMap = L.tileLayer("https://cyberjapandata.gsi.go.jp/xyz/seamlessp
   maxNativeZoom: 18
 });
 
+
+// ⭕️ 追記するコード（3. 高低差地図のデータを定義します。拡張子は公式の.pngです）
+const elevationMap = L.tileLayer("https://gsi.go.jp{z}/{x}/{y}.png", {
+  attribution: "© 国土地理院",
+  minZoom: 5,
+  maxZoom: 18
+});
+
+  
 // === 3. オリジナルマップ（背景グループ）を別々の座標で作成 ===
 const originalMapGroup = L.layerGroup();
 
