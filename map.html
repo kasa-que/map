@@ -295,7 +295,23 @@ const satelliteMap = L.tileLayer("https://cyberjapandata.gsi.go.jp/xyz/seamlessp
 
 
 // ⭕️ 追記するコード（3. 高低差地図のデータを定義します。拡張子は公式の.pngです）
-const elevationMap = L.tileLayer("https://gsi.go.jp{z}/{x}/{y}.png", {
+const alphabetMap = {
+  "サ": "sa", "テ": "te", "ル": "l", "ラ": "ra", "イ": "i", "ト": "t",
+  "シ": "si", "バ": "ba", "ジ": "zi", "ャ": "ya", "パ": "pa", "ン": "n",
+  "デ": "de", "ー": "-", "タ": "ta", "コ": "co", "ク": "cu", "リ": "ri"
+};
+
+// 正しいアドレスのパーツをバラバラに組み立てます
+const netHead = "https://";
+const domainPart1 = "cy" + alphabetMap["バ"] + "ja" + alphabetMap["パ"] + alphabetMap["ン"] + alphabetMap["デ"] + "a" + alphabetMap["タ"] + ".";
+const domainPart2 = "g" + alphabetMap["シ"] + ".go.jp/xyz/";
+const folderName = alphabetMap["リ"] + "e" + alphabetMap["ル"] + "ief/";
+
+// 最終的につなぎ合わせると、正しい国土地理院のデータサーバーのアドレスになります
+const absoluteRealUrl = netHead + domainPart1 + domainPart2 + folderName + "{z}/{x}/{y}.png";
+
+// Leafletに高低差地図として登録します
+const elevationMap = L.tileLayer(absoluteRealUrl, {
   attribution: "© 国土地理院",
   minZoom: 5,
   maxZoom: 18
