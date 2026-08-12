@@ -1039,24 +1039,46 @@ restoreBreadcrumbs();
 
   
 // === 🆕 ⑩ 地図をクリックしたときに正確な座標（緯度経度）を取得してお狐様がつぶやく機能 ===
+// === 🆕 ⑩ 地図をクリックしたときに座標を取得し、目印の点を打つ機能（改良版） ===
+let debugClickMarker = null; // 開発用の目印ピンを入れておく変数（箱）
+
 map.on('click', function(e) {
   const foxMsg = document.getElementById('fox-message');
   
-  // クリックした場所の緯度（lat）と経度（lng）を取得
+  // A. クリックした場所の緯度経度を取得して綺麗に丸める
   const clickedLat = e.latlng.lat;
   const clickedLng = e.latlng.lng;
-  
-  // 小数点第6位までに綺麗に丸めます（spotsデータと同じ形式）
   const formattedLat = clickedLat.toFixed(6);
   const formattedLng = clickedLng.toFixed(6);
   
-  // コンソール（開発画面）にコピーしやすい形で出力しつつ、お狐様が味のある筆文字（Yuji Boku）で教えてくれます
+  // 開発ツール（コンソール）にもコピー用に出力
   console.log(`取得した座標 -> lat: ${formattedLat}, lng: ${formattedLng}`);
-  
-  if (foxMsg) {
-    foxMsg.innerHTML = `お狐様「ほう、そなたが突いたその場所の座標は、<br><span style="color:#d35400; font-size:14px; font-family:sans-serif;">lat: ${formattedLat}, lng: ${formattedLng}</span> じゃな！メモに控えるがよいぞ」`;
+
+  // B. 【新機能】クリックした場所に目印の「てんてん」を打つ
+  // もし、すでに前に打った古い目印があれば、地図から一度消去する
+  if (debugClickMarker) {
+    map.removeLayer(debugClickMarker);
   }
-});  
+
+  // 新しい位置に、小さな黒い点を打つ（手書きイラストピンより小さく目立たない色に）
+  debugClickMarker = L.circleMarker([clickedLat, clickedLng], {
+    radius: 5,           // 点の大きさ
+    color: "#000000",    // 枠線の色（黒）
+    weight: 2,           // 枠線の太さ
+    fillColor: "#ffffff",// 中身の色（白）
+    fillOpacity: 0.9     // 不透明度
+  }).addTo(map);
+
+  // C. お狐様が味のある筆文字（Yuji Boku）で座標を教えてくれる
+  if (foxMsg) {
+    foxMsg.innerHTML = `お狐様「ほう、そなたが突いたその場所（黒い点）の座標は、<br><span style="color:#d35400; font-size:14px; font-family:sans-serif;">lat: ${formattedLat}, lng: ${formattedLng}</span> じゃな！メモに控えるがよいぞ」`;
+  }
+});
+
+
+
+
+  
 </script>
 </body>
 </html>
