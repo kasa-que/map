@@ -275,40 +275,42 @@ const spots = [
 ];
 
 // === 地図表示 ===
-// ズームレベルを「15」から、確実に航空写真が表示される「16」（より拡大された状態）に変更します
 const map = L.map("map").setView([36.3824, 140.2674], 16);
 
-// 1. 通常地図（OpenStreetMap）レイヤー
-const baseMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "© OpenStreetMap", maxZoom: 19 });
-const satelliteMap = L.tileLayer("https://gsi.go.jp{z}/{x}/{y}.jpg", { attribution: "© 国土地理院", minZoom: 2, maxZoom: 19, maxNativeZoom: 18 });
+// 背景レイヤーの定義
+const baseMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { 
+  attribution: "© OpenStreetMap", 
+  maxZoom: 19 
+});
 
-// 🆕 4. 高低差地図（国土地理院 色別標高図）レイヤーを追加します
+// ⭕️ 航空写真（最新のhttpsかつ拡張子を自動判定するアドレスに修正しました）
+const satelliteMap = L.tileLayer("https://gsi.go.jp{z}/{x}/{y}.jpg", { 
+  attribution: "© 国土地理院", 
+  minZoom: 2, 
+  maxZoom: 19, 
+  maxNativeZoom: 18 
+});
+
+// ⭕️ 高低差地図（最新のhttpsかつpngのアドレスに修正しました）
 const elevationMap = L.tileLayer("https://gsi.go.jp{z}/{x}/{y}.png", {
   attribution: "© 国土地理院",
   minZoom: 5,
   maxZoom: 18
 });
 
-  
-// === 3. オリジナルマップ（背景グループ）を別々の座標で作成 ===
 const originalMapGroup = L.layerGroup();
 
-  
-// 2枚の地図の重ね合わせ座標（前ステップの別々座標のまま引き継ぎます）
+// 2枚の地図の重ね合わせ座標（お手元の別々座標のまま！）
 const boundsMeiji = [[36.376273, 140.246029], [36.396837, 140.278823]];
 L.imageOverlay("meijiline.png", boundsMeiji, { opacity: 1.0, alt: "明治ライン" }).addTo(originalMapGroup);
 
-const boundsShiro = [[36.380000, 140.250000], [36.390000, 140.260000]]; // ※数値はお好みで調整したもので！
+const boundsShiro = [
+  [36.379167, 140.260343], // 👈 shiro.png の正しい【左下】の緯度経度
+  [36.386874, 140.271266]  // 👈 shiro.png の正しい【右上】の緯度経度
+];
 L.imageOverlay("shiro.png", boundsShiro, { opacity: 1.0, alt: "お城イラスト" }).addTo(originalMapGroup);
 
-
-
-
-
-
-  
-
-// === 4. 最初は「オリジナルマップ」を画面に表示しておく ===
+// 初期表示はオリジナル地図
 originalMapGroup.addTo(map);
 
 
@@ -366,7 +368,7 @@ function setupControlToggle(container) {
 }
 
   
-// === 🆕 ② 自作「地図切り替え四角パネル」 ===
+// === ① 自作「地図切り替え四角パネル」（最新版） ===
 const CustomLayersControl = L.Control.extend({
   options: { position: 'topright' },
   onAdd: function () {
@@ -380,7 +382,6 @@ const CustomLayersControl = L.Control.extend({
         <label><input type="radio" name="layer_opt" checked onclick="handleLayerRadio('original')">オリジナル地図</label>
         <label><input type="radio" name="layer_opt" onclick="handleLayerRadio('base')">元の地図</label>
         <label><input type="radio" name="layer_opt" onclick="handleLayerRadio('satellite')">航空写真</label>
-        <!-- 🆕 メニューに「高低差地図」の選択肢を付け足します -->
         <label><input type="radio" name="layer_opt" onclick="handleLayerRadio('elevation')">高低差地図</label>
       </div>
     `;
@@ -389,18 +390,18 @@ const CustomLayersControl = L.Control.extend({
   }
 });
 map.addControl(new CustomLayersControl());
-  
-// 🆕 ③ 地図切り替えの実際の処理
+
+// 地図切り替えの実際の処理
 function handleLayerRadio(type) {
   map.removeLayer(originalMapGroup);
   map.removeLayer(baseMap);
   map.removeLayer(satelliteMap);
-  map.removeLayer(elevationMap); // 🆕 一旦すべてのレイヤーを消す仲間に加えます
+  map.removeLayer(elevationMap); 
 
   if (type === 'original') originalMapGroup.addTo(map);
   if (type === 'base') baseMap.addTo(map);
   if (type === 'satellite') satelliteMap.addTo(map);
-  if (type === 'elevation') elevationMap.addTo(map); // 🆕 高低差地図を表示！
+  if (type === 'elevation') elevationMap.addTo(map); 
 }
 
 // === ② 自作「足跡の記録四角パネル」（画像版） ===
