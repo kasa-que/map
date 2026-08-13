@@ -466,15 +466,15 @@ const elevationMap = L.tileLayer(
 // === 3. オリジナルマップ（背景グループ）を別々の座標で作成 ===
 const originalMapGroup = L.layerGroup();
 
-// 🗺【1枚目：jokamachi.png】のカバーする範囲
+// 🗺【1枚目：joka.png】のカバーする範囲
 const boundsMeiji = [
   [36.374537, 140.246776], // 左下
   [36.396091, 140.278200]  // 右上
 ];
 
-L.imageOverlay("jokamachi.png", boundsMeiji, {
+L.imageOverlay("joka.png", boundsMeiji, {
   opacity: 1.0,     
-  alt: "jokamachi"
+  alt: "joka"
 }).addTo(originalMapGroup);
 
 //"meijiline.png" [36.376273, 140.246029], [36.396837, 140.278823] 
