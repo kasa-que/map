@@ -294,8 +294,8 @@ const spots = [
   {
     id: "twn04",
     name: "新丁",
-    lat: 36, lng: 140,    radius: 30,
-    info: ""
+    36.386266, 140.255224,    radius: 30,
+    info: "1640年に浅野長直が田をうめたてて町人町を作った。けれど文政の地図には新丁と書かれているので武士の町なのではないかと思ったので不思議です。"
   },
   {
     id: "twn05",
@@ -784,14 +784,22 @@ function startNewTracking() {
       }
 
       // 【30秒おきのドット記録システム】（ドットを打つと同時に、ブラウザに保存します）
+
+
       const now = Date.now();
       if (myNewLastDotTime === 0 || (now - myNewLastDotTime) >= 30000) {
+        // 色を先ほどの茶色（#a07855）にし、直径を2/3（半径4pxから約2.6px）に小さくしました
         const dot = L.circleMarker([uLat, uLng], {
-          radius: 4, color: "red", fillColor: "red", fillOpacity: 0.6, stroke: false
+          radius: 2.6,        
+          color: "#a07855",   
+          fillColor: "#a07855",
+          fillOpacity: 0.6,
+          stroke: false       
         }).addTo(map);
         myNewTrackDots.push(dot); 
         myNewLastDotTime = now;
-      
+
+        
         // 【追加】これまでの足跡データをLocalStorageにテキストとして保存
         const rawCoords = myNewTrackDots.map(d => {
           const ll = d.getLatLng();
@@ -915,7 +923,7 @@ function updateMapMarkers() {
     if (isTwn || isNow || isDfc) {
       
       // 1. 基本となる「線の色」の決定
-      let dotColor = "#a07855"; // ⭕️ twnの未訪：青っぽく見えない「茶系の透過色」に変更！
+      let dotColor = "#7f756b"; // ⭕️ twnの未訪：青っぽく見えない「茶系の透過色」に変更！
       if (isNow || isDfc) {
         dotColor = "#1e3799";   // now ＆ dfc：通常の紺色
       }
@@ -1266,7 +1274,7 @@ function restoreBreadcrumbs() {
       coordsList.forEach(coord => {
         // 過去の足跡ドットを地図上に再現
         const dot = L.circleMarker(coord, {
-          radius: 4, color: "red", fillColor: "red", fillOpacity: 0.6, stroke: false
+          radius: 2.6, color: "#a07855", fillColor: "#a07855", fillOpacity: 0.6, stroke: false
         }).addTo(map);
         
         // 配列（箱）にも戻しておく
