@@ -794,12 +794,13 @@ function pauseNewTracking() {
 // マーカーの見た目を更新・初期配置する関数（吹き出し内に「行きたいボタン」を追加）
 // マーカーの見た目を更新・初期配置する関数（3種類の手書きイラスト切り替え版）
 // マーカーの見た目を更新・初期配置する関数（twn専用：透過ドット切り替え版）
+// マーカーの見た目を更新・初期配置する関数（オリジナルスタンプ画像切り替え版）
 function updateMapMarkers() {
   spots.forEach(s => {
     const got = localStorage.getItem("stamp_" + s.id);      // 獲得済
     const wish = localStorage.getItem("wish_" + s.id);      // 行きたい
 
-    // --- 1. 通常スポット用の手書きイラスト画像を決定 ---
+    // --- 1. 通常スポット用の手書きイラストピン（画像）を決定 ---
     let myIconUrl = "pin_red.png";
     if (got) {
       myIconUrl = "pin_green.png";
@@ -814,20 +815,31 @@ function updateMapMarkers() {
       popupAnchor: L.point(0, -42)            
     });
 
-    // --- 2. 吹き出し（ポップアップ）の中身を作成 ---
-    let popupContent = `<div style="text-align: center; font-family: sans-serif; min-width: 160px;">`;
+    // --- 🆕 2. 状態に応じて、吹き出しの中に表示するスタンプの画像を決定 ---
+    let stampImageUrl = "stmpof.png"; // 普段（押す前）の共通画像
     if (got) {
+      stampImageUrl = "stmpon.png";  // 獲得済（押した後）の共通画像
+    }
+
+    // --- 3. 吹き出し（ポップアップ）の中身を作成 ---
+    let popupContent = `<div style="text-align: center; font-family: sans-serif; min-width: 160px;">`;
+    
+    if (got) {
+      // 【獲得済のレイアウト】
       popupContent += `
-        <img src="https://icons8.com" alt="スタンプ" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px;">
+        <!-- 💡 獲得済みのオリジナル画像（stmpon.png）を呼び出します -->
+        <img src="${stampImageUrl}" alt="スタンプ" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px;">
         <br><b style="font-size: 14px;">${s.name}</b><br>
         <span style="font-size: 12px; color: #666;">${s.info}</span><br>
         <span style="color: green; font-weight: bold; font-size: 13px; display: inline-block; margin-top: 5px;">✅ 獲得済</span>`;
     } else {
+      // 【未獲得のレイアウト】
       const wishButtonText = wish ? "📍外す" : "📍行きたい";
       const wishButtonColor = wish ? "#fff0f0" : "#fffde6";
 
       popupContent += `
-        <img src="https://icons8.com" alt="スタンプ" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px; opacity: 0.2; filter: grayscale(100%);">
+        <!-- 💡 押す前のオリジナル画像（stmpof.png）を呼び出します。シルエットではないのでopacityやフィルターは外しました -->
+        <img src="${stampImageUrl}" alt="スタンプ" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px;">
         <br><b style="font-size: 14px;">${s.name}</b><br>
         <span style="font-size: 12px; color: #666;">${s.info}</span><br>
         
@@ -842,31 +854,20 @@ function updateMapMarkers() {
     }
     popupContent += `</div>`;
 
-    // --- 3. 🆕 マーカーの配置、または【手書き画像 ⇄ 透過ドット】の切り替え処理 ---
-    
-    // 【判定】もしIDが「twn」から始まる場合
+    // --- 4. マーカーの配置、または【手書き画像 ⇄ 透過ドット】の切り替え処理（前回のtwn条件分岐のまま引き継ぎます） ---
     if (s.id && s.id.startsWith("twn")) {
-      
-      // 状態に応じたお洒落な「透過ドットの色」を決定します
-      let dotColor = "#1e3799"; // ① デフォルト：深みのある紺色
+      let dotColor = "#1e3799"; 
       if (got) {
-        dotColor = "#b71540";   // ② 獲得済：上品なエンジ色
+        dotColor = "#b71540";   
       } else if (wish) {
-        dotColor = "#f1c40f";   // ③ 行きたい：鮮やかな黄色
+        dotColor = "#f1c40f";   
       }
 
-      // ドットの見た目の設定（枠線をなくし、中身の透明度を50%にします）
       const dotOptions = {
-        radius: 8,              // 点の大きさ（半径8px）
-        color: dotColor,        // 枠線の色
-        fillColor: dotColor,    // 塗りつぶしの色
-        fillOpacity: 0.5,       // ★ご要望通りの「透過（50%）」設定です
-        stroke: false           // 枠線を消して滑らかにする
+        radius: 8, color: dotColor, fillColor: dotColor, fillOpacity: 0.5, stroke: false
       };
 
       if (markers[s.id]) {
-        // すでにピンがある場合、もし過去に「画像（L.Marker）」で作られていたら一度消去して、
-        // 新しく「ドット（L.CircleMarker）」として作り直します
         if (typeof markers[s.id].setLatLng !== 'function' || markers[s.id].setStyle) {
           markers[s.id].setStyle(dotOptions);
           markers[s.id].setPopupContent(popupContent);
@@ -875,12 +876,10 @@ function updateMapMarkers() {
           markers[s.id] = L.circleMarker(L.latLng(s.lat, s.lng), dotOptions).addTo(map).bindPopup(popupContent);
         }
       } else {
-        // 最初は新しく透過ドットを地図に打ちます
         markers[s.id] = L.circleMarker(L.latLng(s.lat, s.lng), dotOptions).addTo(map).bindPopup(popupContent);
       }
 
     } else {
-      // 【通常スポット】（IDがtwn以外）の場合は、いつもの綺麗な手書きイラストピンを表示します
       if (markers[s.id]) {
         if (typeof markers[s.id].setIcon === 'function') {
           markers[s.id].setIcon(myHandmadeIcon);
@@ -896,7 +895,7 @@ function updateMapMarkers() {
 
   });
 }
-
+  
 // === 🆕 「行きたい」ボタンが押された時のオンオフ処理 ===
 function toggleWish(id) {
   const wish = localStorage.getItem("wish_" + id);
