@@ -219,6 +219,40 @@ const spots = [
 
 
 
+//建物
+  ,{
+    id: "bld01",
+    name: "高橋町",
+    lat: 36, lng: 140,    radius: 30,
+    info: ""
+  }
+
+
+//防御  
+  ,{
+    id: "dfc01",
+    name: "高橋町",
+    lat: 36, lng: 140,    radius: 30,
+    info: ""
+  }
+
+
+//現存 
+  ,{
+    id: "now01",
+    name: "高橋町",
+    lat: 36, lng: 140,    radius: 30,
+    info: ""
+  }
+
+
+//おすすめ  
+  ,{
+    id: "rcm01",
+    name: "高橋町",
+    lat: 36, lng: 140,    radius: 30,
+    info: ""
+  }
 
 //町はじまり  
   ,{
@@ -782,13 +816,14 @@ function pauseNewTracking() {
 // マーカーの見た目を更新・初期配置する関数（オリジナルスタンプ画像切り替え版）
 // マーカーの見た目を更新・初期配置する関数（スポット別スタンプ画像 ＆ 緑文字消去版）
 // マーカーの見た目を更新・初期配置する関数（dfcは常に輪郭線キープ版）
+// マーカーの見た目を更新・初期配置する関数（茶系透過＆8割スモールドット版）
 function updateMapMarkers() {
   spots.forEach(s => {
     const got = localStorage.getItem("stamp_" + s.id);      // 獲得済
     const wish = localStorage.getItem("wish_" + s.id);      // 行きたい
 
     // ====================================================
-    // ① 【手書き画像グループ】（rcm または それ以外）の画像ファイル名決定
+    // ① 【手書き画像グループ】の画像ファイル名決定（変更なし）
     // ====================================================
     let myIconUrl = "pin_blue.png"; 
 
@@ -816,7 +851,7 @@ function updateMapMarkers() {
 
 
     // ====================================================
-    // ② 吹き出し（ポップアップ）の中身を作成（共通処理）
+    // ② 吹き出し（ポップアップ）の中身を作成（変更なし）
     // ====================================================
     let stampImageUrl = "stmpof.png"; 
     if (got) {
@@ -861,37 +896,39 @@ function updateMapMarkers() {
 
     if (isTwn || isNow || isDfc) {
       
-      // 1. 基本となる「線の色」の初期決定
-      let dotColor = "#7f8c8d"; // twn：グレー
+      // 1. 基本となる「線の色」の決定
+      let dotColor = "#a07855"; // ⭕️ twnの未訪：青っぽく見えない「茶系の透過色」に変更！
       if (isNow || isDfc) {
-        dotColor = "#1e3799";   // now ＆ dfc：紺色
+        dotColor = "#1e3799";   // now ＆ dfc：通常の紺色
       }
 
-      // 状態変化による「線の色」の共通上書き
+      // 共通ルール：行きたい（黄）、スタンプ（エンジ色の赤）への上書き
       if (got) {
         dotColor = "#b71540";   // スタンプしたらエンジ色（赤）
       } else if (wish) {
         dotColor = "#f1c40f";   // 行きたいなら黄色
       }
 
-      // 2. 💡【超重要】dfcかそれ以外かで「中身を塗るか・枠線だけにするか」を精密に仕分ける
-      let fillOpt = 0.5;        // 基本（twn, now）は中身を50%透過で塗る
-      let strokeOpt = false;    // 基本は外枠線なし
-      let borderWeight = 3;     // 線の太さ（dfc用）
+      // 2. 透過率と枠線オプションの精密コントロール
+      let fillOpt = 0.5;        // 通常（twn, now）は中身を50%透過で塗りつぶす
+      let strokeOpt = false;    // 通常は外枠線なし
+      let borderWeight = 3;     // 枠線の太さ
+      let strokeOpacityOpt = 1.0; // 枠線自体の不透明度
 
       if (isDfc) {
-        // ★dfcの場合は、どんな状態（未訪・行きたい・済）になっても、中身は【常に100%透明】をキープ！
-        fillOpt = 0.0;          
-        strokeOpt = true;       // ★常に「輪郭線（枠）」をクッキリ出します
+        fillOpt = 0.0;          // dfcは中身を常に完全透明
+        strokeOpt = true;       // dfcは常に「輪郭線（枠）」を出す
+        strokeOpacityOpt = 0.5; // ⭕️ ご要望通り、dfcの輪郭線自体を「透過（50%）」に設定！
       }
 
       // ドットのスタイル一式を組み立て
       const dotOptions = {
-        radius: 8,
-        color: dotColor,        // 枠線の色（紺 ⇄ 黄 ⇄ エンジ へと美しく変化）
+        radius: 6,              // ⭕️ ご要望通り、半径を8割の大きさ（8pxから6px）に小さくしました！
+        color: dotColor,        // 枠線の色
+        opacity: strokeOpacityOpt, // 枠線自体の透過設定（dfcのみ0.5、他は1.0）
         weight: borderWeight,   // 枠線の太さ
         fillColor: dotColor,    // 塗りつぶしの色
-        fillOpacity: fillOpt,   // 透過率（dfcなら常に0）
+        fillOpacity: fillOpt,   // 中身の透過率（dfcは常に0）
         stroke: strokeOpt       // 枠線を出すかどうか
       };
 
