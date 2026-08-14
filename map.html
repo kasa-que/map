@@ -178,44 +178,13 @@ const spots = [
     radius: 30,
     info: "ここに取水口？"
   },{
-    id: "ichikumon",
-    name: "移築もん",
-    lat: 36.3951, 
-    lng: 140.26607,
-    radius: 30,
-    info: ""
-  },{
-    id: "dfc_castle1",
-    name: "鍵の手",
-    lat: 36.388916, 
-    lng: 140.256164,
-    radius: 30,
-    info: "鍵の手？"
-  },{
     id: "traficright1",
     name: "交差点",
     lat: 36.3770,
     lng: 140.2783,
     radius: 30,
     info: "ここは交差点です。"
-  },
-  {
-    id: "now_hachimandai",
-    name: "八幡台櫓",
-    lat: 36.382503, lng: 140.266092,
-    radius: 30,
-    info: "二階建ての櫓で、敵を見張れるよ！いつもは武器とかをしまっているよ！"
-  },
-  {
-    id: "rcm_dikkis",
-    name: "大黒石",
-    lat: 36.38601,
-    lng: 140.26557,
-    radius: 50000,
-    imgOn: "stamp_dikkis.png",
-    info: "徳蔵寺に攻められた時に、正福寺がおっことして攻撃した石。大黒様の石と袋の石があって、今残っているのは袋の石。"
   }
-
 
 
 
@@ -238,38 +207,45 @@ const spots = [
     lat: 36, lng: 140,    radius: 30,
     info: ""
   }
-  ,{
-    id: "bld04",
-    name: "高橋町",
-    lat: 36, lng: 140,    radius: 30,
-    info: ""
+,{
+    id: "bld11",
+    name: "八幡台櫓",
+    lat: 36.382503, lng: 140.266092,
+    radius: 30,
+    info: "二階建ての櫓で、敵を見張れるよ！いつもは武器とかをしまっているよ！"
   }
-
 
 //防御  
-  ,{
-    id: "dfc01",
-    name: "高橋町",
-    lat: 36, lng: 140,    radius: 30,
-    info: ""
+,{
+    id: "dfc_01",
+    name: "鍵の手",
+    lat: 36.388916, 
+    lng: 140.256164,
+    radius: 30,
+    info: "鍵の手？"
   }
 
-
 //現存 
-  ,{
+,{
     id: "now01",
-    name: "高橋町",
-    lat: 36, lng: 140,    radius: 30,
+    name: "移築もん",
+    lat: 36.3951, 
+    lng: 140.26607,
+    radius: 30,
     info: ""
   }
 
 
 //おすすめ  
-  ,{
+,
+  {
     id: "rcm01",
-    name: "高橋町",
-    lat: 36, lng: 140,    radius: 30,
-    info: ""
+    name: "大黒石",
+    lat: 36.38601,
+    lng: 140.26557,
+    radius: 50000,
+    imgOn: "stamp_dikkis.png",
+    info: "徳蔵寺に攻められた時に、正福寺がおっことして攻撃した石。大黒様の石と袋の石があって、今残っているのは袋の石。"
   }
 
 //町はじまり  
@@ -942,7 +918,7 @@ function updateMapMarkers() {
       if (got) {
         dotColor = "#b71540";   // スタンプしたらエンジ色（赤）
       } else if (wish) {
-        dotColor = "#f1c40f";   // 行きたいなら黄色
+        dotColor = "#e6b422";   // 行きたいなら黄色
       }
 
       // 2. 透過率と枠線オプションの精密コントロール
