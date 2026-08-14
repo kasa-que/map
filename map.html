@@ -888,57 +888,40 @@ function updateMapMarkers() {
 
     let popupContent = `<div style="text-align: center; font-family: sans-serif; min-width: 160px;">`;
     if (got) {
-      // 🆕 2. 【獲得済のレイアウト】
-      // 保存されている日時を読み込みます（無ければ今の時間を仮表示）
+      // 【獲得済のレイアウト】
       const savedTime = localStorage.getItem("stamp_time_" + s.id) || "日時データなし";
 
       popupContent += `
-        <img src="${stampImageUrl}" alt="スタンプ" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px;">
+        <img src="${stampImageUrl}" alt="スタンプ" style="width: 75px; height: 75px; object-fit: contain; margin-bottom: 3px;">
         <br><b style="font-size: 14px;">${s.name}</b>
-        <!-- 💡 margin-topを入れて説明との間に程よい隙間をあけました -->
-        <span style="font-size: 12px; color: #666; display: block; margin-top: 6px; margin-bottom: 6px;">${s.info}</span>
         
-        <!-- 💡 ボタンが消えたスペースに、高さを揃えて獲得日時を綺麗に配置します 
-        <div style="margin-top: 8px; display: flex; justify-content: center; align-items: center; height: 25px;">
-          <span style="font-size: 11px; color: #7f8c8d; font-family: sans-serif; font-weight: bold; background: #f8f9fa; padding: 2px 6px; border-radius: 4px; border: 1px dashed #bdc3c7;">
-            ⏱ ${savedTime}
-          </span>
-        </div>-->
+        <!-- 💡 text-align: left; と display: block; を指定して、説明文だけを綺麗な左揃えに直しました -->
+        <span style="font-size: 12px; color: #666; display: block; text-align: left; margin-top: 6px; margin-bottom: 6px; line-height: 1.4;">${s.info}</span>
         
-        <!-- 👇 ⭕️ 修正後の新しいコードに差し替えます-->
         <div style="margin-top: 8px; display: flex; justify-content: center; align-items: center; height: 25px;">
-          <!-- 指定のクラスを付与し、ボールド・点線・背景・絵文字をすべて無くして薄墨色（#7f756b）のすっきりした文字にします -->
           <span class="yuji-syuku-regular" style="font-size: 13px; color: #7f756b; font-weight: normal; background: none; border: none; padding: 0;">
             ${savedTime}
           </span>
-        </div>
-        
-        `;
-
-
-
-
-        
+        </div>`;
     } else {
       // 【未獲得のレイアウト】
       const wishButtonText = wish ? "📍外す" : "📍行ってみたい";
       const wishButtonColor = wish ? "#fff0f0" : "#fffde6";
 
       popupContent += `
-        <img src="${stampImageUrl}" alt="スタンプ" onclick="tryGetStamp('${s.id}')" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px; cursor: pointer;" title="タッチしてスタンプを押す">
+        <img src="${stampImageUrl}" alt="スタンプ" onclick="tryGetStamp('${s.id}')" style="width: 75px; height: 75px; object-fit: contain; margin-bottom: 3px; cursor: pointer;" title="タッチしてスタンプを押す">
         <br><b style="font-size: 14px;">${s.name}</b>
-        <!-- 💡 未獲得側も同じ位置に隙間（margin-top）をあけます -->
-        <span style="font-size: 12px; color: #666; display: block; margin-top: 6px; margin-bottom: 6px;">${s.info}</span>
+        
+        <!-- 💡 未獲得側も同じく、説明文だけを左揃えにして読みやすくします -->
+        <span style="font-size: 12px; color: #666; display: block; text-align: left; margin-top: 6px; margin-bottom: 6px; line-height: 1.4;">${s.info}</span>
         
         <div style="margin-top: 8px; display: flex; justify-content: center; align-items: center; height: 25px;">
-          <!-- ⭕️ ご要望通りフォント設定を消して、元のすっきりしたスタイルに戻しました -->
           <button onclick="toggleWish('${s.id}')" style="font-size: 11px; padding: 4px 10px; cursor: pointer; background-color: ${wishButtonColor}; border: 1px solid #ccc; border-radius: 4px;">
             ${wishButtonText}
           </button>
         </div>`;
     }
     popupContent += `</div>`;
-
     
     // ====================================================
     // ③ 【地図への配置処理】ドットか画像かを判定して描き分ける
