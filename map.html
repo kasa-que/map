@@ -933,9 +933,9 @@ function updateMapMarkers() {
     if (isTwn || isNow || isDfc) {
       
       // 1. 基本となる「線の色」の決定
-      let dotColor = "#7f756b"; // ⭕️ twnの未訪：青っぽく見えない「茶系の透過色」に変更！
-      if (isNow || isDfc) {
-        dotColor = "#1e3799";   // now ＆ dfc：通常の紺色
+      let dotColor = "#7f756b"; // ★twn と dfc のデフォルトは、優しく馴染む「薄墨色」に統一！
+      if (isNow) {
+        dotColor = "#33302e";   // ★now のデフォルトは、キリッと引き締まる「濃い墨色」に変更！
       }
 
       // 共通ルール：行きたい（黄）、スタンプ（エンジ色の赤）への上書き
