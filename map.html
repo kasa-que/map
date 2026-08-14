@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>スタンプラリ!</title>
+  <title>スタンプラリ-!</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -185,7 +185,7 @@ const spots = [
     radius: 30,
     info: ""
   },{
-    id: "castle1",
+    id: "dfc_castle1",
     name: "鍵の手",
     lat: 36.388916, 
     lng: 140.256164,
@@ -200,14 +200,14 @@ const spots = [
     info: "ここは交差点です。"
   },
   {
-    id: "hachimandai",
+    id: "now_hachimandai",
     name: "八幡台櫓",
     lat: 36.382503, lng: 140.266092,
     radius: 30,
     info: "二階建ての櫓で、敵を見張れるよ！いつもは武器とかをしまっているよ！"
   },
   {
-    id: "dikkis",
+    id: "rcm_dikkis",
     name: "大黒石",
     lat: 36.38601,
     lng: 140.26557,
@@ -781,17 +781,30 @@ function pauseNewTracking() {
 // マーカーの見た目を更新・初期配置する関数（twn専用：透過ドット切り替え版）
 // マーカーの見た目を更新・初期配置する関数（オリジナルスタンプ画像切り替え版）
 // マーカーの見た目を更新・初期配置する関数（スポット別スタンプ画像 ＆ 緑文字消去版）
+// マーカーの見た目を更新・初期配置する関数（dfcは常に輪郭線キープ版）
 function updateMapMarkers() {
   spots.forEach(s => {
     const got = localStorage.getItem("stamp_" + s.id);      // 獲得済
     const wish = localStorage.getItem("wish_" + s.id);      // 行きたい
 
-    // --- 1. 通常スポット用の手書きイラストピン（画像）を決定 ---
-    let myIconUrl = "pin_red.png";
-    if (got) {
-      myIconUrl = "pin_green.png";
-    } else if (wish) {
-      myIconUrl = "pin_yellow.png";
+    // ====================================================
+    // ① 【手書き画像グループ】（rcm または それ以外）の画像ファイル名決定
+    // ====================================================
+    let myIconUrl = "pin_blue.png"; 
+
+    if (s.id && s.id.startsWith("rcm")) {
+      myIconUrl = "str_blue.png";
+      if (got) {
+        myIconUrl = "str_red.png";    
+      } else if (wish) {
+        myIconUrl = "str_yellow.png"; 
+      }
+    } else {
+      if (got) {
+        myIconUrl = "pin_red.png";    
+      } else if (wish) {
+        myIconUrl = "pin_yellow.png"; 
+      }
     }
 
     const myHandmadeIcon = L.icon({
@@ -801,43 +814,28 @@ function updateMapMarkers() {
       popupAnchor: L.point(0, -42)            
     });
 
-    // --- 🆕 2. スポットごとの固有画像があるか判定して、スタンプ画像を決定 ---
-    let stampImageUrl = "stmpof.png"; // 基本は共通の「押す前」画像
 
+    // ====================================================
+    // ② 吹き出し（ポップアップ）の中身を作成（共通処理）
+    // ====================================================
+    let stampImageUrl = "stmpof.png"; 
     if (got) {
-      // 【獲得済（オン）の画像選び】
-      if (s.imgOn) {
-        stampImageUrl = s.imgOn;     // spotsデータに「imgOn」があれば、その個別画像を優先！
-      } else {
-        stampImageUrl = "stmpon.png"; // 無ければいつもの共通「押した後」画像
-      }
+      stampImageUrl = s.imgOn ? s.imgOn : "stmpon.png";
     } else {
-      // 【未獲得（オフ）の画像選び】
-      if (s.imgOf) {
-        stampImageUrl = s.imgOf;     // spotsデータに「imgOf」があれば、その個別画像を優先！
-      } else {
-        stampImageUrl = "stmpof.png"; // 無ければいつもの共通「押す前」画像
-      }
+      stampImageUrl = s.imgOf ? s.imgOf : "stmpof.png";
     }
 
-    // --- 3. 吹き出し（ポップアップ）の中身を作成 ---
     let popupContent = `<div style="text-align: center; font-family: sans-serif; min-width: 160px;">`;
-    
     if (got) {
-      // 【獲得済のレイアウト】
       popupContent += `
-        <!-- 💡 獲得済みのスタンプ画像を表示 -->
         <img src="${stampImageUrl}" alt="スタンプ" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px;">
         <br><b style="font-size: 14px;">${s.name}</b><br>
         <span style="font-size: 12px; color: #666;">${s.info}</span>`;
-        // ⭕️ ご要望通り、ここの下に出ていた「✅ 獲得済」の緑の文字を丸ごと消去しました！
     } else {
-      // 【未獲得のレイアウト】
       const wishButtonText = wish ? "📍外す" : "📍行きたい";
       const wishButtonColor = wish ? "#fff0f0" : "#fffde6";
 
       popupContent += `
-        <!-- 💡 押す前のスタンプ画像を表示 -->
         <img src="${stampImageUrl}" alt="スタンプ" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px;">
         <br><b style="font-size: 14px;">${s.name}</b><br>
         <span style="font-size: 12px; color: #666;">${s.info}</span><br>
@@ -853,17 +851,48 @@ function updateMapMarkers() {
     }
     popupContent += `</div>`;
 
-    // --- 4. マーカーの配置・切り替え処理（前回のtwn条件分岐のまま引き継ぎます） ---
-    if (s.id && s.id.startsWith("twn")) {
-      let dotColor = "#1e3799"; 
-      if (got) {
-        dotColor = "#b71540";   
-      } else if (wish) {
-        dotColor = "#f1c40f";   
+
+    // ====================================================
+    // ③ 【地図への配置処理】ドットか画像かを判定して描き分ける
+    // ====================================================
+    const isTwn = s.id && s.id.startsWith("twn");
+    const isNow = s.id && s.id.startsWith("now");
+    const isDfc = s.id && s.id.startsWith("dfc");
+
+    if (isTwn || isNow || isDfc) {
+      
+      // 1. 基本となる「線の色」の初期決定
+      let dotColor = "#7f8c8d"; // twn：グレー
+      if (isNow || isDfc) {
+        dotColor = "#1e3799";   // now ＆ dfc：紺色
       }
 
+      // 状態変化による「線の色」の共通上書き
+      if (got) {
+        dotColor = "#b71540";   // スタンプしたらエンジ色（赤）
+      } else if (wish) {
+        dotColor = "#f1c40f";   // 行きたいなら黄色
+      }
+
+      // 2. 💡【超重要】dfcかそれ以外かで「中身を塗るか・枠線だけにするか」を精密に仕分ける
+      let fillOpt = 0.5;        // 基本（twn, now）は中身を50%透過で塗る
+      let strokeOpt = false;    // 基本は外枠線なし
+      let borderWeight = 3;     // 線の太さ（dfc用）
+
+      if (isDfc) {
+        // ★dfcの場合は、どんな状態（未訪・行きたい・済）になっても、中身は【常に100%透明】をキープ！
+        fillOpt = 0.0;          
+        strokeOpt = true;       // ★常に「輪郭線（枠）」をクッキリ出します
+      }
+
+      // ドットのスタイル一式を組み立て
       const dotOptions = {
-        radius: 8, color: dotColor, fillColor: dotColor, fillOpacity: 0.5, stroke: false
+        radius: 8,
+        color: dotColor,        // 枠線の色（紺 ⇄ 黄 ⇄ エンジ へと美しく変化）
+        weight: borderWeight,   // 枠線の太さ
+        fillColor: dotColor,    // 塗りつぶしの色
+        fillOpacity: fillOpt,   // 透過率（dfcなら常に0）
+        stroke: strokeOpt       // 枠線を出すかどうか
       };
 
       if (markers[s.id]) {
@@ -879,6 +908,9 @@ function updateMapMarkers() {
       }
 
     } else {
+      // ====================================================
+      // ④ 通常・rcmスポット（画像ピンのグループ）の配置・更新
+      // ====================================================
       if (markers[s.id]) {
         if (typeof markers[s.id].setIcon === 'function') {
           markers[s.id].setIcon(myHandmadeIcon);
@@ -894,7 +926,6 @@ function updateMapMarkers() {
 
   });
 }
-
   
 
 // === 🆕 「行きたい」ボタンが押された時のオンオフ処理 ===
