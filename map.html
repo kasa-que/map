@@ -898,12 +898,27 @@ function updateMapMarkers() {
         <!-- 💡 margin-topを入れて説明との間に程よい隙間をあけました -->
         <span style="font-size: 12px; color: #666; display: block; margin-top: 6px; margin-bottom: 6px;">${s.info}</span>
         
-        <!-- 💡 ボタンが消えたスペースに、高さを揃えて獲得日時を綺麗に配置します -->
+        <!-- 💡 ボタンが消えたスペースに、高さを揃えて獲得日時を綺麗に配置します 
         <div style="margin-top: 8px; display: flex; justify-content: center; align-items: center; height: 25px;">
           <span style="font-size: 11px; color: #7f8c8d; font-family: sans-serif; font-weight: bold; background: #f8f9fa; padding: 2px 6px; border-radius: 4px; border: 1px dashed #bdc3c7;">
             ⏱ ${savedTime}
           </span>
-        </div>`;
+        </div>-->
+        
+        // 👇 ⭕️ 修正後の新しいコードに差し替えます
+        <div style="margin-top: 8px; display: flex; justify-content: center; align-items: center; height: 25px;">
+          <!-- 指定のクラスを付与し、ボールド・点線・背景・絵文字をすべて無くして薄墨色（#7f756b）のすっきりした文字にします -->
+          <span class="yuji-syuku-regular" style="font-size: 13px; color: #7f756b; font-weight: normal; background: none; border: none; padding: 0;">
+            ${savedTime}
+          </span>
+        </div>
+        
+        `;
+
+
+
+
+        
     } else {
       // 【未獲得のレイアウト】
       const wishButtonText = wish ? "📍外す" : "📍行ってみたい";
@@ -1127,8 +1142,31 @@ function processStampVerification(s) {
   if (isNear(currentLat, currentLng, s.lat, s.lng, s.radius)) {
     localStorage.setItem("stamp_" + s.id, "true");
 
+    //const now = new Date();
+    //const timeStr = now.getFullYear() + "/" + String(now.getMonth() + 1).padStart(2, '0') + "/" + String(now.getDate()).padStart(2, '0') + " " + String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
+
     const now = new Date();
-    const timeStr = now.getFullYear() + "/" + String(now.getMonth() + 1).padStart(2, '0') + "/" + String(now.getDate()).padStart(2, '0') + " " + String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
+    // 漢数字に変換するための配列
+    const kanjiNums = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十", "二十一", "二十二", "二十三", "二十四", "二十五", "二十六", "二十七", "二十八", "二十九", "三十", "三十一"];
+    const kanjiMinutes = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十", "二十一", "二十二", "二十三", "二十四", "二十五", "二十六", "二十七", "二十八", "二十九", "三十", "三十一", "三十二", "三十三", "三十四", "三十五", "三十六", "三十七", "三十八", "三十九", "四十", "四十一", "四十二", "四十三", "四十四", "四十五", "四十六", "四十七", "四十八", "四十九", "五十", "五十一", "五十二", "五十三", "五十四", "五十五", "五十六", "五十七", "五十八", "五十九"];
+    // 西暦2026年は「令和八年」になります
+    const reiwaYear = "令和八年";
+    const kanjiMonth = kanjiNums[now.getMonth() + 1] + "月";
+    const kanjiDay = kanjiNums[now.getDate()] + "日";
+    const kanjiHour = kanjiNums[now.getHours()] + "時";
+    const kanjiMin = kanjiMinutes[now.getMinutes()] + "分";
+    // すべてを美しく結合します（例：令和八年八月十四日 十八時四分）
+    const timeStr = reiwaYear + kanjiMonth + kanjiDay + " " + kanjiHour + kanjiMin;
+    localStorage.setItem("stamp_time_" + s.id, timeStr);
+    
+    
+    
+    
+    
+    
+    
+    
+    
     localStorage.setItem("stamp_time_" + s.id, timeStr); // ブラウザに「stamp_time_スポットID」で保存
     
     alert("🎉 スタンプGET！：" + s.name);
