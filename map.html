@@ -228,6 +228,8 @@ const spots = [
     lat: 36.38601,
     lng: 140.26557,
     radius: 50000,
+    imgOn: "stamp_dikkis.png"   // 押した後の個別スタンプ画像
+
     info: "徳蔵寺に攻められた時に、正福寺がおっことして攻撃した石。大黒様の石と袋の石があって、今残っているのは袋の石。"
   }
 
@@ -795,6 +797,7 @@ function pauseNewTracking() {
 // マーカーの見た目を更新・初期配置する関数（3種類の手書きイラスト切り替え版）
 // マーカーの見た目を更新・初期配置する関数（twn専用：透過ドット切り替え版）
 // マーカーの見た目を更新・初期配置する関数（オリジナルスタンプ画像切り替え版）
+// マーカーの見た目を更新・初期配置する関数（スポット別スタンプ画像 ＆ 緑文字消去版）
 function updateMapMarkers() {
   spots.forEach(s => {
     const got = localStorage.getItem("stamp_" + s.id);      // 獲得済
@@ -815,10 +818,23 @@ function updateMapMarkers() {
       popupAnchor: L.point(0, -42)            
     });
 
-    // --- 🆕 2. 状態に応じて、吹き出しの中に表示するスタンプの画像を決定 ---
-    let stampImageUrl = "stmpof.png"; // 普段（押す前）の共通画像
+    // --- 🆕 2. スポットごとの固有画像があるか判定して、スタンプ画像を決定 ---
+    let stampImageUrl = "stmpof.png"; // 基本は共通の「押す前」画像
+
     if (got) {
-      stampImageUrl = "stmpon.png";  // 獲得済（押した後）の共通画像
+      // 【獲得済（オン）の画像選び】
+      if (s.imgOn) {
+        stampImageUrl = s.imgOn;     // spotsデータに「imgOn」があれば、その個別画像を優先！
+      } else {
+        stampImageUrl = "stmpon.png"; // 無ければいつもの共通「押した後」画像
+      }
+    } else {
+      // 【未獲得（オフ）の画像選び】
+      if (s.imgOf) {
+        stampImageUrl = s.imgOf;     // spotsデータに「imgOf」があれば、その個別画像を優先！
+      } else {
+        stampImageUrl = "stmpof.png"; // 無ければいつもの共通「押す前」画像
+      }
     }
 
     // --- 3. 吹き出し（ポップアップ）の中身を作成 ---
@@ -827,18 +843,18 @@ function updateMapMarkers() {
     if (got) {
       // 【獲得済のレイアウト】
       popupContent += `
-        <!-- 💡 獲得済みのオリジナル画像（stmpon.png）を呼び出します -->
+        <!-- 💡 獲得済みのスタンプ画像を表示 -->
         <img src="${stampImageUrl}" alt="スタンプ" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px;">
         <br><b style="font-size: 14px;">${s.name}</b><br>
-        <span style="font-size: 12px; color: #666;">${s.info}</span><br>
-        <span style="color: green; font-weight: bold; font-size: 13px; display: inline-block; margin-top: 5px;">✅ 獲得済</span>`;
+        <span style="font-size: 12px; color: #666;">${s.info}</span>`;
+        // ⭕️ ご要望通り、ここの下に出ていた「✅ 獲得済」の緑の文字を丸ごと消去しました！
     } else {
       // 【未獲得のレイアウト】
       const wishButtonText = wish ? "📍外す" : "📍行きたい";
       const wishButtonColor = wish ? "#fff0f0" : "#fffde6";
 
       popupContent += `
-        <!-- 💡 押す前のオリジナル画像（stmpof.png）を呼び出します。シルエットではないのでopacityやフィルターは外しました -->
+        <!-- 💡 押す前のスタンプ画像を表示 -->
         <img src="${stampImageUrl}" alt="スタンプ" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px;">
         <br><b style="font-size: 14px;">${s.name}</b><br>
         <span style="font-size: 12px; color: #666;">${s.info}</span><br>
@@ -854,7 +870,7 @@ function updateMapMarkers() {
     }
     popupContent += `</div>`;
 
-    // --- 4. マーカーの配置、または【手書き画像 ⇄ 透過ドット】の切り替え処理（前回のtwn条件分岐のまま引き継ぎます） ---
+    // --- 4. マーカーの配置・切り替え処理（前回のtwn条件分岐のまま引き継ぎます） ---
     if (s.id && s.id.startsWith("twn")) {
       let dotColor = "#1e3799"; 
       if (got) {
@@ -895,7 +911,6 @@ function updateMapMarkers() {
 
   });
 }
-
 
   
 
