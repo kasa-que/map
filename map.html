@@ -888,30 +888,31 @@ function updateMapMarkers() {
 
     let popupContent = `<div style="text-align: center; font-family: sans-serif; min-width: 160px;">`;
     if (got) {
+      // 【獲得済のレイアウト】（変更なし・緑文字を消したすっきり状態を維持）
       popupContent += `
         <img src="${stampImageUrl}" alt="スタンプ" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px;">
         <br><b style="font-size: 14px;">${s.name}</b><br>
         <span style="font-size: 12px; color: #666;">${s.info}</span>`;
     } else {
-      const wishButtonText = wish ? "📍外す" : "📍行きたい";
+      // 【未獲得のレイアウト】
+      // ⭕️ 「📍行ってみたい」に文字を変更し、背景色などの設定も合わせました
+      const wishButtonText = wish ? "外す" : "行ってみたい";
       const wishButtonColor = wish ? "#fff0f0" : "#fffde6";
 
       popupContent += `
-        <img src="${stampImageUrl}" alt="スタンプ" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px;">
+        <!-- ⭕️ 画像に onclick="tryGetStamp('${s.id}')" と手元の形（cursor:pointer）を追加し、タッチでスタンプが押せるようにしました -->
+        <img src="${stampImageUrl}" alt="スタンプ" onclick="tryGetStamp('${s.id}')" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px; cursor: pointer;" title="タッチしてスタンプを押す">
         <br><b style="font-size: 14px;">${s.name}</b><br>
         <span style="font-size: 12px; color: #666;">${s.info}</span><br>
         
-        <div style="margin-top: 8px; display: flex; justify-content: center; gap: 5px;">
-          <button onclick="tryGetStamp('${s.id}')" style="font-size: 11px; padding: 4px 6px; cursor: pointer; background-color: #fff; border: 1px solid #ccc; border-radius: 4px;">
-            押す
-          </button>
-          <button onclick="toggleWish('${s.id}')" style="font-size: 11px; padding: 4px 6px; cursor: pointer; background-color: ${wishButtonColor}; border: 1px solid #ccc; border-radius: 4px;">
+        <div style="margin-top: 8px; display: flex; justify-content: center;">
+          <!-- ⭕️ 「押す」ボタンを完全に削除し、「行ってみたい」ボタンを真ん中1つに配置しました -->
+          <button onclick="toggleWish('${s.id}')" style="font-size: 11px; padding: 4px 10px; cursor: pointer; background-color: ${wishButtonColor}; border: 1px solid #ccc; border-radius: 4px; font-family: 'Yuji Boku', serif;">
             ${wishButtonText}
           </button>
         </div>`;
     }
     popupContent += `</div>`;
-
 
     // ====================================================
     // ③ 【地図への配置処理】ドットか画像かを判定して描き分ける
@@ -949,7 +950,7 @@ function updateMapMarkers() {
 
       // ドットのスタイル一式を組み立て
       const dotOptions = {
-        radius: 6,              // ⭕️ ご要望通り、半径を8割の大きさ（8pxから6px）に小さくしました！
+        radius: 8,              // ⭕️ ご要望通り、半径を8割の大きさ（8pxから6px）に小さくしました！
         color: dotColor,        // 枠線の色
         opacity: strokeOpacityOpt, // 枠線自体の透過設定（dfcのみ0.5、他は1.0）
         weight: borderWeight,   // 枠線の太さ
