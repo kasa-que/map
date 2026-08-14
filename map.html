@@ -888,32 +888,43 @@ function updateMapMarkers() {
 
     let popupContent = `<div style="text-align: center; font-family: sans-serif; min-width: 160px;">`;
     if (got) {
-      // 【獲得済のレイアウト】（変更なし・緑文字を消したすっきり状態を維持）
+      // 🆕 2. 【獲得済のレイアウト】
+      // 保存されている日時を読み込みます（無ければ今の時間を仮表示）
+      const savedTime = localStorage.getItem("stamp_time_" + s.id) || "日時データなし";
+
       popupContent += `
         <img src="${stampImageUrl}" alt="スタンプ" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px;">
-        <br><b style="font-size: 14px;">${s.name}</b><br>
-        <span style="font-size: 12px; color: #666;">${s.info}</span>`;
+        <br><b style="font-size: 14px;">${s.name}</b>
+        <!-- 💡 margin-topを入れて説明との間に程よい隙間をあけました -->
+        <span style="font-size: 12px; color: #666; display: block; margin-top: 6px; margin-bottom: 6px;">${s.info}</span>
+        
+        <!-- 💡 ボタンが消えたスペースに、高さを揃えて獲得日時を綺麗に配置します -->
+        <div style="margin-top: 8px; display: flex; justify-content: center; align-items: center; height: 25px;">
+          <span style="font-size: 11px; color: #7f8c8d; font-family: sans-serif; font-weight: bold; background: #f8f9fa; padding: 2px 6px; border-radius: 4px; border: 1px dashed #bdc3c7;">
+            ⏱ ${savedTime}
+          </span>
+        </div>`;
     } else {
       // 【未獲得のレイアウト】
-      // ⭕️ 「📍行ってみたい」に文字を変更し、背景色などの設定も合わせました
-      const wishButtonText = wish ? "外す" : "行ってみたい";
+      const wishButtonText = wish ? "📍外す" : "📍行ってみたい";
       const wishButtonColor = wish ? "#fff0f0" : "#fffde6";
 
       popupContent += `
-        <!-- ⭕️ 画像に onclick="tryGetStamp('${s.id}')" と手元の形（cursor:pointer）を追加し、タッチでスタンプが押せるようにしました -->
         <img src="${stampImageUrl}" alt="スタンプ" onclick="tryGetStamp('${s.id}')" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px; cursor: pointer;" title="タッチしてスタンプを押す">
-        <br><b style="font-size: 14px;">${s.name}</b><br>
-        <span style="font-size: 12px; color: #666;">${s.info}</span><br>
+        <br><b style="font-size: 14px;">${s.name}</b>
+        <!-- 💡 未獲得側も同じ位置に隙間（margin-top）をあけます -->
+        <span style="font-size: 12px; color: #666; display: block; margin-top: 6px; margin-bottom: 6px;">${s.info}</span>
         
-        <div style="margin-top: 8px; display: flex; justify-content: center;">
-          <!-- ⭕️ 「押す」ボタンを完全に削除し、「行ってみたい」ボタンを真ん中1つに配置しました -->
-          <button onclick="toggleWish('${s.id}')" style="font-size: 11px; padding: 4px 10px; cursor: pointer; background-color: ${wishButtonColor}; border: 1px solid #ccc; border-radius: 4px; font-family: 'Yuji Boku', serif;">
+        <div style="margin-top: 8px; display: flex; justify-content: center; align-items: center; height: 25px;">
+          <!-- ⭕️ ご要望通りフォント設定を消して、元のすっきりしたスタイルに戻しました -->
+          <button onclick="toggleWish('${s.id}')" style="font-size: 11px; padding: 4px 10px; cursor: pointer; background-color: ${wishButtonColor}; border: 1px solid #ccc; border-radius: 4px;">
             ${wishButtonText}
           </button>
         </div>`;
     }
     popupContent += `</div>`;
 
+    
     // ====================================================
     // ③ 【地図への配置処理】ドットか画像かを判定して描き分ける
     // ====================================================
@@ -1115,6 +1126,11 @@ function tryGetStamp(id) {
 function processStampVerification(s) {
   if (isNear(currentLat, currentLng, s.lat, s.lng, s.radius)) {
     localStorage.setItem("stamp_" + s.id, "true");
+
+    const now = new Date();
+    const timeStr = now.getFullYear() + "/" + String(now.getMonth() + 1).padStart(2, '0') + "/" + String(now.getDate()).padStart(2, '0') + " " + String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
+    localStorage.setItem("stamp_time_" + s.id, timeStr); // ブラウザに「stamp_time_スポットID」で保存
+    
     alert("🎉 スタンプGET！：" + s.name);
     
     updateMapMarkers(); // マーカーのイラストを緑に変える
