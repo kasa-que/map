@@ -161,11 +161,11 @@
   <button onclick="resetStamps()" style="margin-top: 20px; background-color: #ffcccc;">🗑 スタンプ帳をリセット</button>
 </div>
 
-  
+
 <script>
 let currentLocationMarker = null;
-let currentLat = 36.386266; // 最後に取得した現在地の緯度
-let currentLng = 140.255224; // 最後に取得した現在地の経度
+let currentLat = 36.385662; // 最後に取得した現在地の緯度
+let currentLng = 140.254050; // 最後に取得した現在地の経度
 const markers = {};    // 各スポットのマーカーを管理する箱
 
 // === 史跡データ ===
@@ -252,7 +252,7 @@ const spots = [
   ,{
     id: "twn01",
     name: "高橋町",
-    lat: 36, lng: 140,    radius: 30,
+    lat: 36.384879,  lng: 140.254069,    radius: 30,
     info: ""
   },
   {
@@ -306,7 +306,7 @@ const spots = [
   {
     id: "twn10",
     name: "荒町",
-    lat: 36, lng: 140,    radius: 30,
+    lat: 36.385005,  lng: 140.252496,    radius: 30,
     info: ""
   },
   {
@@ -405,7 +405,7 @@ const spots = [
 
 // === 地図表示 ===
 // ズームレベルを「15」から、確実に航空写真が表示される「16」（より拡大された状態）に変更します
-const map = L.map("map").setView([36.386266,140.255224], 16);
+const map = L.map("map").setView([36.385662,140.254050], 16);
 
 // 1. 通常地図（OpenStreetMap）レイヤー
 const baseMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -673,7 +673,7 @@ function handleTrackRadio(mode) {
     if (iconStatus) {
       iconStatus.innerHTML = `<img src="icon_start.png" alt="足跡(記録中)" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
     }
-    if (foxMsg) foxMsg.innerHTML = `歩いたら地図に足跡がつくよ！笠間城や城下町を探検していこう！」`;
+    if (foxMsg) foxMsg.innerHTML = `歩いたら地図に足跡がつくよ！笠間城や城下町を探検していこう！`;
   } 
   
   else if (mode === 'pause') {
@@ -683,7 +683,7 @@ function handleTrackRadio(mode) {
     if (iconStatus) {
       iconStatus.innerHTML = `<img src="icon_track.png" alt="足跡(ひとやすみ)" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
     }
-    if (foxMsg) foxMsg.innerHTML = `ひとやすみ中は足跡がつかないよ。また足跡をつけたくなったら、足跡をつけるのを忘れないでね！」`;
+    if (foxMsg) foxMsg.innerHTML = `ひとやすみ中は足跡がつかないよ。また足跡をつけたくなったら、足跡をつけるのを忘れないでね！`;
   } 
   
   else if (mode === 'stop') {
