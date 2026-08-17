@@ -200,23 +200,27 @@
   margin-bottom: 12px;
 }
 
-/* 同意する大きなボタン */
+/* ⭕️ 修正後：同意ボタンを美しい「お稲荷様の朱色」にするCSS */
 .agree-btn {
   width: 100%;
   margin-top: 15px;
-  background-color: #2ecc71;
+  background-color: #e64a19; /* 🦊 伏見稲荷の鳥居のような鮮やかな朱色に変更！ */
   color: white;
   border: none;
   font-weight: bold;
   border-radius: 4px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  font-family: 'Yuji Boku', serif; /* ボタンの文字も粋な筆文字に揃えました */
+  font-size: 15px;
+  padding: 10px 12px; /* 押しやすいように少し厚みを持たせました */
+  cursor: pointer;
   transition: background 0.2s;
 }
 
+/* ボタンに指が触れたとき（ホバー時）は、少し深い漆（うるし）のような赤色に変化 */
 .agree-btn:hover {
-  background-color: #27ae60;
+  background-color: #c8390c;
 }
-
 
 
     
@@ -229,21 +233,22 @@
 <div id="safety-modal">
   <div class="safety-content">
     <div style="font-size: 40px; margin-bottom: 10px;">🦊</div>
-    <h3>お狐様からのお願い（安全上の注意）</h3>
+    <h3>お願い</h3>
     
     <div class="safety-scroll-box">
-      <p>このスタンプラリーを安全に楽しむために、以下の約束を必ず守るのじゃ！</p>
+      <p>このマップを安全に楽しんでください。</p>
       <ul>
         <li><strong>実際の交通規制を優先：</strong> 地図の案内よりも、実際の道路標識や警察官の指示、交通規則を必ず優先して歩くこと。</li>
+        <li><strong>現地の危険は自身で判断：</strong> 台風による倒木や古い石段のぐらつきなど、現地の状況が危険な場合は絶対に近寄らないこと。地図に書いてあるからといって危ない場所へ無理に入ろうとせず、自身の目で見て安全第一の判断をすること。</li>
         <li><strong>歩きスマホは絶対に禁止：</strong> 画面を見るときは、必ず周りの迷惑にならない安全な場所に立ち止まって操作すること。</li>
         <li><strong>大人と一緒に行くこと：</strong> 危険な場所や知らない道には一人で行かず、必ず保護者や大人の方と一緒に回ること。</li>
-        <li><strong>私有地への立ち入り禁止：</strong> 史跡が個人の敷地内や立ち入り禁止区域にある場合は、絶対に中に入ってはならぬぞ。</li>
+        <li><strong>私有地への立ち入り禁止：</strong> 史跡が個人の敷地内や立ち入り禁止区域にある場合は、絶対に中に入らないこと。</li>
       </ul>
-      <p style="font-size: 12px; color: #7f8c8d; margin-top: 15px;">※本アプリの利用中に発生した事故やトラブルについて、当方は一切の責任を負いかねますぞよ。</p>
+      <p style="font-size: 12px; color: #7f8c8d; margin-top: 15px;">※本ページの利用中に発生した事故やトラブルについて、当方は一切の責任を負いかねます。</p>
     </div>
 
     <!-- 💡 このボタンを押すまで、後ろの地図は一切触れません -->
-    <button onclick="agreeSafety()" class="agree-btn">上記の内容に同意して旅を始める</button>
+    <button onclick="agreeSafety()" class="agree-btn">上記の内容に同意してはじめる</button>
   </div>
 </div>
 
