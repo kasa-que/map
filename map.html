@@ -201,27 +201,35 @@
 }
 
 /* ⭕️ 修正後：同意ボタンを美しい「お稲荷様の朱色」にするCSS */
+/* ⭕️ 修正後：フォントを普通に戻し、ロック状態の見た目を追加したCSS */
 .agree-btn {
   width: 100%;
   margin-top: 15px;
-  background-color: #e64a19; /* 🦊 伏見稲荷の鳥居のような鮮やかな朱色に変更！ */
+  background-color: #e64a19; /* 稲荷の朱色 */
   color: white;
   border: none;
   font-weight: bold;
   border-radius: 4px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  font-family: 'Yuji Boku', serif; /* ボタンの文字も粋な筆文字に揃えました */
-  font-size: 15px;
-  padding: 10px 12px; /* 押しやすいように少し厚みを持たせました */
+  /* 💡 フォントを普通（sans-serif）に戻しました */
+  font-family: sans-serif; 
+  font-size: 14px;
+  padding: 10px 12px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
 
-/* ボタンに指が触れたとき（ホバー時）は、少し深い漆（うるし）のような赤色に変化 */
-.agree-btn:hover {
+.agree-btn:hover:not(:disabled) {
   background-color: #c8390c;
 }
 
+/* 🆕 【新設定】まだ最後までスクロールしていない（無効化されている）時のボタンの見た目 */
+.agree-btn:disabled {
+  background-color: #bdc3c7 !important; /* 読まない間は灰色になります */
+  color: #7f8c8d !important;
+  cursor: not-allowed;                  /* マウスカーソルを禁止マークに */
+  box-shadow: none;
+}
 
     
     
@@ -233,27 +241,28 @@
 <div id="safety-modal">
   <div class="safety-content">
     <div style="font-size: 40px; margin-bottom: 10px;">🦊</div>
-    <h3>お願い</h3>
+    <!-- 💡 タイトルのフォントを sans-serif（標準）に修正しました -->
+    <h3 style="font-family: sans-serif; font-weight: bold;">お狐様からのお願い（安全上の注意）</h3>
     
-    <div class="safety-scroll-box">
-      <p>このマップを安全に楽しんでください。</p>
+    <!-- 💡 スクロールを検知するために id="safety-scroll" を追加しました -->
+    <div id="safety-scroll" class="safety-scroll-box">
+      <p>このスタンプラリーを安全に楽しむために、以下の約束を必ず守るのじゃ！</p>
       <ul>
-        <li><strong>実際の交通規制を優先：</strong> 地図の案内よりも、実際の道路標識や警察官の指示、交通規則を必ず優先して歩くこと。</li>
-        <li><strong>現地の危険は自身で判断：</strong> 台風による倒木や古い石段のぐらつきなど、現地の状況が危険な場合は絶対に近寄らないこと。地図に書いてあるからといって危ない場所へ無理に入ろうとせず、自身の目で見て安全第一の判断をすること。</li>
+        <li><strong>実際の交通規制を優先：</strong> 地図 of 案内よりも、実際の道路標識や警察官の指示、交通規則を必ず優先して歩くこと。</li>
+        <li><strong>現地の危険は自身で判断：</strong> 台風による倒木があったり、古い石垣が崩れてグラぐらしていたり、現地の状況が危険な場合は絶対に近寄ってはならぬ。地図に書いてあるからといって、危ない場所へ無理に入ろうとせず、自身の目で見て安全第一の判断をくだされ。</li>
         <li><strong>歩きスマホは絶対に禁止：</strong> 画面を見るときは、必ず周りの迷惑にならない安全な場所に立ち止まって操作すること。</li>
-        <li><strong>大人と一緒に行くこと：</strong> 危険な場所や知らない道には一人で行かず、必ず保護者や大人の方と一緒に回ること。</li>
-        <li><strong>私有地への立ち入り禁止：</strong> 史跡が個人の敷地内や立ち入り禁止区域にある場合は、絶対に中に入らないこと。</li>
-        <li><strong>GPSは山中でずれます：</strong> GPS（位置情報）は、特に山の中や谷底、生い茂る木々の下では電波が乱れ、現在地が大きくズレたり飛んだりすることがあります。</li>
-        <li><strong>位置情報を利用します：</strong> 本ページは位置情報を常に通信するため、端末の電池（バッテリー）を激しく消費することがあります。位置情報の許可やアプリの利用によって生じた端末の不具合、電池切れ、その他あらゆるトラブルや事故について、当方は一切の責任を負いかねます。</li>
+        <li><strong>GPSは山中でズレる：</strong> GPS（位置情報）は、特に山の中や谷底、生い茂る木々の下では電波が乱れ、現在地が大きくズレたりワープしたりすることがあるぞよ。地図の青丸マークを盲信せず、常に周囲の実際の景色を確認しながら進むのじゃ。</li>
+        <li><strong>位置情報の利用は自己責任：</strong> 本アプリは位置情報を常に通信するため、端末の電池（バッテリー）を激しく消費するぞよ。位置情報の許可やアプリの利用によって生じた端末の不具合、電池切れ、その他あらゆるトラブルや事故について、当方は一切の責任を負いかねる（自己責任）ので、しかと覚悟して楽しんでくりゃれ。</li>
       </ul>
-      <p style="font-size: 12px; color: #7f8c8d; margin-top: 15px;">※本ページの利用中に発生した事故やトラブルについて、当方は一切の責任を負いかねます。</p>
+      <p style="font-size: 12px; color: #7f8c8d; margin-top: 15px;">※本アプリの利用中に発生した事故やトラブルについて、当方は一切の責任を負いかねますぞよ。</p>
     </div>
 
-    <!-- 💡 このボタンを押すまで、後ろの地図は一切触れません -->
-    <button onclick="agreeSafety()" class="agree-btn">上記の内容に同意してはじめる</button>
+    <!-- 💡 disabled を追加して初期状態では押せないようにロックし、フォントを sans-serif（標準）に修正しました -->
+    <button id="agree-button" onclick="agreeSafety()" class="agree-btn" disabled style="font-family: sans-serif;">
+      下までスクロールして規約を確認してください
+    </button>
   </div>
 </div>
-
   
 <h2 style="padding:10px;">スタンプ</h2>
 <div id="map"></div>
@@ -1589,7 +1598,24 @@ function agreeSafety() {
   }
 }
 
+// === 🆕 ⑫ 注意書きを最後までスクロールしたか監視するシステム ===
+document.addEventListener("DOMContentLoaded", function() {
+  const scrollBox = document.getElementById("safety-scroll");
+  const agreeBtn = document.getElementById("agree-button");
 
+  if (scrollBox && agreeBtn) {
+    scrollBox.addEventListener("scroll", function() {
+      // 箱全体の高さから、見えている高さを引いた「最大のスクロール位置」を計算
+      const maxScroll = scrollBox.scrollHeight - scrollBox.clientHeight;
+      
+      // 現在のスクロール位置が、一番下（誤差1ピクセル以内）まで到達したか判定
+      if (scrollBox.scrollTop >= maxScroll - 1) {
+        agreeBtn.disabled = false; // ボタンのロックを解除！
+        agreeBtn.innerText = "上記の内容に同意して旅を始める"; // ボタンの文字を朱色用に変身
+      }
+    });
+  }
+});
   
 </script>
 </body>
