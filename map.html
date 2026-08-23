@@ -1658,16 +1658,26 @@ document.addEventListener("DOMContentLoaded", function() {
   const agreeBtn = document.getElementById("agree-button");
 
   if (scrollBox && agreeBtn) {
-    scrollBox.addEventListener("scroll", function() {
-      // 箱全体の高さから、見えている高さを引いた「最大のスクロール位置」を計算
-      const maxScroll = scrollBox.scrollHeight - scrollBox.clientHeight;
-      
-      // 現在のスクロール位置が、一番下（誤差1ピクセル以内）まで到達したか判定
-      if (scrollBox.scrollTop >= maxScroll - 1) {
-        agreeBtn.disabled = false; // ボタンのロックを解除！
-        agreeBtn.innerText = "上記の内容に同意して旅を始める"; // ボタンの文字を朱色用に変身
-      }
-    });
+    // 💡【新ロジック】文章の「一番最後の行」を監視するための、透明な目印（判定用の部屋）を自動で作ります
+    const scrollEndMarker = document.createElement("div");
+    scrollEndMarker.style.height = "1px";
+    scrollEndMarker.style.marginTop = "10px";
+    scrollBox.appendChild(scrollEndMarker); // 文章の最下部に目印をペタッと貼る
+
+    // ブラウザ標準の超強力な「画面に入ったか見張るセンサー」を起動
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        // 文章の最下部にある目印が、スクロールして画面（箱の中）に見えた瞬間をキャッチ！
+        if (entry.isIntersecting) {
+          agreeBtn.disabled = false; // ボタンのロックを完全解除！
+          agreeBtn.innerText = "上記の内容に同意して旅を始める"; // ボタンの文字を朱色用に変身
+          observer.disconnect(); // 一度解禁したら、センサーを安全に終了（スマホの電池を節約）
+        }
+      });
+    }, { root: scrollBox, threshold: 1.0 });
+
+    // 作った目印を見張るように命令をだす
+    observer.observe(scrollEndMarker);
   }
 });
   
