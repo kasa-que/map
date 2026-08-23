@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>スタンプラリー!</title>
+  <title>スタンプラリ-!</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,12 +16,6 @@
   />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <!-- 🆕 1/3：リアルタイム方位磁石用のライブラリを読み込む -->
-<link rel="stylesheet" href="https://cloudflare.com">
-<link rel="stylesheet" href="https://unpkg.com">
-<script src="https://unpkg.com"></script>
-
-  
   <style>
     body { margin: 0; font-family:   sans-serif,serif;   background-color: #FFFFFF;  }
     #map { height: 60vh; }
@@ -237,65 +231,55 @@
   box-shadow: none;
 }
 
-/* === 🆕 2/3：リアルタイム方位磁石の和風カスタムスタイル === */
-.leaflet-compass {
-  /* background: #ffffff; 👈 無機質な白を消して、お狐様パネルとお揃いの透過仕様に！ */
-  background: rgba(255, 255, 255, 0.85) !important;
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(0,0,0,0.1) !important;
-  border-radius: 50% !important; /* 綺麗な丸い羅針盤にします */
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2) !important;
-  width: 40px !important;
-  height: 40px !important;
-  margin-top: 10px !important;
-}
-
-/* 羅針盤の中の「北を指す針」のデザイン */
-.leaflet-compass .compass-digit {
-  color: #e64a19 !important; /* 針の色をお稲荷様の朱色（赤）にして目立たせます */
-  font-size: 16px !important;
-  line-height: 40px !important;
-  font-weight: bold;
-}
-    
+/* 🆕 地図の左上に、回転するオリジナル方位磁石を配置 */
+#my-live-compass {
+  position: absolute;
+  top: 10px;
+  left: 50px; /* ズームボタン（＋ー）のすぐ右隣に綺麗に並びます */
+  width: 42px; /* 羅針盤の大きさ */
+  height: 42px;
+  z-index: 1000; /* 地図の上に浮かび上がらせる特等席 */
+  pointer-events: none; /* タッチの邪魔を絶対にしない設定 */
+  filter: drop-shadow(1px 2px 4px rgba(0,0,0,0.3));
+  /* 針や文字ではなく「画像自体」が丸ごとクルクル回るようにします */
+  background-image: url("fox.png"); /* 👈 あなたの描いた透過PNG画像 */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  /* 回る動きを滑らかにする設定 */
+  transition: transform 0.1s ease-out; 
+}    
     
   </style>
 </head>
 
 <body>
 <!-- 🆕 画面全体を覆う安全上の注意書き（門番画面） -->
-<!-- ⭕️ 修正後：100%確実に動く「お約束チェック付き」注意書き画面 -->
 <div id="safety-modal">
   <div class="safety-content">
     <div style="font-size: 40px; margin-bottom: 10px;">🦊</div>
-    <h3 style="font-family: sans-serif; font-weight: bold; margin-bottom: 15px;">お狐様からのお願い（安全上の注意）</h3>
+    <!-- 💡 タイトルのフォントを sans-serif（標準）に修正しました -->
+    <h3 style="font-family: sans-serif; font-weight: bold;">お狐様からのお願い（安全上の注意）</h3>
     
-    <div class="safety-scroll-box" style="max-height: 40vh;">
+    <!-- 💡 スクロールを検知するために id="safety-scroll" を追加しました -->
+    <div id="safety-scroll" class="safety-scroll-box">
       <p>このスタンプラリーを安全に楽しむために、以下の約束を必ず守るのじゃ！</p>
       <ul>
-        <li><strong>実際の交通規制を優先：</strong> 地図の案内よりも、実際の道路標識や交通規則を必ず優先して歩くこと。</li>
-        <li><strong>現地の危険は自身で判断：</strong> 台風による倒木や、古い石垣の崩落など、現地の状況が危険な場合は絶対に近寄ってはならぬ。自身の目で見て安全第一の判断をくだされ。</li>
+        <li><strong>実際の交通規制を優先：</strong> 地図 of 案内よりも、実際の道路標識や警察官の指示、交通規則を必ず優先して歩くこと。</li>
+        <li><strong>現地の危険は自身で判断：</strong> 台風による倒木があったり、古い石垣が崩れてグラぐらしていたり、現地の状況が危険な場合は絶対に近寄ってはならぬ。地図に書いてあるからといって、危ない場所へ無理に入ろうとせず、自身の目で見て安全第一の判断をくだされ。</li>
         <li><strong>歩きスマホは絶対に禁止：</strong> 画面を見るときは、必ず周りの迷惑にならない安全な場所に立ち止まって操作すること。</li>
-        <li><strong>GPSは山中でズレる：</strong> GPSは特に山の中や木々の下では電波が乱れ、現在地が大きくズレることがあるぞよ。実際の景色を確認しながら進むのじゃ。</li>
-        <li><strong>位置情報の利用は自己責任：</strong> アプリの利用によって生じた端末の不具合、電池切れ、あらゆるトラブルや事故について当方は一切の責任を負いかねる（自己責任）ので、楽しんでくりゃれ。</li>
+        <li><strong>GPSは山中でズレる：</strong> GPS（位置情報）は、特に山の中や谷底、生い茂る木々の下では電波が乱れ、現在地が大きくズレたりワープしたりすることがあるぞよ。地図の青丸マークを盲信せず、常に周囲の実際の景色を確認しながら進むのじゃ。</li>
+        <li><strong>位置情報の利用は自己責任：</strong> 本アプリは位置情報を常に通信するため、端末の電池（バッテリー）を激しく消費するぞよ。位置情報の許可やアプリの利用によって生じた端末の不具合、電池切れ、その他あらゆるトラブルや事故について、当方は一切の責任を負いかねる（自己責任）ので、しかと覚悟して楽しんでくりゃれ。</li>
       </ul>
       <p style="font-size: 12px; color: #7f8c8d; margin-top: 15px;">※本アプリの利用中に発生した事故やトラブルについて、当方は一切の責任を負いかねますぞよ。</p>
     </div>
 
-    <!-- 🆕 【新設】お狐様との約束のチェックボックス（標準フォントで超読みやすいです） -->
-    <div style="margin-top: 15px; text-align: center; font-family: sans-serif; font-size: 14px; font-weight: bold; color: #2c3e50;">
-      <label style="cursor: pointer; display: inline-block;">
-        <input type="checkbox" id="safety-check" onchange="toggleAgreeButton()" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 6px; cursor: pointer;">
-        お狐様との約束をしかと守ります
-      </label>
-    </div>
-
-    <button id="agree-button" onclick="agreeSafety()" class="agree-btn" disabled style="font-family: sans-serif; margin-top: 12px;">
-      約束にチェックを入れてくだされ
+    <!-- 💡 disabled を追加して初期状態では押せないようにロックし、フォントを sans-serif（標準）に修正しました -->
+    <button id="agree-button" onclick="agreeSafety()" class="agree-btn" disabled style="font-family: sans-serif;">
+      下までスクロールして規約を確認してください
     </button>
   </div>
 </div>
-
   
 <h2 style="padding:10px;">スタンプ</h2>
 <div id="map"></div>
@@ -841,29 +825,6 @@ const CustomLayersControl = L.Control.extend({
   }
 });
 map.addControl(new CustomLayersControl());
-
-
-
-
-// === 🆕 3/3：リアルタイム方位磁石（和風コンパス）を地図の右上にドッキング ===
-const myWafuCompass = new L.Control.Compass({
-  position: 'topright',      // 右上の「地図」「足跡」の下にきれいに並びます
-  autoActive: true,          // アプリを開いた瞬間に自動で方位の追跡をスタート
-  showDigit: true,           // 針の代わりに真ん中に「N（北）」などの文字を出す場合はtrue
-  textErr: "方位センサーが使えませぬ" // スマホにセンサーがない場合のエラーメッセージ
-});
-map.addControl(myWafuCompass);
-
-
-
-
-
-
-
-
-
-
-
   
 // 🆕 ③ 地図切り替えの実際の処理
 function handleLayerRadio(type) {
@@ -1114,11 +1075,6 @@ function pauseNewTracking() {
 }  
 
 
-
-  
-
-
-  
   
   
 // マーカーの見た目を更新・初期配置する関数（吹き出し内に「行きたいボタン」を追加）
@@ -1651,6 +1607,34 @@ map.on('click', function(e) {
   }
 });
 
+
+
+// === 🆕 ⑬ ライブラリ不使用・スマホの生センサー直結の方位磁石システム ===
+// まず、地図の上に方位磁石の画像（箱）を1枚自動で作り出します
+const compassContainer = document.getElementById('map');
+if (compassContainer) {
+  const compassDiv = document.createElement('div');
+  compassDiv.id = 'my-live-compass';
+  compassContainer.appendChild(compassDiv);
+
+  // スマホの「向き（方位）センサー」の動きをリアルタイムに監視
+  window.addEventListener('deviceorientation', function(e) {
+    // スマホの頭が北からどれだけズレているか（0度〜360度）を取得
+    // iPhone（webkitCompassHeading）と Android（alpha）の両方に対応
+    let heading = e.webkitCompassHeading || (360 - e.alpha);
+    
+    if (heading !== undefined && heading !== null) {
+      // 取得した角度の分だけ、画像（#my-live-compass）を逆向きに回します
+      // これにより、スマホを回しても画像の「北」が常に地球の本物の北を指し続けます！
+      compassDiv.style.transform = 'rotate(' + (-heading) + 'deg)';
+    }
+  }, true);
+}
+
+
+
+
+  
 // === 🆕 ⑪ 注意書き画面で「同意する」が押されたときに画面を消す関数 ===
 function agreeSafety() {
   const modal = document.getElementById('safety-modal');
@@ -1659,31 +1643,24 @@ function agreeSafety() {
   }
 }
 
-// === ⭕️ 修正後：チェックボックスと連動してボタンを解禁する100%確実なシステム ===
-function toggleAgreeButton() {
-  const checkbox = document.getElementById("safety-check");
+// === 🆕 ⑫ 注意書きを最後までスクロールしたか監視するシステム ===
+document.addEventListener("DOMContentLoaded", function() {
+  const scrollBox = document.getElementById("safety-scroll");
   const agreeBtn = document.getElementById("agree-button");
-  
-  if (checkbox && agreeBtn) {
-    if (checkbox.checked) {
-      // 四角にチェックが入ったら、即座にロックを解除して朱色ボタンを発動！
-      agreeBtn.disabled = false;
-      agreeBtn.innerText = "上記の内容に同意して旅を始める";
-    } else {
-      // チェックが外されたら、再びロック状態に戻す
-      agreeBtn.disabled = true;
-      agreeBtn.innerText = "約束にチェックを入れてくだされ";
-    }
-  }
-}
 
-function agreeSafety() {
-  const modal = document.getElementById('safety-modal');
-  if (modal) {
-    modal.style.display = 'none'; // 同意ボタンが押されたら門番画面を非表示にして地図を解禁！
+  if (scrollBox && agreeBtn) {
+    scrollBox.addEventListener("scroll", function() {
+      // 箱全体の高さから、見えている高さを引いた「最大のスクロール位置」を計算
+      const maxScroll = scrollBox.scrollHeight - scrollBox.clientHeight;
+      
+      // 現在のスクロール位置が、一番下（誤差1ピクセル以内）まで到達したか判定
+      if (scrollBox.scrollTop >= maxScroll - 1) {
+        agreeBtn.disabled = false; // ボタンのロックを解除！
+        agreeBtn.innerText = "上記の内容に同意して旅を始める"; // ボタンの文字を朱色用に変身
+      }
+    });
   }
-}
-
+});
   
 </script>
 </body>
