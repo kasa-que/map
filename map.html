@@ -264,31 +264,38 @@
 
 <body>
 <!-- 🆕 画面全体を覆う安全上の注意書き（門番画面） -->
+<!-- ⭕️ 修正後：100%確実に動く「お約束チェック付き」注意書き画面 -->
 <div id="safety-modal">
   <div class="safety-content">
     <div style="font-size: 40px; margin-bottom: 10px;">🦊</div>
-    <!-- 💡 タイトルのフォントを sans-serif（標準）に修正しました -->
-    <h3 style="font-family: sans-serif; font-weight: bold;">お狐様からのお願い（安全上の注意）</h3>
+    <h3 style="font-family: sans-serif; font-weight: bold; margin-bottom: 15px;">お狐様からのお願い（安全上の注意）</h3>
     
-    <!-- 💡 スクロールを検知するために id="safety-scroll" を追加しました -->
-    <div id="safety-scroll" class="safety-scroll-box">
+    <div class="safety-scroll-box" style="max-height: 40vh;">
       <p>このスタンプラリーを安全に楽しむために、以下の約束を必ず守るのじゃ！</p>
       <ul>
-        <li><strong>実際の交通規制を優先：</strong> 地図 of 案内よりも、実際の道路標識や警察官の指示、交通規則を必ず優先して歩くこと。</li>
-        <li><strong>現地の危険は自身で判断：</strong> 台風による倒木があったり、古い石垣が崩れてグラぐらしていたり、現地の状況が危険な場合は絶対に近寄ってはならぬ。地図に書いてあるからといって、危ない場所へ無理に入ろうとせず、自身の目で見て安全第一の判断をくだされ。</li>
+        <li><strong>実際の交通規制を優先：</strong> 地図の案内よりも、実際の道路標識や交通規則を必ず優先して歩くこと。</li>
+        <li><strong>現地の危険は自身で判断：</strong> 台風による倒木や、古い石垣の崩落など、現地の状況が危険な場合は絶対に近寄ってはならぬ。自身の目で見て安全第一の判断をくだされ。</li>
         <li><strong>歩きスマホは絶対に禁止：</strong> 画面を見るときは、必ず周りの迷惑にならない安全な場所に立ち止まって操作すること。</li>
-        <li><strong>GPSは山中でズレる：</strong> GPS（位置情報）は、特に山の中や谷底、生い茂る木々の下では電波が乱れ、現在地が大きくズレたりワープしたりすることがあるぞよ。地図の青丸マークを盲信せず、常に周囲の実際の景色を確認しながら進むのじゃ。</li>
-        <li><strong>位置情報の利用は自己責任：</strong> 本アプリは位置情報を常に通信するため、端末の電池（バッテリー）を激しく消費するぞよ。位置情報の許可やアプリの利用によって生じた端末の不具合、電池切れ、その他あらゆるトラブルや事故について、当方は一切の責任を負いかねる（自己責任）ので、しかと覚悟して楽しんでくりゃれ。</li>
+        <li><strong>GPSは山中でズレる：</strong> GPSは特に山の中や木々の下では電波が乱れ、現在地が大きくズレることがあるぞよ。実際の景色を確認しながら進むのじゃ。</li>
+        <li><strong>位置情報の利用は自己責任：</strong> アプリの利用によって生じた端末の不具合、電池切れ、あらゆるトラブルや事故について当方は一切の責任を負いかねる（自己責任）ので、楽しんでくりゃれ。</li>
       </ul>
       <p style="font-size: 12px; color: #7f8c8d; margin-top: 15px;">※本アプリの利用中に発生した事故やトラブルについて、当方は一切の責任を負いかねますぞよ。</p>
     </div>
 
-    <!-- 💡 disabled を追加して初期状態では押せないようにロックし、フォントを sans-serif（標準）に修正しました -->
-    <button id="agree-button" onclick="agreeSafety()" class="agree-btn" disabled style="font-family: sans-serif;">
-      下までスクロールして規約を確認してください
+    <!-- 🆕 【新設】お狐様との約束のチェックボックス（標準フォントで超読みやすいです） -->
+    <div style="margin-top: 15px; text-align: center; font-family: sans-serif; font-size: 14px; font-weight: bold; color: #2c3e50;">
+      <label style="cursor: pointer; display: inline-block;">
+        <input type="checkbox" id="safety-check" onchange="toggleAgreeButton()" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 6px; cursor: pointer;">
+        お狐様との約束をしかと守ります
+      </label>
+    </div>
+
+    <button id="agree-button" onclick="agreeSafety()" class="agree-btn" disabled style="font-family: sans-serif; margin-top: 12px;">
+      約束にチェックを入れてくだされ
     </button>
   </div>
 </div>
+
   
 <h2 style="padding:10px;">スタンプ</h2>
 <div id="map"></div>
@@ -1652,34 +1659,31 @@ function agreeSafety() {
   }
 }
 
-// === 🆕 ⑫ 注意書きを最後までスクロールしたか監視するシステム ===
-document.addEventListener("DOMContentLoaded", function() {
-  const scrollBox = document.getElementById("safety-scroll");
+// === ⭕️ 修正後：チェックボックスと連動してボタンを解禁する100%確実なシステム ===
+function toggleAgreeButton() {
+  const checkbox = document.getElementById("safety-check");
   const agreeBtn = document.getElementById("agree-button");
-
-  if (scrollBox && agreeBtn) {
-    // 💡【新ロジック】文章の「一番最後の行」を監視するための、透明な目印（判定用の部屋）を自動で作ります
-    const scrollEndMarker = document.createElement("div");
-    scrollEndMarker.style.height = "1px";
-    scrollEndMarker.style.marginTop = "10px";
-    scrollBox.appendChild(scrollEndMarker); // 文章の最下部に目印をペタッと貼る
-
-    // ブラウザ標準の超強力な「画面に入ったか見張るセンサー」を起動
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        // 文章の最下部にある目印が、スクロールして画面（箱の中）に見えた瞬間をキャッチ！
-        if (entry.isIntersecting) {
-          agreeBtn.disabled = false; // ボタンのロックを完全解除！
-          agreeBtn.innerText = "上記の内容に同意して旅を始める"; // ボタンの文字を朱色用に変身
-          observer.disconnect(); // 一度解禁したら、センサーを安全に終了（スマホの電池を節約）
-        }
-      });
-    }, { root: scrollBox, threshold: 1.0 });
-
-    // 作った目印を見張るように命令をだす
-    observer.observe(scrollEndMarker);
+  
+  if (checkbox && agreeBtn) {
+    if (checkbox.checked) {
+      // 四角にチェックが入ったら、即座にロックを解除して朱色ボタンを発動！
+      agreeBtn.disabled = false;
+      agreeBtn.innerText = "上記の内容に同意して旅を始める";
+    } else {
+      // チェックが外されたら、再びロック状態に戻す
+      agreeBtn.disabled = true;
+      agreeBtn.innerText = "約束にチェックを入れてくだされ";
+    }
   }
-});
+}
+
+function agreeSafety() {
+  const modal = document.getElementById('safety-modal');
+  if (modal) {
+    modal.style.display = 'none'; // 同意ボタンが押されたら門番画面を非表示にして地図を解禁！
+  }
+}
+
   
 </script>
 </body>
