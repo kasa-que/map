@@ -231,24 +231,41 @@
   box-shadow: none;
 }
 
-/* 🆕 地図の左上に、回転するオリジナル方位磁石を配置 */
-#my-live-compass {
+/* 🧭 A. 土台となる「回転しない背景画像」の部屋（ズームボタンの真横に配置） */
+#my-compass-wrapper {
   position: absolute;
-  top: 10px;
-  left: 50px; /* ズームボタン（＋ー）のすぐ右隣に綺麗に並びます */
-  width: 42px; /* 羅針盤の大きさ */
-  height: 42px;
-  z-index: 1000; /* 地図の上に浮かび上がらせる特等席 */
-  pointer-events: none; /* タッチの邪魔を絶対にしない設定 */
-  filter: drop-shadow(1px 2px 4px rgba(0,0,0,0.3));
-  /* 針や文字ではなく「画像自体」が丸ごとクルクル回るようにします */
-  background-image: url("fox.png"); /* 👈 あなたの描いた透過PNG画像 */
-  background-size: contain;
+  top: 10px;          /* ズームボタン（＋）の上の位置と完璧に揃えます */
+  left: 52px;         /* ズームボタンのすぐ右隣に綺麗にドッキング */
+  width: 48px;        /* 💡 サイズを気持ち大きく（42pxから48pxへ！） */
+  height: 48px;
+  z-index: 1000;
+  pointer-events: none;
+  background-color: rgba(255, 255, 255, 0.85); /* 四角ボタンとお揃いの透過白 */
+  backdrop-filter: blur(4px);
+  border-radius: 50%; /* 綺麗な丸型 */
+  box-shadow: 0 1px 5px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* 🖼️ 【新設定】ここに「回転しない固定の背景画像」をセットします */
+  background-image: url("fox.png"); 
+  background-size: 80%; /* 枠線の内側に少しだけ余白を持たせて綺麗に収めます */
   background-repeat: no-repeat;
   background-position: center;
-  /* 回る動きを滑らかにする設定 */
+}
+/* 🧭 B. その上で「リアルタイムにクルクル回転する画像」の部屋 */
+#my-live-compass {
+  width: 100%;        /* 土台の円盤（48px）いっぱいに広げます */
+  height: 100%;
+  background-image: url("fox.png"); /* 👈 あなたが描いた回転するイラスト画像 */
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+  /* 回る動きを滑らかにする設定（引き継ぎ） */
   transition: transform 0.1s ease-out; 
-}    
+} 
+
     
   </style>
 </head>
@@ -1609,23 +1626,24 @@ map.on('click', function(e) {
 
 
 
-// === 🆕 ⑬ ライブラリ不使用・スマホの生センサー直結の方位磁石システム ===
-// まず、地図の上に方位磁石の画像（箱）を1枚自動で作り出します
+// === 🆕 ⑬ ライブラリ不使用・スマホの生センサー直結の方位磁石システム（2枚重ね版） ===
 const compassContainer = document.getElementById('map');
 if (compassContainer) {
+  // 1. まずは「回転しない土台（背景）」の丸い部屋を作ります
+  const compassWrapper = document.createElement('div');
+  compassWrapper.id = 'my-compass-wrapper';
+  compassContainer.appendChild(compassWrapper);
+
+  // 2. その土台の「真上（内側）」に、クルクル回転する針の部屋を合体させます
   const compassDiv = document.createElement('div');
   compassDiv.id = 'my-live-compass';
-  compassContainer.appendChild(compassDiv);
+  compassWrapper.appendChild(compassDiv); // 土台の中に入れ子にする
 
-  // スマホの「向き（方位）センサー」の動きをリアルタイムに監視
+  // スマホの「向き（方位）センサー」のリアルタイム監視（許可の連動処理はそのまま生きます）
   window.addEventListener('deviceorientation', function(e) {
-    // スマホの頭が北からどれだけズレているか（0度〜360度）を取得
-    // iPhone（webkitCompassHeading）と Android（alpha）の両方に対応
     let heading = e.webkitCompassHeading || (360 - e.alpha);
-    
     if (heading !== undefined && heading !== null) {
-      // 取得した角度の分だけ、画像（#my-live-compass）を逆向きに回します
-      // これにより、スマホを回しても画像の「北」が常に地球の本物の北を指し続けます！
+      // 中の針の部屋（compassDiv）だけを、センサーに合わせてクルクル逆回転させます！
       compassDiv.style.transform = 'rotate(' + (-heading) + 'deg)';
     }
   }, true);
