@@ -232,35 +232,42 @@
 }
 
 /* 🧭 A. 土台となる「回転しない背景画像」の部屋（ズームボタンの真横に配置） */
-/* 🧭 A. 土台となる「回転しない背景画像」の部屋 */
 #my-compass-wrapper {
   position: absolute;
-  
-  /* 💡 ズームボタン（＋ー全体）の上下のど真ん中に芯が合うように、計算して 18px に下げました！ */
-  top: 18px;          
+  top: 18px; /* ズームボタン（＋ー）の真ん中に芯が合う位置 */
   left: 52px;         
-  
   width: 48px;        
   height: 48px;
   z-index: 1000;
   pointer-events: none;
   
-  /* 💡 真っ白すぎた背景を、お狐様パネルや合体ボタンと同じ上品な「半透明（透過85%）」に変更！ */
+  /* 💡 システムの邪魔をブロックするために「!important」をすべての透過設定に追加しました！ */
   background: rgba(255, 255, 255, 0.85) !important; 
-  backdrop-filter: blur(4px); /* 後ろの地図がほんのりボケてさらに馴染みます */
+  backdrop-filter: blur(4px) !important; /* 後ろの地図がほんのりボケて透過が綺麗に見えます */
   
-  border-radius: 50%; 
-  box-shadow: 0 1px 5px rgba(0,0,0,0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-radius: 50% !important; 
+  box-shadow: 0 1px 5px rgba(0,0,0,0.3) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   
   /* 回転しない固定の背景画像 */
-  background-image: url("icon_compass_bg.png"); 
+  background-image: url("fox.png"); 
   background-size: 80%; 
   background-repeat: no-repeat;
   background-position: center;
 }
+/* 🧭 B. その上で「リアルタイムにクルクル回転する画像」の部屋 */
+#my-live-compass {
+  width: 100%;        /* 土台の円盤（48px）いっぱいに広げます */
+  height: 100%;
+  background-image: url("fox.png"); /* 👈 あなたが描いた回転するイラスト画像 */
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+  /* 回る動きを滑らかにする設定（引き継ぎ） */
+  transition: transform 0.1s ease-out; 
+} 
 
     
   </style>
