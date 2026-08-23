@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>スタンプラリ-!</title>
+  <title>スタンプラリ!</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -834,6 +834,29 @@ const CustomLayersControl = L.Control.extend({
   }
 });
 map.addControl(new CustomLayersControl());
+
+
+
+
+// === 🆕 3/3：リアルタイム方位磁石（和風コンパス）を地図の右上にドッキング ===
+const myWafuCompass = new L.Control.Compass({
+  position: 'topright',      // 右上の「地図」「足跡」の下にきれいに並びます
+  autoActive: true,          // アプリを開いた瞬間に自動で方位の追跡をスタート
+  showDigit: true,           // 針の代わりに真ん中に「N（北）」などの文字を出す場合はtrue
+  textErr: "方位センサーが使えませぬ" // スマホにセンサーがない場合のエラーメッセージ
+});
+map.addControl(myWafuCompass);
+
+
+
+
+
+
+
+
+
+
+
   
 // 🆕 ③ 地図切り替えの実際の処理
 function handleLayerRadio(type) {
@@ -1086,15 +1109,6 @@ function pauseNewTracking() {
 
 
   
-// === 🆕 3/3：リアルタイム方位磁石（和風コンパス）を地図の右上にドッキング ===
-const myWafuCompass = new L.Control.Compass({
-  position: 'topright',      // 右上の「地図」「足跡」の下にきれいに並びます
-  autoActive: true,          // アプリを開いた瞬間に自動で方位の追跡をスタート
-  showDigit: true,           // 針の代わりに真ん中に「N（北）」などの文字を出す場合はtrue
-  textErr: "方位センサーが使えませぬ" // スマホにセンサーがない場合のエラーメッセージ
-});
-
-map.addControl(myWafuCompass);
 
 
   
