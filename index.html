@@ -2,840 +2,479 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>スタンプラリー</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Leaflet（地図ライブラリ） -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <title>稲荷町クエスト</title>
 
   <style>
-    body { margin: 0; font-family: sans-serif; }
-    #map { height: 60vh; }
-    #panel { padding: 10px; }
-    button { font-size: 16px; padding: 8px 12px; cursor: pointer; }
-    .stamp { font-size: 20px; margin-bottom: 10px; }
-    
-    /* ピンの色を変えるためのスタイル定義 */
-    /* ⭕️ SVGピン専用の新しい色定義 */
-    /* 未訪問（デフォルト：赤） */
-    .pin-red svg {
-      color: #ff4d4d;
-      filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.3)); /* ピンに立体的な影をつけます */
-    }
-    /* 訪問済（スタンプ獲得：緑） */
-    .pin-green svg {
-      color: #2ecc71;
-      filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.3));
-    }
-    /* 行きたい場所（📍ボタン：黄） */
-    .pin-yellow svg {
-      color: #f1c40f;
-      filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.3));
+    /* =========================
+       基本設定
+    ========================= */
+
+    :root {
+      --paper: #F3E9D2;
+      --card: #F8F3E8;
+      --ink: #332F29;
+      --sub-ink: #6B6254;
+      --line: #C9B99B;
+      --accent: #B4553D;
+      --water: #8FA6A6;
     }
 
-    
-    /* 自作四角パネルの共通スタイル */
-    .custom-map-control {
-      background: #ffffff;
-      border-radius: 4px;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.4);
-      font-family: sans-serif;
-      font-size: 13px;
-      color: #333;
-      margin-top: 10px !important; /* 👈 ここにこの1行を付け足してください */
+    * {
+      box-sizing: border-box;
     }
-    
-    /* 最小化（閉じている時）の見た目（34px四方の正方形） */
-    .custom-map-control.collapsed {
-      width: 34px;
-      height: 34px;
-      cursor: pointer;
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family:
+        "Hiragino Mincho ProN",
+        "Yu Mincho",
+        "YuMincho",
+        serif;
+    }
+
+
+    /* =========================
+       ページ全体
+    ========================= */
+
+    .page {
+      width: 100%;
+      max-width: 600px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 32px 18px 28px;
+      overflow: hidden;
+
+      background:
+        radial-gradient(
+          ellipse at 20% 20%,
+          rgba(255,255,255,0.35),
+          transparent 45%
+        ),
+        radial-gradient(
+          ellipse at 80% 70%,
+          rgba(120,90,50,0.04),
+          transparent 45%
+        ),
+        var(--paper);
+    }
+
+
+    /* =========================
+       タイトル
+    ========================= */
+
+    .header {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .torii {
+      font-size: 42px;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: clamp(32px, 9vw, 48px);
+      letter-spacing: 0.12em;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      margin: 12px 0 0;
+      color: var(--sub-ink);
+      font-size: 14px;
+      letter-spacing: 0.12em;
+    }
+
+
+    /* =========================
+       古地図イメージ部分
+    ========================= */
+
+    .town-image {
+      position: relative;
+      height: 155px;
+      margin: 0 -18px 22px;
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          to bottom,
+          transparent 0%,
+          rgba(229,211,175,0.25) 100%
+        );
+    }
+
+    .town-image::before {
+      content: "稲荷町";
+      position: absolute;
+      left: 50%;
+      top: 45%;
+      transform: translate(-50%, -50%);
+
+      font-size: 70px;
+      color: rgba(80,70,55,0.08);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .town-image::after {
+      content: "";
+      position: absolute;
+      left: -10%;
+      right: -10%;
+      bottom: 0;
+      height: 35px;
+
+      background:
+        linear-gradient(
+          175deg,
+          transparent 40%,
+          rgba(143,166,166,0.55) 42%,
+          rgba(143,166,166,0.55) 60%,
+          transparent 62%
+        );
+    }
+
+
+    /* =========================
+       メニュー
+    ========================= */
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+
+      width: 100%;
+      min-height: 105px;
+      padding: 15px 16px;
+
+      background: rgba(248,243,232,0.92);
+      border: 1px solid rgba(201,185,155,0.7);
+      border-radius: 12px;
+
+      box-shadow:
+        0 2px 6px rgba(80,60,30,0.08);
+
+      color: var(--ink);
+      text-decoration: none;
+
+      transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+    }
+
+    .menu-item:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 5px 12px rgba(80,60,30,0.12);
+    }
+
+    .menu-item:active {
+      transform: translateY(0);
+    }
+
+
+    /* =========================
+       アイコン
+    ========================= */
+
+    .menu-icon {
+      flex: 0 0 64px;
+      width: 64px;
+      height: 64px;
+
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-    .custom-map-control.collapsed .control-icon {
-      font-size: 16px;
-      display: block;
-    }
-    .custom-map-control.expanded .control-icon {
-      display: none;
-    }
-    
-    /* 展開している（開いている時）の見た目 */
-    .custom-map-control.expanded {
-      width: auto;
-      height: auto;
-      padding: 8px 10px;
-    }
-    .custom-map-control h4 {
-      margin: 0 0 6px 0;
-      font-size: 12px;
-      color: #666;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 3px;
-      white-space: nowrap;
-    }
-    .custom-map-control label {
-      display: block;
-      margin: 6px 0;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .custom-map-control input {
-      margin-right: 5px;
-      vertical-align: middle;
-    }
-    .custom-map-control .control-content {
-      display: none;
-    }
-    .custom-map-control.expanded .control-content {
-      display: block;
+
+      border-radius: 50%;
+
+      background: #334B52;
+      color: white;
+
+      font-size: 30px;
+      margin-right: 18px;
     }
 
+    .menu-item.quest .menu-icon {
+      background: var(--accent);
+    }
+
+    .menu-item.about .menu-icon {
+      background: #4B4A43;
+    }
+
+
+    /* =========================
+       文字
+    ========================= */
+
+    .menu-text {
+      flex: 1;
+    }
+
+    .menu-title {
+      margin: 0 0 6px;
+
+      font-size: 21px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+    }
+
+    .menu-description {
+      margin: 0;
+
+      font-family:
+        "Hiragino Sans",
+        "Yu Gothic",
+        sans-serif;
+
+      font-size: 13px;
+      color: var(--sub-ink);
+    }
+
+    .arrow {
+      font-family: sans-serif;
+      font-size: 30px;
+      color: var(--sub-ink);
+      margin-left: 10px;
+    }
+
+
+    /* =========================
+       フッター
+    ========================= */
+
+    .footer {
+      text-align: center;
+      margin-top: 35px;
+      padding-bottom: 20px;
+    }
+
+    .footer-title {
+      font-size: 18px;
+      letter-spacing: 0.15em;
+    }
+
+    .footer-credit {
+      margin-top: 8px;
+
+      font-family: sans-serif;
+      font-size: 11px;
+      color: var(--sub-ink);
+      letter-spacing: 0.1em;
+    }
+
+
+    /* =========================
+       スマホ小画面対応
+    ========================= */
+
+    @media (max-width: 380px) {
+
+      .page {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .town-image {
+        margin-left: -12px;
+        margin-right: -12px;
+      }
+
+      .menu-item {
+        min-height: 90px;
+        padding: 12px;
+      }
+
+      .menu-icon {
+        flex-basis: 52px;
+        width: 52px;
+        height: 52px;
+        font-size: 24px;
+        margin-right: 12px;
+      }
+
+      .menu-title {
+        font-size: 17px;
+      }
+
+      .menu-description {
+        font-size: 11px;
+      }
+    }
   </style>
 </head>
 
+
 <body>
 
-<h2 style="padding:10px;">スタンプ</h2>
-<div id="map"></div>
+  <main class="page">
+
+    <!-- タイトル -->
+    <header class="header">
+
+      <div class="torii">⛩</div>
+
+      <h1 class="title">
+        稲荷町クエスト
+      </h1>
+
+      <p class="subtitle">
+        古地図を持って、江戸の町を歩こう
+      </p>
+
+    </header>
 
 
-<div id="panel">
-  <!-- 📍ボタンの横あたりに追加してください -->
-  
-  <div id="stamps"></div>
-  <button onclick="resetStamps()" style="margin-top: 20px; background-color: #ffcccc;">🗑 スタンプ帳をリセット</button>
-</div>
-
-  
-<script>
-let currentLocationMarker = null;
-let currentLat = null; // 最後に取得した現在地の緯度
-let currentLng = null; // 最後に取得した現在地の経度
-const markers = {};    // 各スポットのマーカーを管理する箱
-
-// === 史跡データ ===
-const spots = [
-  {
-    id: "gmstert",
-    name: "取水口？",
-    lat: 36.3953, 
-    lng: 140.2665,
-    radius: 30,
-    info: "ここに取水口？"
-  },{
-    id: "ichikumon",
-    name: "移築もん",
-    lat: 36.3951, 
-    lng: 140.26607,
-    radius: 30,
-    info: ""
-  },{
-    id: "castle1",
-    name: "鍵の手",
-    lat: 36.388916, 
-    lng: 140.256164,
-    radius: 30,
-    info: "鍵の手？"
-  },{
-    id: "castle2",
-    name: "鍵の手",
-    lat: 36.388916, 
-    lng: 140.256164,
-    radius: 30,
-    info: "鍵の手？"
-  },{
-    id: "castle3",
-    name: "鍵の手",
-    lat: 36.388916, 
-    lng: 140.256164,
-    radius: 30,
-    info: "鍵の手？"
-  },{
-    id: "castle4",
-    name: "鍵の手",
-    lat: 36.388916, 
-    lng: 140.256164,
-    radius: 30,
-    info: "鍵の手？"
-  },{
-    id: "castle5",
-    name: "鍵の手",
-    lat: 36.388916, 
-    lng: 140.256164,
-    radius: 30,
-    info: "鍵の手？"
-  },{
-    id: "castle6",
-    name: "鍵の手",
-    lat: 36.388916, 
-    lng: 140.256164,
-    radius: 30,
-    info: "鍵の手？"
-  },
-
-  {
-    id: "traficright1",
-    name: "交差点",
-    lat: 36.3770,
-    lng: 140.2783,
-    radius: 30,
-    info: "ここは交差点です。"
-  },
-  {
-    id: "traficright2",
-    name: "交差点",
-    lat: 36.3770,
-    lng: 140.2783,
-    radius: 30,
-    info: "ここは交差点です。"
-  },
-  {
-    id: "mitotullys",
-    name: "タリーズ",
-    lat: 36.37115,
-    lng: 140.47631,
-    radius: 30,
-    info: "ここはタリーズです。"
-  },
-  {
-    id: "pkg",
-    name: "駐車場",
-    lat: 36.370026,
-    lng: 140.4778904,
-    radius: 50000,
-    info: "ここは駐車場です。"
-  },
-  {
-    id: "11",
-    name: "大黒石",
-    lat: 36.38601,
-    lng: 140.26557,
-    radius: 50000,
-    info: "徳蔵寺に攻められた時に、正福寺がおっことして攻撃した石。大黒様の石と袋の石があって、今残っているのは袋の石。"
-  }
+    <!-- 古地図っぽいイメージ -->
+    <div class="town-image"></div>
 
 
+    <!-- メニュー -->
+    <nav class="menu">
+
+      <!-- 古地図 -->
+      <a
+        class="menu-item"
+        href="map.html"
+      >
+        <div class="menu-icon">🗺</div>
+
+        <div class="menu-text">
+          <h2 class="menu-title">
+            古地図を歩く
+          </h2>
+
+          <p class="menu-description">
+            WEB地図アプリへ
+          </p>
+        </div>
+
+        <div class="arrow">›</div>
+      </a>
 
 
-];
+      <!-- レポート -->
+      <a
+        class="menu-item"
+        href="report.pdf"
+        target="_blank"
+      >
+        <div class="menu-icon">📜</div>
 
-// === 地図表示 ===
-// ズームレベルを「15」から、確実に航空写真が表示される「16」（より拡大された状態）に変更します
-const map = L.map("map").setView([36.3824, 140.2674], 16);
+        <div class="menu-text">
+          <h2 class="menu-title">
+            研究レポート
+          </h2>
 
-// 1. 通常地図（OpenStreetMap）レイヤー
-const baseMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution: "© OpenStreetMap",
-  maxZoom: 19
-});
+          <p class="menu-description">
+            PDFを開く
+          </p>
+        </div>
 
-// 2. 航空写真（国土地理院）レイヤー
-// maxNativeZoomを指定することで、これ以上ズームアウト・ズームインしても画像が消えないように保護します
-const satelliteMap = L.tileLayer("https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/{z}/{x}/{y}.jpg", {
-  attribution: "© 国土地理院",
-  minZoom: 2,
-  maxZoom: 19,
-  maxNativeZoom: 18
-});
-
-// 3. オリジナルマップ（meijiline.png）を「背景グループ」として作成
-const originalMapGroup = L.layerGroup();
-
-const imageBounds = [
-  [36.376273, 140.246029], //左下
-  [36.396837, 140.278823]  //右上
-];
-const imageUrl = "meijiline.png"; 
-
-L.imageOverlay(imageUrl, imageBounds, {
-  opacity: 1.0,     
-  alt: "オリジナルマップ"
-}).addTo(originalMapGroup);
+        <div class="arrow">›</div>
+      </a>
 
 
-// === 4. 最初は「オリジナルマップ」を画面に表示しておく ===
-originalMapGroup.addTo(map);
+      <!-- クエスト -->
+      <a
+        class="menu-item quest"
+        href="quest.html"
+      >
+        <div class="menu-icon">🦊</div>
+
+        <div class="menu-text">
+          <h2 class="menu-title">
+            クエスト記録
+          </h2>
+
+          <p class="menu-description">
+            調べて歩いた記録を見る
+          </p>
+        </div>
+
+        <div class="arrow">›</div>
+      </a>
 
 
-// === 5. 右上の切り替えボタンに3つの選択肢を登録 ===
-// === 🆕 ① スマホでも絶対に誤作動しない「四角パネル自動開閉システム」 ===
-function setupControlToggle(container) {
-  // 最初は「最小化（collapsed）」状態にする
-  container.classList.add('custom-map-control', 'collapsed');
+      <!-- ABOUT -->
+      <a
+        class="menu-item about"
+        href="about.html"
+      >
+        <div class="menu-icon">⛩</div>
 
-  // アイコンをタップ、またはマウスが乗ったら「開く」
-  const expand = () => {
-    container.classList.remove('collapsed');
-    container.classList.add('expanded');
-  };
-  container.addEventListener('mouseenter', expand);
-  container.addEventListener('touchstart', expand, { passive: true });
+        <div class="menu-text">
+          <h2 class="menu-title">
+            稲荷町クエストについて
+          </h2>
 
-  // マウスが完全に離れたら折りたたむ（最小化）
-  container.addEventListener('mouseleave', () => {
-    container.classList.remove('expanded');
-    container.classList.add('collapsed');
-  });
+          <p class="menu-description">
+            はじめに・動機など
+          </p>
+        </div>
 
-  // ラジオボタンをクリックした時は、タッチのズレを防ぐため「0.3秒待ってから」閉じる
-  container.addEventListener('change', () => {
-    setTimeout(() => {
-      container.classList.remove('expanded');
-      container.classList.add('collapsed');
-    }, 300);
-  });
+        <div class="arrow">›</div>
+      </a>
 
-  // 地図画面をタップしたら折りたたむ
-  map.on('click', () => {
-    container.classList.remove('expanded');
-    container.classList.add('collapsed');
-  });
+    </nav>
 
-  // パネル内を触ったときに後ろの地図が勝手に動くのを防ぐ
-  L.DomEvent.disableClickPropagation(container);
-}
 
-// === 🆕 ② 自作「地図切り替え四角パネル」 ===
-const CustomLayersControl = L.Control.extend({
-  options: { position: 'topright' },
-  onAdd: function () {
-    const container = L.DomUtil.create('div');
-    container.innerHTML = `
-      <div class="control-icon">🗺</div>
-      <div class="control-content">
-        <h4>地図の切り替え</h4>
-        <label><input type="radio" name="layer_opt" checked onclick="handleLayerRadio('original')">オリジナル地図</label>
-        <label><input type="radio" name="layer_opt" onclick="handleLayerRadio('base')">元の地図</label>
-        <label><input type="radio" name="layer_opt" onclick="handleLayerRadio('satellite')">航空写真</label>
+    <!-- フッター -->
+    <footer class="footer">
+
+      <div class="footer-title">
+        稲荷町クエスト 🐾
       </div>
-    `;
-    setupControlToggle(container);
-    return container;
-  }
-});
-map.addControl(new CustomLayersControl());
 
-// 🆕 ③ 地図切り替えの実際の処理
-function handleLayerRadio(type) {
-  map.removeLayer(originalMapGroup);
-  map.removeLayer(baseMap);
-  map.removeLayer(satelliteMap);
-
-  if (type === 'original') originalMapGroup.addTo(map);
-  if (type === 'base') baseMap.addTo(map);
-  if (type === 'satellite') satelliteMap.addTo(map);
-}
-
-// === 🆕 ④ 自作「足跡の記録四角パネル」を追加 ===
-const CustomTrackControl = L.Control.extend({
-  options: { position: 'topright' }, // 「🗺」の下に自動で並びます
-  onAdd: function () {
-    const container = L.DomUtil.create('div');
-    container.innerHTML = `
-      <div class="control-icon" id="track-icon-status">👣</div>
-      <div class="control-content">
-        <h4>足跡の記録</h4>
-        <label><input type="radio" name="track_opt" id="opt_start" onclick="handleTrackRadio('start')">🟢 足跡スタート</label>
-        <label><input type="radio" name="track_opt" id="opt_pause" onclick="handleTrackRadio('pause')">🟡 足跡ひとやすみ</label>
-        <label><input type="radio" name="track_opt" id="opt_stop" checked onclick="handleTrackRadio('stop')">⚪ 足跡リセット</label>
+      <div class="footer-credit">
+        presented by ○○
       </div>
-    `;
-    setupControlToggle(container); // 先ほど作った開閉の仕組みをそのまま使い回します
-    return container;
-  }
-});
-map.addControl(new CustomTrackControl());
+
+    </footer>
+
+  </main>
 
 
-// === 🆕 ⑧ 自作「現在地チェック四角パネル」を左下に配置 ===
-const CustomLocationControl = L.Control.extend({
-  options: { position: 'bottomleft' }, // 👈 ご要望通り「左下」に配置します
-  onAdd: function () {
-    const container = L.DomUtil.create('div');
-    
-    // 普段は「📍」、触ると「現在地を取得」というメニューがフワッと開きます
-    container.innerHTML = `
-      <div class="control-icon">📍</div>
-      <div class="control-content">
-        <h4 style="margin: 0; padding: 0; border: none; cursor: pointer;" onclick="checkLocation()">📍 現在地をチェック</h4>
-      </div>
-    `;
-    setupControlToggle(container); // 🗺や👣と全く同じ開閉システムを使い回します
-    return container;
-  }
-});
-map.addControl(new CustomLocationControl());
-  
+  <!-- =========================
+       JavaScript
+  ========================= -->
 
+  <script>
 
+    // メニューを押したときのちょっとした効果
+    document.querySelectorAll(".menu-item").forEach(item => {
 
+      item.addEventListener("click", () => {
 
+        item.style.transform = "scale(0.98)";
 
+        setTimeout(() => {
+          item.style.transform = "";
+        }, 120);
 
-  
-/////////
-// === 🆕 ⑥ 【新システム】名前がぶつからない足跡記録変数 ===
-let myNewWatchId = null;       // 重複を避けるため名前を変えました
-let myNewTrackDots = [];       // 重複を避けるため名前を変えました
-let myNewLastDotTime = 0;      // 重複を避けるため名前を変えました
-
-function handleTrackRadio(mode) {
-  const iconStatus = document.getElementById('track-icon-status');
-  //const messageEl = document.getElementById('message');
-
-  if (mode === 'start') {
-    startNewTracking(); // 🟢 新しい追跡関数を呼び出す
-    if (iconStatus) iconStatus.innerText = "🟢"; 
-    //if (messageEl) messageEl.textContent = "🟢 足跡の記録を開始しました！30秒ごとに点を打ちます。";
-  } 
-  
-  else if (mode === 'pause') {
-    pauseNewTracking(); // 🟡 新しい一時停止関数を呼び出す
-    if (iconStatus) iconStatus.innerText = "🟡"; 
-    //if (messageEl) messageEl.textContent = "🟡 足跡の記録をひとやすみしています。";
-  } 
-  
-  else if (mode === 'stop') {
-    // ⚪ リセット
-    if (myNewTrackDots.length > 0) {
-      if (confirm("これまでに記録した歩いた足跡（てんてん）をすべて消去しますか？")) {
-        myNewTrackDots.forEach(dot => map.removeLayer(dot));
-        myNewTrackDots = [];
-        localStorage.removeItem("saved_breadcrumbs"); // 👈 これを追記して保存データも消します
-        myNewLastDotTime = 0;
-        if (myNewWatchId !== null) {
-          navigator.geolocation.clearWatch(myNewWatchId);
-          myNewWatchId = null;
-        }
-        if (iconStatus) iconStatus.innerText = "👣"; 
-        //if (messageEl) messageEl.textContent = "⚪ 足跡をリセットしました。";
-        alert("⚪ 軌跡をリセットしました。");
-      } else {
-        if (myNewWatchId !== null) {
-          document.getElementById('opt_start').checked = true;
-          if (iconStatus) iconStatus.innerText = "🟢";
-        } else {
-          document.getElementById('opt_pause').checked = true;
-          if (iconStatus) iconStatus.innerText = "🟡";
-        }
-      }
-    } else {
-      if (myNewWatchId !== null) {
-        navigator.geolocation.clearWatch(myNewWatchId);
-        myNewWatchId = null;
-      }
-      if (iconStatus) iconStatus.innerText = "👣"; 
-      //if (messageEl) messageEl.textContent = "⚪ 記録は停止しています。";
-    }
-  }
-}
-
-// === 🟢 【新システム】足跡スタート（30秒おき） ===
-function startNewTracking() {
-  if (!navigator.geolocation) {
-    alert("お使いのブラウザは位置情報の追跡に対応していません");
-    document.getElementById('opt_stop').checked = true; 
-    document.getElementById('track-icon-status').innerText = "👣";
-    return;
-  }
-  if (myNewWatchId !== null) return; 
-
-  myNewWatchId = navigator.geolocation.watchPosition(
-    (pos) => {
-      const uLat = pos.coords.latitude;
-      const uLng = pos.coords.longitude;
-      currentLat = uLat;
-      currentLng = uLng;
-
-      // 現在地マーク（青丸）を自動移動
-      if (currentLocationMarker) {
-        currentLocationMarker.setLatLng([uLat, uLng]);
-      } else {
-        currentLocationMarker = L.circleMarker([uLat, uLng], {
-          radius: 8, color: "blue", fillColor: "blue", fillOpacity: 0.8
-        }).addTo(map);
-      }
-
-      // 【30秒おきのドット記録システム】（ドットを打つと同時に、ブラウザに保存します）
-      const now = Date.now();
-      if (myNewLastDotTime === 0 || (now - myNewLastDotTime) >= 30000) {
-        const dot = L.circleMarker([uLat, uLng], {
-          radius: 4, color: "red", fillColor: "red", fillOpacity: 0.6, stroke: false
-        }).addTo(map);
-        myNewTrackDots.push(dot); 
-        myNewLastDotTime = now;
-      
-        // 【追加】これまでの足跡データをLocalStorageにテキストとして保存
-        const rawCoords = myNewTrackDots.map(d => {
-          const ll = d.getLatLng();
-          return [ll.lat, ll.lng];
-        });
-        localStorage.setItem("saved_breadcrumbs", JSON.stringify(rawCoords));
-      }
-
-
-
-      
-    },
-    (err) => {
-      console.error("位置の追跡に失敗しました:", err.message);
-      alert("⚠️ GPS信号が弱いため記録を開始できません。");
-      if (myNewWatchId !== null) {
-        navigator.geolocation.clearWatch(myNewWatchId);
-        myNewWatchId = null;
-      }
-      document.getElementById('opt_stop').checked = true;
-      document.getElementById('track-icon-status').innerText = "👣";
-    },
-    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-  );
-}
-
-// === 🟡 【新システム】足跡ひとやすみ ===
-function pauseNewTracking() {
-  if (myNewWatchId === null) return;
-  navigator.geolocation.clearWatch(myNewWatchId);
-  myNewWatchId = null;
-}  
-
-
-  
-  
-// マーカーの見た目を更新・初期配置する関数（吹き出し内に「行きたいボタン」を追加）
-// マーカーの見た目を更新・初期配置する関数（3種類の手書きイラスト切り替え版）
-function updateMapMarkers() {
-  spots.forEach(s => {
-    const got = localStorage.getItem("stamp_" + s.id);      // 獲得済（緑）
-    const wish = localStorage.getItem("wish_" + s.id);      // 行きたい（黄）
-
-    // --- 1. 状態に応じて、表示する手書きイラストのファイル名を決定 ---
-    let myIconUrl = "pin_red.png"; // ① まだ行っていない場所のイラスト名
-    if (got) {
-      myIconUrl = "pin_green.png"; // ② スタンプ獲得済みのイラスト名
-    } else if (wish) {
-      myIconUrl = "pin_yellow.png"; // ③ 行きたい場所のイラスト名
-    }
-
-    // --- 2. 手書きピンのサイズと位置の設定（文字消えしない安全な記述です） ---
-    const myHandmadeIcon = L.icon({
-      iconUrl: myIconUrl,                     // 上で選んだイラスト画像を読み込む
-      iconSize: L.point(30, 30),              // イラストの表示サイズ（横30px, 縦30px）★お好みで変更してね
-      iconAnchor: L.point(15, 30),            // イラストの「一番下の尖った部分」が正確に場所を指す位置（中心, 下端）
-      popupAnchor: L.point(0, -32)            // 吹き出しがイラストのすぐ上から出るように調整
-    });
-
-    // --- 3. 吹き出し（ポップアップ）の中身を作成 ---
-    let popupContent = `<div style="text-align: center; font-family: sans-serif; min-width: 160px;">`;
-    if (got) {
-      popupContent += `
-        <img src="https://icons8.com" alt="スタンプ" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px;">
-        <br><b style="font-size: 14px;">${s.name}</b><br>
-        <span style="font-size: 12px; color: #666;">${s.info}</span><br>
-        <span style="color: green; font-weight: bold; font-size: 13px; display: inline-block; margin-top: 5px;">✅ 獲得済</span>`;
-    } else {
-      const wishButtonText = wish ? "📍外す" : "📍行きたい";
-      const wishButtonColor = wish ? "#fff0f0" : "#fffde6";
-
-      popupContent += `
-        <img src="https://icons8.com" alt="スタンプ" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 5px; opacity: 0.2; filter: grayscale(100%);">
-        <br><b style="font-size: 14px;">${s.name}</b><br>
-        <span style="font-size: 12px; color: #666;">${s.info}</span><br>
-        
-        <div style="margin-top: 8px; display: flex; justify-content: center; gap: 5px;">
-          <button onclick="tryGetStamp('${s.id}')" style="font-size: 11px; padding: 4px 6px; cursor: pointer; background-color: #fff; border: 1px solid #ccc; border-radius: 4px;">
-            押す
-          </button>
-          <button onclick="toggleWish('${s.id}')" style="font-size: 11px; padding: 4px 6px; cursor: pointer; background-color: ${wishButtonColor}; border: 1px solid #ccc; border-radius: 4px;">
-            ${wishButtonText}
-          </button>
-        </div>`;
-    }
-    popupContent += `</div>`;
-
-    // --- 4. マーカーの配置またはイラスト・吹き出しの更新 ---
-    if (markers[s.id]) {
-      // 既にピンがある場合は、イラスト画像（Icon）と吹き出しの中身を最新状態に更新
-      markers[s.id].setIcon(myHandmadeIcon);
-      markers[s.id].setPopupContent(popupContent);
-    } else {
-      // 最初は新しく手書きピンを作る
-      const marker = L.marker([s.lat, s.lng], { icon: myHandmadeIcon }).addTo(map).bindPopup(popupContent);
-      markers[s.id] = marker;
-    }
-  });
-}
-
-
-// === 🆕 「行きたい」ボタンが押された時のオンオフ処理 ===
-function toggleWish(id) {
-  const wish = localStorage.getItem("wish_" + id);
-  if (wish) {
-    localStorage.removeItem("wish_" + id); // すでに登録されていれば解除（赤に戻す）
-  } else {
-    localStorage.setItem("wish_" + id, "true"); // なければ登録（黄色にする）
-  }
-  updateMapMarkers(); // 地図のピンの色と、吹き出し内のボタン表示を即座に更新
-}
-
-
-  
-
-// === 距離計算 ===
-function isNear(lat1, lng1, lat2, lng2, radius) {
-  const R = 6371000;
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLng = (lng2 - lng1) * Math.PI / 180;
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(lat1 * Math.PI / 180) *
-    Math.cos(lat2 * Math.PI / 180) *
-    Math.sin(dLng / 2) ** 2;
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c < radius;
-}
-
-// === 📍 現在地をチェック（位置表示のみに変更） ===
-function checkLocation() {
-  alert("📍 現在地チェック開始");
-
-  if (!navigator.geolocation) {
-    alert("このブラウザは位置情報に対応していません");
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(
-    pos => {
-      // 取得した緯度経度を記憶する
-      currentLat = pos.coords.latitude;
-      currentLng = pos.coords.longitude;
-
-      alert("位置取得成功！"); 
-
-      if (currentLocationMarker) {
-        map.removeLayer(currentLocationMarker);
-      }
-      
-      currentLocationMarker = L.circleMarker(
-        [currentLat, currentLng],
-        {
-          radius: 8,
-          color: "blue",
-          fillColor: "blue",
-          fillOpacity: 0.8
-        }
-      ).addTo(map);
-      
-      map.setView([currentLat, currentLng], 16);
-      
-      // 案内メッセージを変更（自動スタンプは無し）
-      document.getElementById("message").textContent = "📍 現在地を更新しました！下のスタンプ帳からボタンを押してね。";
-    },
-    err => {
-      alert("位置情報が取得できませんでした。\n理由: " + err.message);
-    },
-    {
-      enableHighAccuracy: true,
-      timeout: 10000,
-      maximumAge: 0
-    }
-  );
-}
-
-// === 個別のスタンプ判定機能（追加） ===
-function tryGetStamp(id) {
-  // まだ現在地がチェックされていない場合
-  if (currentLat === null || currentLng === null) {
-    alert("まずは「📍 現在地をチェック」ボタンを押して、マップ上に現在地を表示させてください！");
-    return;
-  }
-
-  // 対象のスポットデータを特定
-  const s = spots.find(spot => spot.id === id);
-  
-  // 現在地とスポットの距離を判定
-  if (isNear(currentLat, currentLng, s.lat, s.lng, s.radius)) {
-    localStorage.setItem("stamp_" + s.id, "true");
-    alert("🎉 スタンプGET！：" + s.name);
-    
-    updateMapMarkers(); // マーカーの色を緑に変える
-    showStamps();       // スタンプ帳のボタンを「獲得済」に変える
-  } else {
-    alert("🥲 残念！まだ「" + s.name + "」の近くにいません。もっと近づいてからもう一度押してね。");
-  }
-}
-
-// === スタンプ表示（個別ボタン付きに改造） ===
-function showStamps() {
-  const div = document.getElementById("stamps");
-  div.innerHTML = "<h3>📖 スタンプ帳</h3>";
-
-  spots.forEach(s => {
-    const got = localStorage.getItem("stamp_" + s.id);
-    
-    if (got) {
-      div.innerHTML += `<div class="stamp">${s.name}：✅ 獲得済</div>`;
-    } else {
-      // 未獲得の場合は、個別の判定ボタンを配置
-      div.innerHTML += `
-        <div class="stamp">
-          ${s.name}：❌ 
-          <button onclick="tryGetStamp('${s.id}')" style="font-size:14px; padding:4px 8px; margin-left:10px;">ここでスタンプを押す</button>
-        </div>`;
-    }
-  });
-}
-//🍎リセット機能
-function resetStamps() {
-  if (confirm("スタンプと歩いた足跡、行きたい場所をすべて消去しますか？")) {
-    spots.forEach(s => {
-      localStorage.removeItem("stamp_" + s.id);
-      localStorage.removeItem("wish_" + s.id); // 👈 黄色のデータも削除
-    });
-    trackDots.forEach(dot => map.removeLayer(dot));
-    trackDots = [];
-    
-    updateMapMarkers(); 
-    showStamps();       
-    document.getElementById("message").textContent = "";
-  }
-}
-
-////////////軌跡ここから
-// === 軌跡（ドット記録）機能の変数 ===
-let watchId = null;          // GPSの継続監視を管理するID
-let trackDots = [];          // 地図上に打った「てんてん」のマークを保存する箱
-let lastDotTime = 0;         // 最後にドットを打った時刻（ミリ秒）
-
-// === 🏁 スタンプラリー開始 ===
-function startTracking() {
-  if (!navigator.geolocation) {
-    alert("お使いのブラウザは位置情報の追跡に対応していません");
-    return;
-  }
-  if (watchId !== null) return; 
-
-  alert("🏁 記録を開始しました！30秒ごとに地図に足跡（てんてん）が刻まれます。");
-  
-  document.getElementById("startBtn").disabled = true;
-  document.getElementById("stopBtn").disabled = false;
-
-  // リセット
-  trackDots = [];
-  lastDotTime = 0; 
-
-  watchId = navigator.geolocation.watchPosition(
-    (pos) => {
-      const uLat = pos.coords.latitude;
-      const uLng = pos.coords.longitude;
-
-      currentLat = uLat;
-      currentLng = uLng;
-
-      // 現在地マーク（青丸）を自動移動
-      if (currentLocationMarker) {
-        currentLocationMarker.setLatLng([uLat, uLng]);
-      } else {
-        currentLocationMarker = L.circleMarker([uLat, uLng], {
-          radius: 8, color: "blue", fillColor: "blue", fillOpacity: 0.8
-        }).addTo(map);
-      }
-
-      // 【時間判定】現在の時刻（ミリ秒）を取得
-      const now = Date.now();
-
-      // 初回、または前回のドット作成から30000ミリ秒（30秒）以上経過しているか判定
-      if (lastDotTime === 0 || (now - lastDotTime) >= 30000) {
-        
-        // 小さな赤いドットを地図上に配置（線は引かない）
-        const dot = L.circleMarker([uLat, uLng], {
-          radius: 4,          // 点の大きさ
-          color: "red",       // 点の色
-          fillColor: "red",
-          fillOpacity: 0.6,
-          stroke: false       // 枠線を消して滑らかな丸にする
-        }).addTo(map);
-
-        // あとで一括消去できるように箱に保存
-        trackDots.push(dot);
-
-        // 最後にドットを打った時間を今に更新
-        lastDotTime = now;
-      }
-    },
-    (err) => {
-      console.error("位置の追跡に失敗しました:", err.message);
-    },
-    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-  );
-}
-
-// === 🎯 ゴール（追跡ストップ） ===
-function stopTracking() {
-  if (watchId === null) return;
-
-  navigator.geolocation.clearWatch(watchId);
-  watchId = null;
-
-  alert("🎯 ゴール！お疲れ様でした。歩いた足跡が地図に残ります。");
-
-  document.getElementById("startBtn").disabled = false;
-  document.getElementById("stopBtn").disabled = true;
-}
-
-
-// ※【注意】以前のリセット機能（resetStamps）に、打った点（てんてん）も一緒に消す処理を追加しておきます
-function resetStamps() {
-  if (confirm("スタンプと歩いた足跡をすべて消しますか？")) {
-    spots.forEach(s => {
-      localStorage.removeItem("stamp_" + s.id);
-    });
-    // 画面上のてんてんをすべて消去
-    trackDots.forEach(dot => map.removeLayer(dot));
-    trackDots = [];
-    
-    updateMapMarkers(); 
-    showStamps();       
-    document.getElementById("message").textContent = "";
-  }
-}
-
-// 初期起動時の実行
-updateMapMarkers();
-showStamps();
-
-// === 🆕 ⑦ 画面読み込み時にLocalStorageから足跡（てんてん）を復活させる ===
-function restoreBreadcrumbs() {
-  const savedData = localStorage.getItem("saved_breadcrumbs");
-  if (savedData) {
-    try {
-      // 保存されていた緯度経度のリストを読み込む
-      const coordsList = JSON.parse(savedData);
-      
-      coordsList.forEach(coord => {
-        // 過去の足跡ドットを地図上に再現
-        const dot = L.circleMarker(coord, {
-          radius: 4, color: "red", fillColor: "red", fillOpacity: 0.6, stroke: false
-        }).addTo(map);
-        
-        // 配列（箱）にも戻しておく
-        myNewTrackDots.push(dot);
       });
-    } catch (e) {
-      console.error("足跡データの復元に失敗しました", e);
-    }
-  }
-}
 
-// 起動時に足跡を復元する
-restoreBreadcrumbs();
-  
-</script>
+    });
+
+  </script>
+
 </body>
 </html>
