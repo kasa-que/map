@@ -234,10 +234,17 @@
 /* 🧭 A. 土台となる「回転しない背景画像」の部屋（ズームボタンの真横に配置） */
 #my-compass-wrapper {
   position: absolute;
-  top: 18px; /* ズームボタン（＋ー）の真ん中に芯が合う位置 */
-  left: 52px;         
+  //top: 18px; /* ズームボタン（＋ー）の真ん中に芯が合う位置 */
+  //left: 52px;         
+  //width: 48px;        
+  //height: 48px;
+  
+  /* 💡 ＋ーボタンが消えたので、上から10px、左から10pxの完璧なカドの位置へ引っ越しさせます */
+  top: 10px;          
+  left: 10px;         
   width: 48px;        
   height: 48px;
+
   z-index: 1000;
   pointer-events: none;
   
@@ -302,7 +309,7 @@
 </div>
   
 <!-- ⭕️ 修正後：鳥居（torii.png）とアプリ名ロゴ（logo.png）の画像タイトル -->
-<div style="text-align: center; padding: 15px 0 5px 0; display: flex; flex-direction: column; align-items: center; gap: 4px;">
+<div style="text-align: center; padding: 5px 0 5px 0; display: flex; flex-direction: column; align-items: center; gap: 4px;">
   
   <!-- ① 上段：神聖な鳥居のイラスト（torii.png） -->
   <img src="torii.png" alt="⛩" style="width: 45px; height: 45px; object-fit: contain; display: block;">
@@ -700,7 +707,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
 
 // === 地図表示 ===
 // ズームレベルを「15」から、確実に航空写真が表示される「16」（より拡大された状態）に変更します
-const map = L.map("map").setView([36.385662,140.254050], 16);
+const map = L.map("map", { zoomControl: false }).setView([36.385662,140.254050], 16);
 
 // 1. 通常地図（OpenStreetMap）レイヤー
 const baseMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
