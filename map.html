@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>スタンプラリ-!</title>
+  <title>スタンプラリ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1032,34 +1032,6 @@ function handleLayerRadio(type) {
   
 }
 
-  
-// === ② 自作「足跡の記録四角パネル」（画像版） ===
-const CustomTrackControl = L.Control.extend({
-  options: { position: 'topright' },
-  onAdd: function () {
-    const container = L.DomUtil.create('div');
-    container.innerHTML = `
-      <!-- 💡 ここにも class="control-icon-toggle" を追加して、開いた時に画像を消します -->
-      <div class="control-icon control-icon-toggle" id="track-icon-status">
-        <img src="icon_track.png" alt="足跡" style="width: 100%; height: 100%; object-fit: contain; display: block;">
-      </div>
-      <div class="control-content">
-        <h4>足跡の記録</h4>
-        <label><input type="radio" name="track_opt" id="opt_start" onclick="handleTrackRadio('start')">足跡つけはじめる</label>
-        <label><input type="radio" name="track_opt" id="opt_pause" onclick="handleTrackRadio('pause')">足跡ひとやすみ</label>
-        <label><input type="radio" name="track_opt" id="opt_stop" checked onclick="handleTrackRadio('stop')">足跡を消す</label>
-      </div>
-    `;
-    setupControlToggle(container);
-    return container;
-  }
-});
-map.addControl(new CustomTrackControl());
-  
-
-
-
-
 // === 🆕 ⑮ 自作「目印切り替え四角パネル」（右上・2段目に配置） ===
 // 選択されているグループを覚えておく変数（最初は『すべて（all）』にしておきます）
 let currentDisplayGroup = "all";
@@ -1088,6 +1060,37 @@ const CustomFilterControl = L.Control.extend({
   }
 });
 map.addControl(new CustomFilterControl());
+
+
+
+  
+// === ② 自作「足跡の記録四角パネル」（画像版） ===
+const CustomTrackControl = L.Control.extend({
+  options: { position: 'topright' },
+  onAdd: function () {
+    const container = L.DomUtil.create('div');
+    container.innerHTML = `
+      <!-- 💡 ここにも class="control-icon-toggle" を追加して、開いた時に画像を消します -->
+      <div class="control-icon control-icon-toggle" id="track-icon-status">
+        <img src="icon_track.png" alt="足跡" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+      </div>
+      <div class="control-content">
+        <h4>足跡の記録</h4>
+        <label><input type="radio" name="track_opt" id="opt_start" onclick="handleTrackRadio('start')">足跡つけはじめる</label>
+        <label><input type="radio" name="track_opt" id="opt_pause" onclick="handleTrackRadio('pause')">足跡ひとやすみ</label>
+        <label><input type="radio" name="track_opt" id="opt_stop" checked onclick="handleTrackRadio('stop')">足跡を消す</label>
+      </div>
+    `;
+    setupControlToggle(container);
+    return container;
+  }
+});
+map.addControl(new CustomTrackControl());
+  
+
+
+
+
 
 
 // ====================================================
@@ -1130,7 +1133,7 @@ const CustomQuestControl = L.Control.extend({
     container.innerHTML = `
       <div class="control-icon control-icon-toggle">
         <img
-          src="quest_pin.png"
+          src="quest_menu.png"
           alt="クエスト"
           style="
             width:100%;
