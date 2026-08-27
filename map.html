@@ -1101,7 +1101,18 @@ const CustomQuestControl = L.Control.extend({
     const container = L.DomUtil.create('div');
 
     // クエスト一覧を自動生成
-    let questListHTML = "";
+    let questListHTML = `
+      <label>
+        <input
+          type="radio"
+          name="quest_opt"
+          value=""
+          checked
+          onclick="handleQuestRadio('')"
+        >
+        クエストが選択されていません
+      </label>
+    `;
 
     quests.forEach(q => {
       questListHTML += `
@@ -1175,7 +1186,7 @@ function handleQuestRadio(id) {
 
   if (foxMsg) {
     foxMsg.innerHTML =
-      `🦊「${q.name}」のスタート地点だよ！`;
+      `クエスト「${q.name}」のスタート地点だよ！足跡をつけるか、達成したら現在地を確認してね！`;
   }
 
   // クエストパネルを閉じる
