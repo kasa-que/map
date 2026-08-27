@@ -829,7 +829,7 @@ const quests = [
    // クエストクリア地点
     clearLat: 36.382674,
     clearLng: 140.267445,
-    clearRadius: 30,
+    clearRadius: 50000,
     stampImage: "qst01_cl.png"
   },
 
@@ -1981,13 +1981,17 @@ const popupStamp = questClearTime
         margin-bottom: 5px;
       "
     >
-    <div style="
-      font-size: 13px;
-      color: #7f756b;
-      margin-bottom: 8px;
-    ">
-      🎉 クエストクリア！
-    </div>
+  <div style="
+    font-size: 13px;
+    color: #7f756b;
+    margin-bottom: 8px;
+  ">
+    🎉 クエストクリア！
+    <br>
+    <span style="font-size: 11px;">
+      ${new Date(questClearTime).toLocaleString("ja-JP")}
+    </span>
+  </div>
   `
   : `
     <div style="
@@ -2092,16 +2096,55 @@ function checkQuestClear() {
     return false;
   }
 
+  // すでにクリア済みなら何もしない
+  if (localStorage.getItem("quest_clear_time_" + currentQuest.id)) {
+    return true;
+  }
+
   // 現在地と、現在選択中のクエストのクリア地点をチェック
-  return isNear(
+  const near = isNear(
     currentLat,
     currentLng,
     currentQuest.clearLat,
     currentQuest.clearLng,
     currentQuest.clearRadius
   );
-}
 
+  // クリア地点に到着していなければ終了
+  if (!near) {
+    return false;
+  }
+
+  // ==========================================
+  // 🎉 クエストクリア！
+  // ==========================================
+
+  const now = new Date();
+
+  // クリア日時を保存
+  localStorage.setItem(
+    "quest_clear_time_" + currentQuest.id,
+    now.toISOString()
+  );
+
+  // お狐様メッセージ
+  const foxMsg = document.getElementById('fox-message');
+
+  if (foxMsg) {
+    foxMsg.innerHTML =
+      `🎉🦊「${currentQuest.name}」クリア！`;
+  }
+
+  alert(
+    "🎉 クエストクリア！\n\n" +
+    currentQuest.name
+  );
+
+  // 地図のクエストピンを更新
+  updateQuestMarkers();
+
+  return true;
+}
   
 // === 📍 現在地をチェック（位置表示のみに変更） ===
 function checkLocation() {
@@ -2400,6 +2443,78 @@ function showStamps(mode = 'all') {
     });
 
   });
+
+
+
+
+
+
+  // ====================================================
+  // 🦊 クエスト
+  // ====================================================
+
+  // クエストが存在する場合だけ表示
+  if (quests && quests.length > 0) {
+
+    div.innerHTML += `
+      <h4 class="stamp-category-title">
+        クエスト
+      </h4>
+    `;
+
+    div.innerHTML += `
+      <div class="stamp-grid" id="stamp-grid-quest">
+      </div>
+    `;
+
+    const questGrid = document.getElementById("stamp-grid-quest");
+
+
+    // クエストを1個ずつ配置
+    quests.forEach(q => {
+
+      // クリア日時が保存されているか確認
+      const clearTime = localStorage.getItem(
+        "quest_clear_time_" + q.id
+      );
+
+      // クリア済みなら専用スタンプ
+      // 未クリアなら「まだ」の画像
+      const stampImageUrl = clearTime
+        ? q.stampImage
+        : "stmpof.png";
+
+
+      questGrid.innerHTML += `
+        <div class="stamp-item" onclick="jumpToQuest('${q.id}')">
+
+          <img
+            src="${stampImageUrl}"
+            alt="クエスト"
+            class="stamp-image"
+          >
+
+          <div class="stamp-name">
+            ${q.name}
+          </div>
+
+        </div>
+      `;
+
+    });
+  }
+
+
+
+
+
+
+
+
+
+
+
+  
 } 
 // ====================================================
 // 📖 スタンプ帳から地図のスポットへジャンプ
