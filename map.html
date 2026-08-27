@@ -1173,182 +1173,332 @@ function pauseNewTracking() {
 // マーカーの見た目を更新・初期配置する関数（スポット別スタンプ画像 ＆ 緑文字消去版）
 // マーカーの見た目を更新・初期配置する関数（dfcは常に輪郭線キープ版）
 // マーカーの見た目を更新・初期配置する関数（茶系透過＆8割スモールドット版）
+/////PPPPP
 function updateMapMarkers() {
   spots.forEach(s => {
     const got = localStorage.getItem("stamp_" + s.id);      // 獲得済
     const wish = localStorage.getItem("wish_" + s.id);      // 行きたい
 
+    // ====================================================
+    // 🆕 選択されたグループに、このピンが該当するか判定
+    // ====================================================
+    let isMatched = false;
 
-    // 🆕 【ここを追記！】選ばれたグループ以外のピンを自動で隠す（消去する）システム
-    // s.idの頭文字が、現在選ばれているグループ名と一致しているかチェックします
+    if (currentDisplayGroup === "all") {
+      // 「全て表示」なら全部表示
+      isMatched = true;
+    } else {
+      // 「dfc」「twn」「now」「rcm」「bld」など、
+      // IDの先頭が選択グループと一致するか確認
+      isMatched = s.id && s.id.startsWith(currentDisplayGroup);
+    }
+
+    // ====================================================
+    // 🆕 選ばれたグループ以外のピンを地図から一時的に隠す
+    // ====================================================
     if (!isMatched) {
-      // 💡 ルールに合わないピンは、地図から一時的に外します（記憶は残したまま）
       if (markers[s.id]) {
         map.removeLayer(markers[s.id]);
       }
-      return; 
-    } else {
-      // 🆕 【ここを追加！】ルールに合致したピンが、もし過去に非表示にされていたら地図に貼り直します！
-      if (markers[s.id] && !map.hasLayer(markers[s.id])) {
-        markers[s.id].addTo(map);
-      }
+      return;
     }
 
+    // ====================================================
+    // 🆕 選択されたグループのピンを地図に戻す
+    // ====================================================
+    if (markers[s.id] && !map.hasLayer(markers[s.id])) {
+      markers[s.id].addTo(map);
+    }
 
-    
     // ====================================================
-    // ① 【手書き画像グループ】の画像ファイル名決定（変更なし）
+    // ① 手書き画像グループの画像ファイル名決定
     // ====================================================
-    let myIconUrl = "pin_blue.png"; 
+    let myIconUrl = "pin_blue.png";
 
     if (s.id && s.id.startsWith("rcm")) {
       myIconUrl = "str_blue.png";
+
       if (got) {
-        myIconUrl = "str_red.png";    
+        myIconUrl = "str_red.png";
       } else if (wish) {
-        myIconUrl = "str_yellow.png"; 
+        myIconUrl = "str_yellow.png";
       }
+
     } else {
       if (got) {
-        myIconUrl = "pin_red.png";    
+        myIconUrl = "pin_red.png";
       } else if (wish) {
-        myIconUrl = "pin_yellow.png"; 
+        myIconUrl = "pin_yellow.png";
       }
     }
 
     const myHandmadeIcon = L.icon({
-      iconUrl: myIconUrl,                     
-      iconSize: L.point(40, 40),              
-      iconAnchor: L.point(20, 40),            
-      popupAnchor: L.point(0, -42)            
+      iconUrl: myIconUrl,
+      iconSize: L.point(40, 40),
+      iconAnchor: L.point(20, 40),
+      popupAnchor: L.point(0, -42)
     });
 
+    // ====================================================
+    // ② 吹き出し（ポップアップ）の中身を作成
+    // ====================================================
+    let stampImageUrl = "stmpof.png";
 
-    // ====================================================
-    // ② 吹き出し（ポップアップ）の中身を作成（変更なし）
-    // ====================================================
-    let stampImageUrl = "stmpof.png"; 
     if (got) {
       stampImageUrl = s.imgOn ? s.imgOn : "stmpon.png";
     } else {
       stampImageUrl = s.imgOf ? s.imgOf : "stmpof.png";
     }
 
-    let popupContent = `<div style="text-align: center; font-family: sans-serif; min-width: 160px;">`;
+    let popupContent =
+      `<div style="text-align: center; font-family: sans-serif; min-width: 160px;">`;
+
     if (got) {
-      // 【獲得済のレイアウト】
-      const savedTime = localStorage.getItem("stamp_time_" + s.id) || "日時データなし";
+
+      // ------------------------------
+      // 獲得済み
+      // ------------------------------
+      const savedTime =
+        localStorage.getItem("stamp_time_" + s.id) || "日時データなし";
 
       popupContent += `
-        <img src="${stampImageUrl}" alt="スタンプ" style="width: 75px; height: 75px; object-fit: contain; margin-bottom: 3px;">
-        <br><b style="font-size: 14px;">${s.name}</b>
-        
-        <!-- 💡 text-align: left; と display: block; を指定して、説明文だけを綺麗な左揃えに直しました -->
-        <span style="font-size: 12px; color: #666; display: block; text-align: left; margin-top: 6px; margin-bottom: 6px; line-height: 1.4;">${s.info}</span>
-        
-        <div style="margin-top: 8px; display: flex; justify-content: center; align-items: center; height: 25px;">
-          <span class="yuji-syuku-regular" style="font-size: 13px; color: #7f756b; font-weight: normal; background: none; border: none; padding: 0;">
+        <img
+          src="${stampImageUrl}"
+          alt="スタンプ"
+          style="width: 75px; height: 75px; object-fit: contain; margin-bottom: 3px;"
+        >
+        <br>
+        <b style="font-size: 14px;">${s.name}</b>
+
+        <span
+          style="
+            font-size: 12px;
+            color: #666;
+            display: block;
+            text-align: left;
+            margin-top: 6px;
+            margin-bottom: 6px;
+            line-height: 1.4;
+          "
+        >${s.info}</span>
+
+        <div
+          style="
+            margin-top: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 25px;
+          "
+        >
+          <span
+            class="yuji-syuku-regular"
+            style="
+              font-size: 13px;
+              color: #7f756b;
+              font-weight: normal;
+              background: none;
+              border: none;
+              padding: 0;
+            "
+          >
             ${savedTime}
           </span>
         </div>`;
+
     } else {
-      // 【未獲得のレイアウト】
-      const wishButtonText = wish ? "📍外す" : "📍行ってみたい";
-      const wishButtonColor = wish ? "#fff0f0" : "#fffde6";
+
+      // ------------------------------
+      // 未獲得
+      // ------------------------------
+      const wishButtonText = wish
+        ? "📍外す"
+        : "📍行ってみたい";
+
+      const wishButtonColor = wish
+        ? "#fff0f0"
+        : "#fffde6";
 
       popupContent += `
-        <img src="${stampImageUrl}" alt="スタンプ" onclick="tryGetStamp('${s.id}')" style="width: 75px; height: 75px; object-fit: contain; margin-bottom: 3px; cursor: pointer;" title="タッチしてスタンプを押す">
-        <br><b style="font-size: 14px;">${s.name}</b>
-        
-        <!-- 💡 未獲得側も同じく、説明文だけを左揃えにして読みやすくします -->
-        <span style="font-size: 12px; color: #666; display: block; text-align: left; margin-top: 6px; margin-bottom: 6px; line-height: 1.4;">${s.info}</span>
-        
-        <div style="margin-top: 8px; display: flex; justify-content: center; align-items: center; height: 25px;">
-          <button onclick="toggleWish('${s.id}')" style="font-size: 11px; padding: 4px 10px; cursor: pointer; background-color: ${wishButtonColor}; border: 1px solid #ccc; border-radius: 4px;">
+        <img
+          src="${stampImageUrl}"
+          alt="スタンプ"
+          onclick="tryGetStamp('${s.id}')"
+          style="
+            width: 75px;
+            height: 75px;
+            object-fit: contain;
+            margin-bottom: 3px;
+            cursor: pointer;
+          "
+          title="タッチしてスタンプを押す"
+        >
+        <br>
+        <b style="font-size: 14px;">${s.name}</b>
+
+        <span
+          style="
+            font-size: 12px;
+            color: #666;
+            display: block;
+            text-align: left;
+            margin-top: 6px;
+            margin-bottom: 6px;
+            line-height: 1.4;
+          "
+        >${s.info}</span>
+
+        <div
+          style="
+            margin-top: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 25px;
+          "
+        >
+          <button
+            onclick="toggleWish('${s.id}')"
+            style="
+              font-size: 11px;
+              padding: 4px 10px;
+              cursor: pointer;
+              background-color: ${wishButtonColor};
+              border: 1px solid #ccc;
+              border-radius: 4px;
+            "
+          >
             ${wishButtonText}
           </button>
         </div>`;
     }
+
     popupContent += `</div>`;
-    
+
     // ====================================================
-    // ③ 【地図への配置処理】ドットか画像かを判定して描き分ける
+    // ③ ドット表示グループ
     // ====================================================
     const isTwn = s.id && s.id.startsWith("twn");
     const isNow = s.id && s.id.startsWith("now");
     const isDfc = s.id && s.id.startsWith("dfc");
 
     if (isTwn || isNow || isDfc) {
-      
-      // 1. 基本となる「線の色」の決定
-      let dotColor = "#7f756b"; // ★twn と dfc のデフォルトは、優しく馴染む「薄墨色」に統一！
+
+      // ------------------------------
+      // 基本となる線の色
+      // ------------------------------
+      let dotColor = "#7f756b";
+
       if (isNow) {
-        dotColor = "#33302e";   // ★now のデフォルトは、キリッと引き締まる「濃い墨色」に変更！
+        dotColor = "#33302e";
       }
 
-      // 共通ルール：行きたい（黄）、スタンプ（エンジ色の赤）への上書き
+      // 行きたい・スタンプ獲得による色変更
       if (got) {
-        dotColor = "#b71540";   // スタンプしたらエンジ色（赤）
+        dotColor = "#b71540";
       } else if (wish) {
-        dotColor = "#c89932";   // 行きたいなら黄色
+        dotColor = "#c89932";
       }
 
-      // 2. 透過率と枠線オプションの精密コントロール
-      let fillOpt = 0.5;        // 通常（twn, now）は中身を50%透過で塗りつぶす
-      let strokeOpt = false;    // 通常は外枠線なし
-      let borderWeight = 3;     // 枠線の太さ
-      let strokeOpacityOpt = 1.0; // 枠線自体の不透明度
+      // ------------------------------
+      // 透過率と枠線
+      // ------------------------------
+      let fillOpt = 0.5;
+      let strokeOpt = false;
+      let borderWeight = 3;
+      let strokeOpacityOpt = 1.0;
 
       if (isDfc) {
-        fillOpt = 0.0;          // dfcは中身を常に完全透明
-        strokeOpt = true;       // dfcは常に「輪郭線（枠）」を出す
-        strokeOpacityOpt = 0.5; // ⭕️ ご要望通り、dfcの輪郭線自体を「透過（50%）」に設定！
+        fillOpt = 0.0;
+        strokeOpt = true;
+        strokeOpacityOpt = 0.5;
       }
 
-      // ドットのスタイル一式を組み立て
       const dotOptions = {
-        radius: 10,              // ⭕️ ご要望通り、半径を8割の大きさ（8pxから6px）に小さくしました！
-        color: dotColor,        // 枠線の色
-        opacity: strokeOpacityOpt, // 枠線自体の透過設定（dfcのみ0.5、他は1.0）
-        weight: borderWeight,   // 枠線の太さ
-        fillColor: dotColor,    // 塗りつぶしの色
-        fillOpacity: fillOpt,   // 中身の透過率（dfcは常に0）
-        stroke: strokeOpt       // 枠線を出すかどうか
+        radius: 10,
+        color: dotColor,
+        opacity: strokeOpacityOpt,
+        weight: borderWeight,
+        fillColor: dotColor,
+        fillOpacity: fillOpt,
+        stroke: strokeOpt
       };
 
+      // ------------------------------
+      // 既存マーカーを更新
+      // ------------------------------
       if (markers[s.id]) {
-        if (typeof markers[s.id].setLatLng !== 'function' || markers[s.id].setStyle) {
+
+        if (
+          typeof markers[s.id].setLatLng === "function" &&
+          typeof markers[s.id].setStyle === "function"
+        ) {
           markers[s.id].setStyle(dotOptions);
           markers[s.id].setPopupContent(popupContent);
+
         } else {
           map.removeLayer(markers[s.id]);
-          markers[s.id] = L.circleMarker(L.latLng(s.lat, s.lng), dotOptions).addTo(map).bindPopup(popupContent);
+
+          markers[s.id] =
+            L.circleMarker(
+              L.latLng(s.lat, s.lng),
+              dotOptions
+            )
+            .addTo(map)
+            .bindPopup(popupContent);
         }
+
       } else {
-        markers[s.id] = L.circleMarker(L.latLng(s.lat, s.lng), dotOptions).addTo(map).bindPopup(popupContent);
+
+        markers[s.id] =
+          L.circleMarker(
+            L.latLng(s.lat, s.lng),
+            dotOptions
+          )
+          .addTo(map)
+          .bindPopup(popupContent);
       }
 
     } else {
+
       // ====================================================
-      // ④ 通常・rcmスポット（画像ピンのグループ）の配置・更新
+      // ④ 通常・rcmスポット（画像ピン）
       // ====================================================
       if (markers[s.id]) {
-        if (typeof markers[s.id].setIcon === 'function') {
+
+        if (typeof markers[s.id].setIcon === "function") {
+
           markers[s.id].setIcon(myHandmadeIcon);
           markers[s.id].setPopupContent(popupContent);
+
         } else {
+
           map.removeLayer(markers[s.id]);
-          markers[s.id] = L.marker(L.latLng(s.lat, s.lng), { icon: myHandmadeIcon }).addTo(map).bindPopup(popupContent);
+
+          markers[s.id] =
+            L.marker(
+              L.latLng(s.lat, s.lng),
+              { icon: myHandmadeIcon }
+            )
+            .addTo(map)
+            .bindPopup(popupContent);
         }
+
       } else {
-        markers[s.id] = L.marker(L.latLng(s.lat, s.lng), { icon: myHandmadeIcon }).addTo(map).bindPopup(popupContent);
+
+        markers[s.id] =
+          L.marker(
+            L.latLng(s.lat, s.lng),
+            { icon: myHandmadeIcon }
+          )
+          .addTo(map)
+          .bindPopup(popupContent);
       }
     }
-
   });
-}
+}  
+//PPPPP
   
-
 // === 🆕 「行きたい」ボタンが押された時のオンオフ処理 ===
 function toggleWish(id) {
   const wish = localStorage.getItem("wish_" + id);
