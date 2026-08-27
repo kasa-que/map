@@ -1825,6 +1825,71 @@ function updateMapMarkers() {
   });
 }  
 //PPPPP
+
+// ====================================================
+// 🦊 クエストマーカーを表示
+// ====================================================
+function updateQuestMarkers() {
+
+  quests.forEach(q => {
+
+    // すでにピンがあれば作らない
+    if (questMarkers[q.id]) {
+      return;
+    }
+
+    // クエスト用ピン
+    const questIcon = L.icon({
+      iconUrl: "quest_pin.png",
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+      popupAnchor: [0, -42]
+    });
+
+    // ピンを押したときに出る内容
+    const popupContent = `
+      <div style="
+        text-align: center;
+        font-family: sans-serif;
+        min-width: 180px;
+      ">
+        <div style="
+          font-size: 16px;
+          font-weight: bold;
+          margin-bottom: 8px;
+        ">
+          🦊 ${q.name}
+        </div>
+
+        <div style="
+          font-size: 13px;
+          color: #666;
+          text-align: left;
+          line-height: 1.5;
+        ">
+          ${q.info}
+        </div>
+      </div>
+    `;
+
+    // ★開始地点にクエストピンを立てる
+    questMarkers[q.id] = L.marker(
+      [q.startLat, q.startLng],
+      { icon: questIcon }
+    )
+    .addTo(map)
+    .bindPopup(popupContent);
+
+  });
+}
+
+
+
+
+
+
+
+  
   
 // === 🆕 「行きたい」ボタンが押された時のオンオフ処理 ===
 function toggleWish(id) {
@@ -2301,6 +2366,7 @@ function resetStamps() {
 // 初期起動時の実行
 updateMapMarkers();
 showStamps();
+updateQuestMarkers();
 
 // === 🆕 ⑦ 画面読み込み時にLocalStorageから足跡（てんてん）を復活させる ===
 function restoreBreadcrumbs() {
