@@ -343,6 +343,89 @@
     border-right: none;
   }
 }
+
+
+
+
+/* ====================================================
+   📍現在地 ＆ 📖スタンプ帳
+   左下のボタンを横並び固定
+   ==================================================== */
+
+.bottom-control-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+/* 2つのボタンそれぞれ */
+.bottom-control-item {
+  flex: 0 0 auto;
+}
+
+/* 中身も横並び */
+.bottom-control-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+/* アイコン */
+.bottom-control-item .control-icon {
+  flex: 0 0 auto;
+}
+
+/* 文字・メニュー */
+.bottom-control-item .control-content {
+  margin-left: 5px;
+}
+
+/* 見出し */
+.bottom-control-item h4 {
+  margin: 0;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+
+  display: flex;
+  align-items: center;
+
+  height: 28px;
+}
+
+
+/* ====================================================
+   📖 スタンプ帳メニュー
+   ==================================================== */
+
+.book-control .stamp-menu {
+  display: none;
+  margin-top: 6px;
+}
+
+/* 開いたときだけ表示 */
+.book-control.expanded .stamp-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* メニューボタン */
+.book-control .stamp-menu button {
+  font-size: 12px;
+  padding: 5px 10px;
+  cursor: pointer;
+
+  background: #fffdf7;
+  border: 1px solid #c8beb1;
+  border-radius: 4px;
+
+  white-space: nowrap;
+}
+
+
     
     
   </style>
@@ -1027,93 +1110,119 @@ function handleFilterRadio(groupType) {
 
 // === 📍 現在地 ＆ 📕 スタンプ帳 横並びパネル ===
 // === 現在地 ＆ スタンプ帳：独立した2つのコントロール ===
-
-// --- 現在地ボタン ---
-const CustomLocationControl = L.Control.extend({
+// ====================================================
+// 📍 現在地 ＆ 📖 スタンプ帳
+// 左下・横並び固定
+// ====================================================
+const CustomBottomLeftControl = L.Control.extend({
   options: { position: 'bottomleft' },
 
   onAdd: function () {
-    const container = L.DomUtil.create('div');
 
-    container.innerHTML = `
-      <div style="display: flex; align-items: center;">
+    // ★ 2つを横並びにする「親」
+    const mainWrapper = L.DomUtil.create('div');
+    mainWrapper.className = 'bottom-control-wrapper';
+
+    // ====================================================
+    // 📍 現在地ボタン
+    // ====================================================
+    const locContainer = L.DomUtil.create('div', '', mainWrapper);
+    locContainer.className = 'bottom-control-item location-control';
+
+    locContainer.innerHTML = `
+      <div class="bottom-control-inner">
         <div class="control-icon">
           <img src="icon_location.png"
                alt="現在地"
-               style="width: 100%; height: 100%; object-fit: contain; display: block;">
+               style="width:100%; height:100%; object-fit:contain; display:block;">
         </div>
 
-        <div class="control-content" style="margin-left: 5px;">
-          <h4 style="
-            margin: 0;
-            padding: 0;
-            border: none;
-            cursor: pointer;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            height: 28px;
-          " onclick="checkLocation()">
+        <div class="control-content">
+          <h4 onclick="checkLocation()">
             現在地をチェック
           </h4>
         </div>
       </div>
     `;
 
-    // 最初から開いた状態
-    container.classList.add('expanded');
-    setupControlToggle(container);
-    container.classList.remove('collapsed');
-
-    return container;
-  }
-});
-
-map.addControl(new CustomLocationControl());
+    // 現在地は常に開いた状態
+    locContainer.classList.add('expanded');
 
 
-// --- スタンプ帳ボタン ---
-const CustomStampBookControl = L.Control.extend({
-  options: { position: 'bottomleft' },
+    // ====================================================
+    // 📖 スタンプ帳ボタン
+    // ====================================================
+    const bookContainer = L.DomUtil.create('div', '', mainWrapper);
+    bookContainer.className = 'bottom-control-item book-control';
 
-  onAdd: function () {
-    const container = L.DomUtil.create('div');
+    bookContainer.innerHTML = `
+      <div class="bottom-control-inner">
 
-    container.innerHTML = `
-      <div style="display: flex; align-items: center;">
-        <div class="control-icon">
+        <div class="control-icon control-icon-toggle">
           <img src="icon_book.png"
                alt="スタンプ帳"
-               style="width: 100%; height: 100%; object-fit: contain; display: block;">
+               style="width:100%; height:100%; object-fit:contain; display:block;">
         </div>
 
-        <div class="control-content" style="margin-left: 5px;">
-          <h4 style="
-            margin: 0;
-            padding: 0;
-            border: none;
-            cursor: pointer;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            height: 28px;
-          " onclick="scrollToStamps()">
-            スタンプ帳を見る
-          </h4>
+        <div class="control-content">
+
+          <h4>スタンプ帳を見る</h4>
+
+          <div class="stamp-menu">
+            <button onclick="showCollectedStamps()">
+              獲得したスタンプ
+            </button>
+
+            <button onclick="showAllStamps()">
+              全てのスタンプ
+            </button>
+
+            <button onclick="confirmResetStamps()">
+              スタンプ帳をリセット
+            </button>
+          </div>
+
         </div>
+
       </div>
     `;
 
-    setupControlToggle(container);
+    // スタンプ帳だけ開閉する
+    bookContainer.classList.add('collapsed');
 
-    return container;
+    // マウスを乗せたら開く
+    bookContainer.addEventListener('mouseenter', () => {
+      bookContainer.classList.remove('collapsed');
+      bookContainer.classList.add('expanded');
+    });
+
+    // マウスを離したら閉じる
+    bookContainer.addEventListener('mouseleave', () => {
+      bookContainer.classList.remove('expanded');
+      bookContainer.classList.add('collapsed');
+    });
+
+    // スマホのタップ
+    bookContainer.addEventListener('touchstart', (e) => {
+      e.stopPropagation();
+
+      if (bookContainer.classList.contains('expanded')) {
+        bookContainer.classList.remove('expanded');
+        bookContainer.classList.add('collapsed');
+      } else {
+        bookContainer.classList.remove('collapsed');
+        bookContainer.classList.add('expanded');
+      }
+    }, { passive: true });
+
+    // メニューを押したとき、地図側にクリックを伝えない
+    L.DomEvent.disableClickPropagation(bookContainer);
+
+    return mainWrapper;
   }
 });
 
-map.addControl(new CustomStampBookControl());
-
-
-
+map.addControl(new CustomBottomLeftControl());
 
 
 
