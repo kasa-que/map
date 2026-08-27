@@ -2159,57 +2159,83 @@ if (compassContainer) {
     }
   }, true);
 }
-// === ⑭ iPhoneや最新スマホの「方位センサーの鍵」を解禁するシステム ===
-// 門番画面の「同意して始める」ボタン（agreeSafety）が押された瞬間に、センサーの許可をスマホに申請します
-const originalAgreeSafety = agreeSafety; // 以前作った関数を一旦バックアップ
-
-agreeSafety = function() {
-  // まずは以前作った「注意書き画面を消す処理」を実行
-  originalAgreeSafety();
-
-  // スマホ（特にiPhone）に「方位センサーを使ってよいか」確認の許可を求めます
-  if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-    DeviceOrientationEvent.requestPermission()
-      .then(permissionState => {
-        if (permissionState === 'granted') {
-          // ユーザーが許可してくれたら、お狐様がメッセージをくれます
-          const foxMsg = document.getElementById('fox-message');
-          //if (foxMsg) foxMsg.innerHTML = `お狐様「ほう！スマホの羅針盤（コンパス）の封印が解かれたぞよ。これで方角もバッチリじゃな！」`;
-        }
-      })
-      .catch(console.error);
-  }
-};
 
 
 
   
-// === 🆕 ⑪ 注意書き画面で「同意する」が押されたときに画面を消す関数 ===
+// === ⑪ 注意書き画面で「同意する」が押されたとき ===
 function agreeSafety() {
+
   const modal = document.getElementById('safety-modal');
+
   if (modal) {
-    modal.style.display = 'none'; // 門番画面を非表示にして、地図を解禁します！
+    modal.style.display = 'none';
+  }
+
+  // iPhoneなどの方位センサーの許可を求める
+  if (
+    typeof DeviceOrientationEvent !== 'undefined' &&
+    typeof DeviceOrientationEvent.requestPermission === 'function'
+  ) {
+
+    DeviceOrientationEvent.requestPermission()
+      .then(permissionState => {
+
+        if (permissionState === 'granted') {
+          console.log("方位センサーの使用が許可されました");
+        }
+
+      })
+      .catch(error => {
+        console.log("方位センサーの許可が得られませんでした:", error);
+      });
   }
 }
-
-// === 🆕 ⑫ 注意書きを最後までスクロールしたか監視するシステム ===
+  
+// ====================================================
+// ⑫ 注意書きを最後まで読んだら「同意」ボタンを有効化
+// ====================================================
 document.addEventListener("DOMContentLoaded", function() {
+
   const scrollBox = document.getElementById("safety-scroll");
   const agreeBtn = document.getElementById("agree-button");
 
-  if (scrollBox && agreeBtn) {
-    scrollBox.addEventListener("scroll", function() {
-      // 箱全体の高さから、見えている高さを引いた「最大のスクロール位置」を計算
-      const maxScroll = scrollBox.scrollHeight - scrollBox.clientHeight;
-      
-      // 現在のスクロール位置が、一番下（誤差1ピクセル以内）まで到達したか判定
-      if (scrollBox.scrollTop >= maxScroll - 1) {
-        agreeBtn.disabled = false; // ボタンのロックを解除！
-        agreeBtn.innerText = "上記の内容に同意して旅を始める"; // ボタンの文字を朱色用に変身
-      }
-    });
+  if (!scrollBox || !agreeBtn) {
+    console.error("⚠️ safety-scroll または agree-button が見つかりません");
+    return;
   }
+
+  function checkSafetyScroll() {
+
+    const maxScroll =
+      scrollBox.scrollHeight - scrollBox.clientHeight;
+
+    // 内容が最初から全部表示できる場合
+    // または一番下までスクロールした場合
+    if (
+      maxScroll <= 1 ||
+      scrollBox.scrollTop >= maxScroll - 5
+    ) {
+
+      agreeBtn.disabled = false;
+
+      agreeBtn.innerText =
+        "上記の内容に同意して旅を始める";
+
+      console.log("✅ 同意ボタンを有効にしました");
+    }
+  }
+
+  // スクロールしたとき
+  scrollBox.addEventListener("scroll", checkSafetyScroll);
+
+  // スマホでのタッチ操作対策
+  scrollBox.addEventListener("touchend", checkSafetyScroll);
+
+  // 念のため最初にもチェック
+  checkSafetyScroll();
 });
+
   
 </script>
 </body>
