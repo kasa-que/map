@@ -2004,45 +2004,45 @@ function updateQuestMarkers() {
       return;
     }
 
-const questIcon = L.icon({
-  iconUrl: "quest_pin.png",
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
-  popupAnchor: [0, -42]
-});
+    const questIcon = L.icon({
+      iconUrl: "quest_pin.png",
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+      popupAnchor: [0, -42]
+    });
     
     // ピンを押したときに出る内容
-// 🦊 クエストのクリア状況を確認
-const questClearTime = localStorage.getItem(
-  "quest_clear_time_" + q.id
-);
-const stampImageUrl =
-  q.stampImage ? q.stampImage : "stmpon.png";
-    
-const popupStamp = questClearTime
-  ? `
-    <img
-      src="${stampImageUrl}"
-      alt="クエストクリアスタンプ"
-      style="
-        width: 80px;
-        height: 80px;
-        object-fit: contain;
-        margin-bottom: 5px;
-      "
-    >
-  <div style="
-    font-size: 13px;
-    color: #7f756b;
-    margin-bottom: 8px;
-  ">
-    🎉 クエストクリア！
-    <br>
-    <span style="font-size: 11px;">
-      ${formatJapaneseDateTime(new Date(questClearTime))}
-    </span>
-</div>
-  `
+  // 🦊 クエストのクリア状況を確認
+  const questClearTime = localStorage.getItem(
+    "quest_clear_time_" + q.id
+  );
+  const stampImageUrl =
+    q.stampImage ? q.stampImage : "stmpon.png";
+      
+  const popupStamp = questClearTime
+    ? `
+      <img
+        src="${stampImageUrl}"
+        alt="クエストクリアスタンプ"
+        style="
+          width: 80px;
+          height: 80px;
+          object-fit: contain;
+          margin-bottom: 5px;
+        "
+      >
+    <div style="
+      font-size: 13px;
+      color: #7f756b;
+      margin-bottom: 8px;
+    ">
+      🎉 クエストクリア！
+      <br>
+      <span style="font-size: 11px;">
+        ${formatJapaneseDateTime(new Date(questClearTime))}
+      </span>
+  </div>
+    `
   : `
     <div style="
       font-size: 12px;
@@ -2092,6 +2092,23 @@ const popupStamp = questClearTime
     .bindPopup(popupContent);
 
   });
+  
+  
+   // ==========================================
+  // 🦊 クリア済みクエストだけピンを変更
+  // ==========================================
+  quests.forEach(q => {
+
+    const clearTime = localStorage.getItem(
+      "quest_clear_time_" + q.id
+    );
+
+    if (clearTime) {
+      updateQuestPinImage(q);
+    }
+
+  });
+
 }
 
 
