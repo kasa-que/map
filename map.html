@@ -842,8 +842,8 @@ const quests = [
 
 
     // 🏁 クエスト開始地点
-    startLat: 36.393608,
-    startLng: 140.260021,
+    startLat: 36.393237,
+    startLng: 140.262333,
 
     // 🎯 クエストクリア地点
     clearLat: 36.378247,
@@ -1531,7 +1531,21 @@ function startNewTracking() {
       const uLng = pos.coords.longitude;
       currentLat = uLat;
       currentLng = uLng;
-
+      
+      // ====================================================
+      // 🦊 クエストのクリア地点チェック
+      // ====================================================
+      quests.forEach(q => {
+        // すでにクリアしているクエストはチェックしない
+        if (getQuestClearTime(q.id)) {
+          return;
+        }
+        // クリア地点に到着しているか確認
+        if (checkQuestClear(q)) {
+          console.log("🦊 クエストクリア地点に到着！", q.name);
+        }    
+      });
+      
       // 現在地マーク（青丸）を自動移動
       if (currentLocationMarker) {
         currentLocationMarker.setLatLng([uLat, uLng]);
@@ -2057,7 +2071,10 @@ function checkLocation() {
       // 取得した緯度経度を記憶する
       currentLat = pos.coords.latitude;
       currentLng = pos.coords.longitude;
-
+      
+      // 🆕 現在地チェックでもクエストクリア判定
+      checkQuestClear();
+  
       alert("位置取得成功！"); 
 
       if (currentLocationMarker) {
