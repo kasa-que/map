@@ -425,7 +425,7 @@
     <img src="fox.png" alt="いなきち" style="width: 70px; height: 70px; object-fit: contain; flex-shrink: 0;">
     
   <p id="fox-message" style="margin: 0; color: #332F29;  line-height: 1.4; font-family: 'Yuji Syuku', serif; font-size: 16px; letter-spacing: 0.5px;">
-    地図の中のマークをタッチして行きたいところを探してね！<br/>
+    地図の中の目印をタッチして行きたいところを探してね！<br/>
   </p>
   </div>
   
@@ -1011,7 +1011,7 @@ const CustomFilterControl = L.Control.extend({
     container.innerHTML = `
       <div class="control-icon control-icon-toggle">
         <!-- 💡 閉じている時は、お気に入りのピン画像をメニューの顔にします -->
-        <img src="pin_glay.png" alt="目印" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+        <img src="pin_black.png" alt="目印" style="width: 100%; height: 100%; object-fit: contain; display: block;">
       </div>
       <div class="control-content">
         <h4>目印の切り替え</h4>
@@ -1126,7 +1126,7 @@ const CustomBottomLeftControl = L.Control.extend({
             border:none;
             white-space:nowrap;
           ">
-            📖 スタンプ帳
+            御集印帳
           </h4>
 
           <label>
@@ -1134,7 +1134,7 @@ const CustomBottomLeftControl = L.Control.extend({
               type="radio"
               name="stampbook_opt"
               onclick="handleStampBookRadio('got')">
-            獲得したスタンプ
+            集めた印
           </label>
 
           <label>
@@ -1142,7 +1142,7 @@ const CustomBottomLeftControl = L.Control.extend({
               type="radio"
               name="stampbook_opt"
               onclick="handleStampBookRadio('all')">
-            全てのスタンプ
+            全ての印
           </label>
 
           <label>
@@ -1150,7 +1150,7 @@ const CustomBottomLeftControl = L.Control.extend({
               type="radio"
               name="stampbook_opt"
               onclick="handleStampBookRadio('reset')">
-            🗑️ スタンプ帳をリセット
+            御集印帳をリセット
           </label>
 
         </div>
@@ -1226,7 +1226,7 @@ function handleStampBookRadio(type) {
           "🦊 スタンプ帳をまっさらにしたよ！また集めに行こう！";
       }
 
-      alert("📖 スタンプ帳をリセットしました。");
+      alert("御集印帳をリセットしました。");
 
       // リセット後もスタンプ帳へ
       scrollToStampBook();
@@ -1943,7 +1943,7 @@ function showStamps(mode = 'all') {
 
   // スタンプ帳のタイトル
   div.innerHTML = `
-    <h3>📖 スタンプ帳</h3>
+    <h3>御集印帳</h3>
   `;
 
 
@@ -1952,24 +1952,24 @@ function showStamps(mode = 'all') {
   // ====================================================
   const categories = [
     {
-      prefix: "twn",
-      title: "🏮 町"
+      prefix: "bld",
+      title: "建造物"
     },
     {
       prefix: "dfc",
-      title: "🛡️ 防御施設"
+      title: "防御施設"
+    },
+    {
+      prefix: "twn",
+      title: "町名標示"
     },
     {
       prefix: "now",
-      title: "🏯 現存"
-    },
-    {
-      prefix: "bld",
-      title: "🧱 建物"
+      title: "現存"
     },
     {
       prefix: "rcm",
-      title: "🌟 おすすめ"
+      title: "おすすめ⭐︎"
     }
   ];
 
