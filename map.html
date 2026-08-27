@@ -1016,11 +1016,11 @@ const CustomFilterControl = L.Control.extend({
       <div class="control-content">
         <h4>目印の切り替え</h4>
         <label><input type="radio" name="filter_opt" checked onclick="handleFilterRadio('all')">全て表示</label>
-        <label><input type="radio" name="filter_opt" onclick="handleFilterRadio('dfc')">🥽 防御施設</label>
-        <label><input type="radio" name="filter_opt" onclick="handleFilterRadio('twn')">🏮 町名</label>
-        <label><input type="radio" name="filter_opt" onclick="handleFilterRadio('now')">🏯 現存</label>
-        <label><input type="radio" name="filter_opt" onclick="handleFilterRadio('rcm')">🌟 おすすめ</label>
-        <label><input type="radio" name="filter_opt" onclick="handleFilterRadio('bld')">🧱 建物</label>
+        <label><input type="radio" name="filter_opt" onclick="handleFilterRadio('bld')">建造物</label>
+        <label><input type="radio" name="filter_opt" onclick="handleFilterRadio('dfc')">防御施設</label>
+        <label><input type="radio" name="filter_opt" onclick="handleFilterRadio('twn')">町名標示</label>
+        <label><input type="radio" name="filter_opt" onclick="handleFilterRadio('now')">現存</label>
+        <label><input type="radio" name="filter_opt" onclick="handleFilterRadio('rcm')">おすすめ⭐︎</label>
       </div>
     `;
     setupControlToggle(container);
