@@ -1149,6 +1149,19 @@ const CustomQuestControl = L.Control.extend({
         <h4>🦊 クエスト</h4>
 
         ${questListHTML}
+        
+        <button
+          onclick="resetQuestData()"
+          style="
+            margin-top: 12px;
+            width: 100%;
+            padding: 7px;
+            font-size: 12px;
+            cursor: pointer;
+          "
+        >
+          🔄 クエスト記録をリセット
+        </button>
 
       </div>
     `;
@@ -2865,7 +2878,39 @@ function jumpToQuest(id) {
 
   }, 500);
 }
+function resetQuestData() {
 
+  const ok = confirm(
+    "⚠️ クエストのクリア記録をすべて削除します。\n\n" +
+    "通常のスタンプは消えません。\n\n" +
+    "本当にリセットしますか？"
+  );
+
+  // キャンセルしたら何もしない
+  if (!ok) {
+    return;
+  }
+
+  // クエストのクリア記録だけ削除
+  quests.forEach(q => {
+    localStorage.removeItem("quest_clear_time_" + q.id);
+  });
+
+  alert("🦊 クエストのクリア記録をリセットしました！");
+
+  // 地図上のクエストピンを未クリア状態に戻す
+  Object.values(questMarkers).forEach(marker => {
+    map.removeLayer(marker);
+  });
+
+  questMarkers = {};
+
+  // クエストピンを作り直す
+  updateQuestMarkers();
+
+  // スタンプ帳も更新
+  showStamps();
+}
 
   
 //🍎リセット機能
@@ -3135,8 +3180,8 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 });
-checkQuestClearData();
-resetQuestClearData(); 
+//checkQuestClearData();
+//resetQuestClearData(); 
 </script>
 </body>
 </html>
