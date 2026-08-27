@@ -829,8 +829,7 @@ const quests = [
    // クエストクリア地点
     clearLat: 36.382674,
     clearLng: 140.267445,
-    clearRadius: 50000,
-    stampImage: ""
+    clearRadius: 50000
   },
 
   {
@@ -2119,12 +2118,14 @@ function checkQuestClear() {
   // 🎉 クエストクリア！
   // ==========================================
 
-  const now = new Date();
-
-  // クリア日時を保存
+   const now = new Date();
+localStorage.removeItem("quest_clear_time_quest01");
+  // スタンプと同じ形式でクリア日時を保存
+  const clearTime = formatJapaneseDateTime(now);
+  
   localStorage.setItem(
     "quest_clear_time_" + currentQuest.id,
-    now.toISOString()
+    clearTime
   );
 
   // お狐様メッセージ
