@@ -2262,6 +2262,52 @@ function tryGetStamp(id) {
   }
 }
 
+
+
+// ====================================================
+// 📅 日時を「令和八年八月二十七日 十四時三分」に変換
+// ====================================================
+function formatJapaneseDateTime(date) {
+
+  const kanjiNums = [
+    "零", "一", "二", "三", "四", "五", "六", "七", "八", "九",
+    "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七",
+    "十八", "十九", "二十", "二十一", "二十二", "二十三", "二十四",
+    "二十五", "二十六", "二十七", "二十八", "二十九", "三十", "三十一"
+  ];
+
+  const kanjiMinutes = [
+    "零", "一", "二", "三", "四", "五", "六", "七", "八", "九",
+    "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七",
+    "十八", "十九", "二十", "二十一", "二十二", "二十三", "二十四",
+    "二十五", "二十六", "二十七", "二十八", "二十九", "三十",
+    "三十一", "三十二", "三十三", "三十四", "三十五", "三十六",
+    "三十七", "三十八", "三十九", "四十", "四十一", "四十二",
+    "四十三", "四十四", "四十五", "四十六", "四十七", "四十八",
+    "四十九", "五十", "五十一", "五十二", "五十三", "五十四",
+    "五十五", "五十六", "五十七", "五十八", "五十九"
+  ];
+
+  const reiwaYear = date.getFullYear() - 2018;
+
+  const kanjiYear = kanjiNums[reiwaYear];
+  const kanjiMonth = kanjiNums[date.getMonth() + 1];
+  const kanjiDay = kanjiNums[date.getDate()];
+  const kanjiHour = kanjiNums[date.getHours()];
+  const kanjiMin = kanjiMinutes[date.getMinutes()];
+
+  return (
+    "令和" +
+    kanjiYear + "年" +
+    kanjiMonth + "月" +
+    kanjiDay + "日 " +
+    kanjiHour + "時" +
+    kanjiMin + "分"
+  );
+}
+
+
+  
 // 実際に距離を測ってスタンプを付与する共通の処理
 function processStampVerification(s) {
   if (isNear(currentLat, currentLng, s.lat, s.lng, s.radius)) {
@@ -2271,29 +2317,10 @@ function processStampVerification(s) {
     //const timeStr = now.getFullYear() + "/" + String(now.getMonth() + 1).padStart(2, '0') + "/" + String(now.getDate()).padStart(2, '0') + " " + String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
 
     const now = new Date();
-    // 漢数字に変換するための配列
-    const kanjiNums = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十", "二十一", "二十二", "二十三", "二十四", "二十五", "二十六", "二十七", "二十八", "二十九", "三十", "三十一"];
-    const kanjiMinutes = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十", "二十一", "二十二", "二十三", "二十四", "二十五", "二十六", "二十七", "二十八", "二十九", "三十", "三十一", "三十二", "三十三", "三十四", "三十五", "三十六", "三十七", "三十八", "三十九", "四十", "四十一", "四十二", "四十三", "四十四", "四十五", "四十六", "四十七", "四十八", "四十九", "五十", "五十一", "五十二", "五十三", "五十四", "五十五", "五十六", "五十七", "五十八", "五十九"];
-    // 西暦2026年は「令和八年」になります
-    const reiwaYear = "令和八年";
-    const kanjiMonth = kanjiNums[now.getMonth() + 1] + "月";
-    const kanjiDay = kanjiNums[now.getDate()] + "日";
-    const kanjiHour = kanjiNums[now.getHours()] + "時";
-    const kanjiMin = kanjiMinutes[now.getMinutes()] + "分";
-    // すべてを美しく結合します（例：令和八年八月十四日 十八時四分）
-    const timeStr = reiwaYear + kanjiMonth + kanjiDay + " " + kanjiHour + kanjiMin;
+    const timeStr = formatJapaneseDateTime(now);    
+
     localStorage.setItem("stamp_time_" + s.id, timeStr);
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    localStorage.setItem("stamp_time_" + s.id, timeStr); // ブラウザに「stamp_time_スポットID」で保存
-    
+          
     alert("🎉 スタンプGET！：" + s.name);
     
     updateMapMarkers(); // マーカーのイラストを緑に変える
