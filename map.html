@@ -439,7 +439,12 @@ let currentLocationMarker = null;
 let currentLat = 36.385662; // 最後に取得した現在地の緯度
 let currentLng = 140.254050; // 最後に取得した現在地の経度
 const markers = {};    // 各スポットのマーカーを管理する箱
+// ====================================================
+// 🦊 クエスト用マーカーを入れておく箱
+// ====================================================
+const questMarkers = {};
 
+  
 // === 史跡データ ===
 const spots = [
   {
@@ -826,21 +831,22 @@ const quests = [
   {
     id: "quest02",
 
-    name: "大手門を探せ！",
+    name: "蒲生用水をたどれ！",
 
-    info: "古地図をヒントに、大手門があった場所を探してみよう！",
+    info: "蒲生用水の取水口を探してから、桜町時習館の堀まで蒲生用水をたどってみよう！",
+
 
     // 🏁 クエスト開始地点
-    startLat: 36.384800,
-    startLng: 140.264200,
+    startLat: 36.393608,
+    startLng: 140.260021,
 
     // 🎯 クエストクリア地点
-    clearLat: 36.384100,
-    clearLng: 140.264900,
+    clearLat: 36.378247,
+    clearLng: 140.253383,
 
     clearRadius: 30,
 
-    stampImage: "quest02_stamp.png"
+    stampImage: "qst02_cl.png"
   }
 
 ];
