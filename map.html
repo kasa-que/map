@@ -2056,11 +2056,11 @@ function updateQuestMarkers() {
 
   quests.forEach(q => {
 
-    // すでにピンがあれば作らない
+   // すでにピンがあれば、内容だけ最新状態に更新
     if (questMarkers[q.id]) {
+      updateQuestPopup(q);
       return;
     }
-
     const questIcon = L.icon({
       iconUrl: "quest_pin.png",
       iconSize: [40, 40],
@@ -2170,7 +2170,7 @@ function updateQuestMarkers() {
 
 
 
-//クエストマーカーだいり
+//クエストマーカー
 function updateQuestPopup(q) {
 
   if (!questMarkers[q.id]) {
