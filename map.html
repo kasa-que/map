@@ -1174,14 +1174,22 @@ function handleStampBookRadio(type) {
   // 獲得したスタンプだけ表示
   // --------------------------------
   if (type === 'got') {
+
     showStamps('got');
+
+    // スタンプ帳までスクロール
+    scrollToStampBook();
   }
 
   // --------------------------------
   // 全てのスタンプを表示
   // --------------------------------
   else if (type === 'all') {
+
     showStamps('all');
+
+    // スタンプ帳までスクロール
+    scrollToStampBook();
   }
 
   // --------------------------------
@@ -1189,7 +1197,6 @@ function handleStampBookRadio(type) {
   // --------------------------------
   else if (type === 'reset') {
 
-    // まず本当にいいの？確認
     const answer = confirm(
       "🦊 本当にいいの？\n\n" +
       "これまでに集めたスタンプが\n" +
@@ -1208,29 +1215,36 @@ function handleStampBookRadio(type) {
       // 地図のピンを更新
       updateMapMarkers();
 
-      // スタンプ帳も更新
+      // スタンプ帳を「全て」に戻す
       showStamps('all');
 
       // お狐様メッセージ
       const foxMsg = document.getElementById('fox-message');
+
       if (foxMsg) {
-        foxMsg.innerHTML = "🦊 スタンプ帳をまっさらにしたよ！また集めに行こう！";
+        foxMsg.innerHTML =
+          "🦊 スタンプ帳をまっさらにしたよ！また集めに行こう！";
       }
 
       alert("📖 スタンプ帳をリセットしました。");
 
+      // リセット後もスタンプ帳へ
+      scrollToStampBook();
+
     } else {
 
-      // 「いいえ」だった場合
       const foxMsg = document.getElementById('fox-message');
 
       if (foxMsg) {
-        foxMsg.innerHTML = "🦊 ほっ……スタンプはちゃんと残っているよ！";
+        foxMsg.innerHTML =
+          "🦊 ほっ……スタンプはちゃんと残っているよ！";
       }
     }
   }
 
-  // 選択後はパネルを閉じる
+  // --------------------------------
+  // パネルを閉じる
+  // --------------------------------
   const panels = document.querySelectorAll('.custom-map-control');
 
   panels.forEach(panel => {
@@ -1239,6 +1253,27 @@ function handleStampBookRadio(type) {
   });
 }
 
+
+// ====================================================
+// 📖 スタンプ帳まで自動スクロール
+// ====================================================
+function scrollToStampBook() {
+
+  const stampBook = document.getElementById("stamps");
+
+  if (!stampBook) return;
+
+  // 少し待ってからスクロール
+  // → showStamps() で内容を書き換えたあとに確実に移動するため
+  setTimeout(() => {
+
+    stampBook.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+  }, 100);
+}
   
   
 /////////
@@ -2076,8 +2111,9 @@ function jumpToSpot(id) {
   if (mapElement) {
     mapElement.scrollIntoView({
       behavior: "smooth",
-      block: "start"
-    });
+      //block: "start"
+   block: "center"
+   });
   }
 
   // --------------------------------
