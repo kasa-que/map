@@ -2040,23 +2040,27 @@ function isNear(lat1, lng1, lat2, lng2, radius) {
 // ====================================================
 // 🦊 クエストのクリア地点に到着したか判定
 // ====================================================
-function checkQuestClear(q) {
+function checkQuestClear() {
+
+  // 現在クエストが選ばれていなければ何もしない
+  if (!currentQuest) {
+    return false;
+  }
 
   // 現在地がまだ取得できていなければ何もしない
   if (currentLat === null || currentLng === null) {
     return false;
   }
 
-  // 現在地とクリア地点の距離をチェック
+  // 現在地と、現在選択中のクエストのクリア地点をチェック
   return isNear(
     currentLat,
     currentLng,
-    q.clearLat,
-    q.clearLng,
-    q.clearRadius
+    currentQuest.clearLat,
+    currentQuest.clearLng,
+    currentQuest.clearRadius
   );
 }
-
 
   
 // === 📍 現在地をチェック（位置表示のみに変更） ===
