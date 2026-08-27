@@ -829,7 +829,7 @@ const quests = [
    // クエストクリア地点
     clearLat: 36.382674,
     clearLng: 140.267445,
-    clearRadius: 50000
+    clearRadius: 30
   },
 
   {
@@ -848,7 +848,7 @@ const quests = [
     clearLat: 36.378247,
     clearLng: 140.253383,
 
-    clearRadius: 30,
+    clearRadius: 50000,
 
     stampImage: "qst02_cl.png"
   }
@@ -2119,7 +2119,6 @@ function checkQuestClear() {
   // ==========================================
 
    const now = new Date();
-localStorage.removeItem("quest_clear_time_quest01");
   // スタンプと同じ形式でクリア日時を保存
   const clearTime = formatJapaneseDateTime(now);
   
