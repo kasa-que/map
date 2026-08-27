@@ -2176,7 +2176,27 @@ function updateQuestPopup(q) {
   // ポップアップの中身だけ更新
   questMarkers[q.id].setPopupContent(popupContent);
 }
-//++
+function updateQuestPinImage(q) {
+
+  // クエストピンが存在しなければ何もしない
+  if (!questMarkers[q.id]) {
+    return;
+  }
+
+  // クリア済みクエスト用のピン
+  const questClearIcon = L.icon({
+    iconUrl: "quest_clear_pin.png",
+    iconSize: L.point(40, 40),
+    iconAnchor: L.point(20, 40),
+    popupAnchor: L.point(0, -42)
+  });
+
+  // 既存のクエストピンの画像だけ変更
+  if (typeof questMarkers[q.id].setIcon === "function") {
+    questMarkers[q.id].setIcon(questClearIcon);
+  }
+}
+
   
   
 // === 🆕 「行きたい」ボタンが押された時のオンオフ処理 ===
@@ -2274,7 +2294,7 @@ function checkQuestClear() {
   showStamps(); 
 
   updateQuestPopup(currentQuest);
-  //++updateQuestPinImage(currentQuest);
+  updateQuestPinImage(currentQuest);
   
   // 🆕 更新されたピンのポップアップを開く
   setTimeout(() => {
