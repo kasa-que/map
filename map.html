@@ -1187,6 +1187,7 @@ function handleQuestRadio(id) {
   if (!q) return;
   // 🆕 現在選択中のクエストを記憶
   currentQuest = q;
+  updateQuestMarkers();
 
   // クエストの開始地点へ移動
   map.setView(
