@@ -1967,11 +1967,13 @@ function updateQuestMarkers() {
 const questClearTime = localStorage.getItem(
   "quest_clear_time_" + q.id
 );
-
+const stampImageUrl =
+  q.stampImage ? q.stampImage : "stmpon.png";
+    
 const popupStamp = questClearTime
   ? `
     <img
-      src="${q.stampImage}"
+      src="${stampImageUrl}"
       alt="クエストクリアスタンプ"
       style="
         width: 80px;
@@ -1988,9 +1990,9 @@ const popupStamp = questClearTime
     🎉 クエストクリア！
     <br>
     <span style="font-size: 11px;">
-      ${new Date(questClearTime).toLocaleString("ja-JP")}
+      ${formatJapaneseDateTime(new Date(questClearTime))}
     </span>
-  </div>
+</div>
   `
   : `
     <div style="
@@ -2118,15 +2120,14 @@ function checkQuestClear() {
   // 🎉 クエストクリア！
   // ==========================================
 
-   const now = new Date();
-  // スタンプと同じ形式でクリア日時を保存
-  const clearTime = formatJapaneseDateTime(now);
+  const now = new Date();
   
+  // クリア日時はISO形式で保存
   localStorage.setItem(
     "quest_clear_time_" + currentQuest.id,
-    clearTime
+    now.toISOString()
   );
-
+  
   // お狐様メッセージ
   const foxMsg = document.getElementById('fox-message');
 
