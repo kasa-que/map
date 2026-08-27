@@ -1130,6 +1130,21 @@ const CustomQuestControl = L.Control.extend({
       `;
     });
 
+
+    // 🗑️ クエストのクリア記録をリセット
+    questListHTML += `
+      <label>
+        <input
+          type="radio"
+          name="quest_opt"
+          onclick="resetQuestData()"
+        >
+        クエストをリセット
+      </label>
+    `;
+
+    
+
     container.innerHTML = `
       <div class="control-icon control-icon-toggle">
         <img
