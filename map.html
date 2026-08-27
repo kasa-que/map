@@ -2159,7 +2159,20 @@ function resetQuestClearData() {
   });
   alert("🦊 クエストのクリア記録だけリセットしました！");
 }
+function checkQuestClearData() {
 
+  let result = "";
+
+  quests.forEach(q => {
+
+    const key = "quest_clear_time_" + q.id;
+    const value = localStorage.getItem(key);
+
+    result += q.id + " : " + (value || "なし") + "\n";
+  });
+
+  alert(result);
+}
 
 
 
@@ -2908,6 +2921,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 });
+checkQuestClearData();
  resetQuestClearData(); 
 </script>
 </body>
