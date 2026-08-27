@@ -1162,7 +1162,22 @@ map.addControl(new CustomQuestControl());
 // 🦊 クエスト選択時の処理
 // ====================================================
 function handleQuestRadio(id) {
+  // 「クエストが選択されていません」を選んだ場合
+  if (!id) {
+    currentQuest = null;
 
+    const foxMsg = document.getElementById('fox-message');
+
+    if (foxMsg) {
+      foxMsg.innerHTML =
+        "🦊 クエストを選んで、冒険を始めよう！";
+    }
+
+    return;
+  }
+
+
+  
   // 選ばれたクエストを探す
   const q = quests.find(quest => quest.id === id);
 
@@ -1189,6 +1204,8 @@ function handleQuestRadio(id) {
       `クエスト「${q.name}」のスタート地点だよ！足跡をつけるか、達成したら現在地を確認してね！`;
   }
 
+
+  
   // クエストパネルを閉じる
   const panels = document.querySelectorAll('.custom-map-control');
 
