@@ -1974,15 +1974,13 @@ function updateMapMarkers() {
 // 🦊 クエストマーカーを表示
 // ====================================================
 function updateQuestMarkers() {
-  Object.values(questMarkers).forEach(marker => {
-    map.removeLayer(marker);
-  });
-  
-  questMarkers = {};
-
 
   quests.forEach(q => {
 
+    // すでにピンがあれば作らない
+    if (questMarkers[q.id]) {
+      return;
+    }
 
     // クエスト用ピン
     const questIcon = L.icon({
@@ -2956,8 +2954,8 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 });
-checkQuestClearData();
-resetQuestClearData(); 
+//checkQuestClearData();
+//resetQuestClearData(); 
 </script>
 </body>
 </html>
