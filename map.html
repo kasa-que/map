@@ -358,6 +358,19 @@
   }
 }
     
+.stamp-item {
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.15s;
+}
+
+.stamp-item:hover {
+  background-color: rgba(127, 117, 107, 0.08);
+}
+
+.stamp-item:active {
+  transform: scale(0.96);
+}
+
     
   </style>
 </head>
@@ -2004,7 +2017,7 @@ function showStamps(mode = 'all') {
       // グリッドの1マス
       // ----------------------------------------------
       grid.innerHTML += `
-        <div class="stamp-item">
+        <div class="stamp-item" onclick="jumpToSpot('${s.id}')">
 
           <img
             src="${stampImageUrl}"
@@ -2023,7 +2036,51 @@ function showStamps(mode = 'all') {
 
   });
 } 
-  
+// ====================================================
+// 📖 スタンプ帳から地図のスポットへジャンプ
+// ====================================================
+function jumpToSpot(id) {
+
+  // 対象スポットを探す
+  const s = spots.find(spot => spot.id === id);
+
+  if (!s) return;
+
+  // --------------------------------
+  // ① 目印フィルターを「全て表示」に戻す
+  // --------------------------------
+  currentDisplayGroup = "all";
+
+  // ラジオボタンの「全て表示」もチェックする
+  const allFilter = document.querySelector(
+    'input[name="filter_opt"][onclick="handleFilterRadio(\'all\')"]'
+  );
+
+  if (allFilter) {
+    allFilter.checked = true;
+  }
+
+  // 地図上のピンを全部表示
+  updateMapMarkers();
+
+  // --------------------------------
+  // ② 地図をその場所へ移動
+  // --------------------------------
+  map.setView([s.lat, s.lng], 18, {
+    animate: true
+  });
+
+  // --------------------------------
+  // ③ 少し待ってからピンの吹き出しを開く
+  // --------------------------------
+  setTimeout(() => {
+
+    if (markers[s.id]) {
+      markers[s.id].openPopup();
+    }
+
+  }, 500);
+}  
   
 //🍎リセット機能
 function resetStamps() {
