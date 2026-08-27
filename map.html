@@ -1181,17 +1181,18 @@ function updateMapMarkers() {
 
     // 🆕 【ここを追記！】選ばれたグループ以外のピンを自動で隠す（消去する）システム
     // s.idの頭文字が、現在選ばれているグループ名と一致しているかチェックします
-    const idStr = s.id ? String(s.id) : "";
-    const isMatched = (currentDisplayGroup === "all") || idStr.startsWith(currentDisplayGroup);
-
     if (!isMatched) {
-      // 💡 もし選ばれていないグループのスポットなら、すでに地図にいるマークを一度消去して、次のスポットへジャンプします！
+      // 💡 ルールに合わないピンは、地図から一時的に外します（記憶は残したまま）
       if (markers[s.id]) {
         map.removeLayer(markers[s.id]);
       }
-      return; // これでこれ以降の描画処理をスキップして非表示にします
+      return; 
+    } else {
+      // 🆕 【ここを追加！】ルールに合致したピンが、もし過去に非表示にされていたら地図に貼り直します！
+      if (markers[s.id] && !map.hasLayer(markers[s.id])) {
+        markers[s.id].addTo(map);
+      }
     }
-
 
 
     
