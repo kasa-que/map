@@ -2183,17 +2183,19 @@ function updateQuestPinImage(q) {
     return;
   }
 
-  // クリア済みピンに変更
-  const clearIcon = L.icon({
-    iconUrl: "quest_clear_pin.png?v=" + Date.now(),
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-    popupAnchor: [0, -42]
+  // クリア済みクエスト用のピン
+  const questClearIcon = L.icon({
+    iconUrl: "quest_clear_pin.png",
+    iconSize: L.point(40, 40),
+    iconAnchor: L.point(20, 40),
+    popupAnchor: L.point(0, -42)
   });
 
-  questMarkers[q.id].setIcon(clearIcon);
+  // 既存のクエストピンの画像だけ変更
+  if (typeof questMarkers[q.id].setIcon === "function") {
+    questMarkers[q.id].setIcon(questClearIcon);
+  }
 }
-
 
   
   
