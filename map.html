@@ -312,7 +312,21 @@
   line-height: 1.3;
   text-align: center;
 }
+.stamp-category-title {
+  margin: 18px 0 6px;
+  padding: 6px 8px;
 
+  font-size: 16px;
+  font-weight: bold;
+
+  border-bottom: 2px solid #c8beb1;
+  color: #5f574f;
+}
+
+/* 最初の分類だけ少し上の余白を小さく */
+.stamp-category-title:first-of-type {
+  margin-top: 8px;
+}
 
 /* -----------------------------
    スマホ：3列
@@ -1879,57 +1893,133 @@ function showStamps(mode = 'all') {
 
   const div = document.getElementById("stamps");
 
-  // グリッドを作る
+  // スタンプ帳のタイトル
   div.innerHTML = `
     <h3>📖 スタンプ帳</h3>
-    <div class="stamp-grid"></div>
   `;
 
-  const grid = div.querySelector(".stamp-grid");
 
-  spots.forEach(s => {
+  // ====================================================
+  // 分類ごとの設定
+  // ====================================================
+  const categories = [
+    {
+      prefix: "twn",
+      title: "🏮 町"
+    },
+    {
+      prefix: "dfc",
+      title: "🛡️ 防御施設"
+    },
+    {
+      prefix: "now",
+      title: "🏯 現存"
+    },
+    {
+      prefix: "bld",
+      title: "🧱 建物"
+    },
+    {
+      prefix: "rcm",
+      title: "🌟 おすすめ"
+    }
+  ];
 
-    const got = localStorage.getItem("stamp_" + s.id);
 
-    // ==========================================
-    // 「獲得したスタンプ」を選んだ場合
-    // 未獲得のものはグリッドに入れない
-    // ==========================================
-    if (mode === 'got' && !got) {
+  // ====================================================
+  // 分類ごとに表示
+  // ====================================================
+  categories.forEach(category => {
+
+    // この分類に属するスポットだけ取り出す
+    const categorySpots = spots.filter(s =>
+      s.id && s.id.startsWith(category.prefix)
+    );
+
+    // 「獲得したスタンプ」の場合は、
+    // 獲得済みだけに絞り込む
+    const displaySpots = categorySpots.filter(s => {
+
+      const got = localStorage.getItem("stamp_" + s.id);
+
+      if (mode === "got") {
+        return got;
+      }
+
+      return true;
+    });
+
+
+    // この分類に表示するものが1つもなければ、
+    // 見出し自体を表示しない
+    if (displaySpots.length === 0) {
       return;
     }
 
-    // ==========================================
-    // スタンプ画像を決める
-    // ==========================================
-    let stampImageUrl;
 
-    if (got) {
-      // 獲得済み → その場所の獲得済みスタンプ
-      stampImageUrl = s.imgOn ? s.imgOn : "stmpon.png";
-    } else {
-      // 未獲得 → まだのスタンプ
-      stampImageUrl = s.imgOf ? s.imgOf : "stmpof.png";
-    }
+    // ==================================================
+    // 分類タイトル
+    // ==================================================
+    div.innerHTML += `
+      <h4 class="stamp-category-title">
+        ${category.title}
+      </h4>
+    `;
 
-    // ==========================================
-    // グリッドの1マス
-    // ==========================================
-    grid.innerHTML += `
-      <div class="stamp-item">
 
-        <img
-          src="${stampImageUrl}"
-          alt="スタンプ"
-          class="stamp-image"
-        >
-
-        <div class="stamp-name">
-          ${s.name}
-        </div>
-
+    // ==================================================
+    // この分類専用のグリッド
+    // ==================================================
+    div.innerHTML += `
+      <div class="stamp-grid" id="stamp-grid-${category.prefix}">
       </div>
     `;
+
+    const grid = document.getElementById(
+      "stamp-grid-" + category.prefix
+    );
+
+
+    // ==================================================
+    // スタンプを1個ずつ配置
+    // ==================================================
+    displaySpots.forEach(s => {
+
+      const got = localStorage.getItem("stamp_" + s.id);
+
+
+      // ----------------------------------------------
+      // スタンプ画像
+      // ----------------------------------------------
+      let stampImageUrl;
+
+      if (got) {
+        stampImageUrl = s.imgOn ? s.imgOn : "stmpon.png";
+      } else {
+        stampImageUrl = s.imgOf ? s.imgOf : "stmpof.png";
+      }
+
+
+      // ----------------------------------------------
+      // グリッドの1マス
+      // ----------------------------------------------
+      grid.innerHTML += `
+        <div class="stamp-item">
+
+          <img
+            src="${stampImageUrl}"
+            alt="スタンプ"
+            class="stamp-image"
+          >
+
+          <div class="stamp-name">
+            ${s.name}
+          </div>
+
+        </div>
+      `;
+
+    });
 
   });
 } 
