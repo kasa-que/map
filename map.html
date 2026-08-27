@@ -2782,6 +2782,62 @@ function jumpToSpot(id) {
 
   }, 500);
 }  
+
+
+function jumpToQuest(id) {
+
+  // 対象クエストを探す
+  const q = quests.find(quest => quest.id === id);
+
+  if (!q) return;
+
+  // --------------------------------
+  // ① このクエストを現在選択中にする
+  // --------------------------------
+  currentQuest = q;
+
+  // クエストのラジオボタンも選択状態にする
+  const questRadio = document.querySelector(
+    'input[name="quest_opt"][onclick="handleQuestRadio(\'' + q.id + '\')"]'
+  );
+
+  if (questRadio) {
+    questRadio.checked = true;
+  }
+
+  // --------------------------------
+  // ② 地図をスタート地点へ移動
+  // --------------------------------
+  map.setView([q.startLat, q.startLng], 17, {
+    animate: true
+  });
+
+  // --------------------------------
+  // ③ ページを地図まで自動スクロール
+  // --------------------------------
+  const mapElement = document.getElementById("map");
+
+  if (mapElement) {
+    mapElement.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+  }
+
+  // --------------------------------
+  // ④ 少し待ってからクエストの吹き出しを開く
+  // --------------------------------
+  setTimeout(() => {
+
+    if (questMarkers[q.id]) {
+      questMarkers[q.id].openPopup();
+    }
+
+  }, 500);
+}
+
+
+  
 //🍎リセット機能
 function resetStamps() {
   if (confirm("スタンプと歩いた足跡、行きたい場所をすべて消去しますか？")) {
