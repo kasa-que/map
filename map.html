@@ -2080,8 +2080,18 @@ function checkLocation() {
       
       // 🆕 現在地チェックでもクエストクリア判定
       if (checkQuestClear()) {
+      
+        // クリアした日時を記録
+        const clearTime = new Date().toISOString();
+      
+        localStorage.setItem(
+          "quest_clear_time_" + currentQuest.id,
+          clearTime
+        );
+      
         alert("🎉 クエストクリア！");
-      }  
+      
+      }
       alert("位置取得成功！"); 
 
       if (currentLocationMarker) {
