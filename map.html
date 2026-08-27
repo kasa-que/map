@@ -2453,57 +2453,80 @@ function showStamps(mode = 'all') {
   // 🦊 クエスト
   // ====================================================
 
-  // クエストが存在する場合だけ表示
-  if (quests && quests.length > 0) {
+// ====================================================
+// 🦊 クエスト
+// ====================================================
 
-    div.innerHTML += `
-      <h4 class="stamp-category-title">
-        クエスト
-      </h4>
-    `;
+// 「獲得したスタンプ」の場合は、クリア済みだけ表示
+const displayQuests = quests.filter(q => {
 
-    div.innerHTML += `
-      <div class="stamp-grid" id="stamp-grid-quest">
+  const clearTime = localStorage.getItem(
+    "quest_clear_time_" + q.id
+  );
+
+  if (mode === "got") {
+    return clearTime;
+  }
+
+  return true;
+});
+
+
+// 表示するクエストがある場合だけ表示
+if (displayQuests.length > 0) {
+
+  div.innerHTML += `
+    <h4 class="stamp-category-title">
+      クエスト
+    </h4>
+  `;
+
+  div.innerHTML += `
+    <div class="stamp-grid" id="stamp-grid-quest">
+    </div>
+  `;
+
+  const questGrid =
+    document.getElementById("stamp-grid-quest");
+
+
+  // 表示対象のクエストを1個ずつ配置
+  displayQuests.forEach(q => {
+
+    // クリア日時が保存されているか確認
+    const clearTime = localStorage.getItem(
+      "quest_clear_time_" + q.id
+    );
+
+
+    // クリア済みなら専用スタンプ
+    // 未クリアなら「まだ」の画像
+    const stampImageUrl = clearTime
+      ? q.stampImage
+      : "stmpof.png";
+
+
+    questGrid.innerHTML += `
+      <div
+        class="stamp-item"
+        onclick="jumpToQuest('${q.id}')"
+      >
+
+        <img
+          src="${stampImageUrl}"
+          alt="クエスト"
+          class="stamp-image"
+        >
+
+        <div class="stamp-name">
+          ${q.name}
+        </div>
+
       </div>
     `;
 
-    const questGrid = document.getElementById("stamp-grid-quest");
-
-
-    // クエストを1個ずつ配置
-    quests.forEach(q => {
-
-      // クリア日時が保存されているか確認
-      const clearTime = localStorage.getItem(
-        "quest_clear_time_" + q.id
-      );
-
-      // クリア済みなら専用スタンプ
-      // 未クリアなら「まだ」の画像
-      const stampImageUrl = clearTime
-        ? q.stampImage
-        : "stmpof.png";
-
-
-      questGrid.innerHTML += `
-        <div class="stamp-item" onclick="jumpToQuest('${q.id}')">
-
-          <img
-            src="${stampImageUrl}"
-            alt="クエスト"
-            class="stamp-image"
-          >
-
-          <div class="stamp-name">
-            ${q.name}
-          </div>
-
-        </div>
-      `;
-
-    });
-  }
-
+  });
+}
 
 
 
