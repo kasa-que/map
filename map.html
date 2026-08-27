@@ -816,7 +816,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
 
 
 
-
+let currentQuest = null;
 const quests = [
 
   {
@@ -1157,6 +1157,8 @@ function handleQuestRadio(id) {
   const q = quests.find(quest => quest.id === id);
 
   if (!q) return;
+  // 🆕 現在選択中のクエストを記憶
+  currentQuest = q;
 
   // クエストの開始地点へ移動
   map.setView(
