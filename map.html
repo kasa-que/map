@@ -1204,13 +1204,23 @@ function handleQuestRadio(id) {
       `クエスト「${q.name}」のスタート地点だよ！足跡をつけるか、達成したら現在`;
   }
 
-  alert(
-    "🦊 クエスト開始！\n\n" +
-    "「" + q.name + "」\n\n" +
-    "足跡をつけながら進むか、\n" +
-    "達成したら「現在地」を確認してね。"
+  // クエストをすでにクリアしているか確認
+  const questClearTime = localStorage.getItem(
+    "quest_clear_time_" + q.id
   );
   
+  // 未クリアなら「クエスト開始！」を表示
+  if (!questClearTime) {
+  
+    alert(
+      "🦊 クエスト開始！\n\n" +
+      "「" + q.name + "」\n\n" +
+      "さあ、冒険の始まりだよ！\n\n" +
+      "足跡をつけながら進むか、\n" +
+      "達成したら「現在地」を確認してね。"
+    );
+  
+  }  
 
 
   
