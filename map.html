@@ -1032,6 +1032,31 @@ function handleLayerRadio(type) {
   
 }
 
+  
+// === ② 自作「足跡の記録四角パネル」（画像版） ===
+const CustomTrackControl = L.Control.extend({
+  options: { position: 'topright' },
+  onAdd: function () {
+    const container = L.DomUtil.create('div');
+    container.innerHTML = `
+      <!-- 💡 ここにも class="control-icon-toggle" を追加して、開いた時に画像を消します -->
+      <div class="control-icon control-icon-toggle" id="track-icon-status">
+        <img src="icon_track.png" alt="足跡" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+      </div>
+      <div class="control-content">
+        <h4>足跡の記録</h4>
+        <label><input type="radio" name="track_opt" id="opt_start" onclick="handleTrackRadio('start')">足跡つけはじめる</label>
+        <label><input type="radio" name="track_opt" id="opt_pause" onclick="handleTrackRadio('pause')">足跡ひとやすみ</label>
+        <label><input type="radio" name="track_opt" id="opt_stop" checked onclick="handleTrackRadio('stop')">足跡を消す</label>
+      </div>
+    `;
+    setupControlToggle(container);
+    return container;
+  }
+});
+map.addControl(new CustomTrackControl());
+  
+
 
 
 
@@ -1063,35 +1088,6 @@ const CustomFilterControl = L.Control.extend({
   }
 });
 map.addControl(new CustomFilterControl());
-
-  
-// === ② 自作「足跡の記録四角パネル」（画像版） ===
-const CustomTrackControl = L.Control.extend({
-  options: { position: 'topright' },
-  onAdd: function () {
-    const container = L.DomUtil.create('div');
-    container.innerHTML = `
-      <!-- 💡 ここにも class="control-icon-toggle" を追加して、開いた時に画像を消します -->
-      <div class="control-icon control-icon-toggle" id="track-icon-status">
-        <img src="icon_track.png" alt="足跡" style="width: 100%; height: 100%; object-fit: contain; display: block;">
-      </div>
-      <div class="control-content">
-        <h4>足跡の記録</h4>
-        <label><input type="radio" name="track_opt" id="opt_start" onclick="handleTrackRadio('start')">足跡つけはじめる</label>
-        <label><input type="radio" name="track_opt" id="opt_pause" onclick="handleTrackRadio('pause')">足跡ひとやすみ</label>
-        <label><input type="radio" name="track_opt" id="opt_stop" checked onclick="handleTrackRadio('stop')">足跡を消す</label>
-      </div>
-    `;
-    setupControlToggle(container);
-    return container;
-  }
-});
-map.addControl(new CustomTrackControl());
-  
-
-
-
-
 
 
 // ====================================================
@@ -1134,7 +1130,7 @@ const CustomQuestControl = L.Control.extend({
     container.innerHTML = `
       <div class="control-icon control-icon-toggle">
         <img
-          src="quest_menu.png"
+          src="quest_pin.png"
           alt="クエスト"
           style="
             width:100%;
@@ -2005,20 +2001,13 @@ function updateQuestMarkers() {
     }
 
     // クエスト用ピン
-    // 🦊 クエストのクリア状況を確認
-    const questClearTime = localStorage.getItem(
-      "quest_clear_time_" + q.id
-    );
-    
-    // 未クリア / クリア済みでピンを切り替え
     const questIcon = L.icon({
-      iconUrl: questClearTime
-        ? "quest_clear_pin.png"
-        : "quest_pin.png",
+      iconUrl: "quest_pin.png",
       iconSize: [40, 40],
       iconAnchor: [20, 40],
       popupAnchor: [0, -42]
     });
+
     // ピンを押したときに出る内容
 // 🦊 クエストのクリア状況を確認
 const questClearTime = localStorage.getItem(
@@ -2186,24 +2175,7 @@ function updateQuestPopup(q) {
   // ポップアップの中身だけ更新
   questMarkers[q.id].setPopupContent(popupContent);
 }
-function updateQuestPin(q) {
 
-  // クエストのピンが存在しなければ何もしない
-  if (!questMarkers[q.id]) {
-    return;
-  }
-
-  // クリア済みピンの画像
-  const clearIcon = L.icon({
-    iconUrl: "quest_clear_pin.png",
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-    popupAnchor: [0, -42]
-  });
-
-  // ピンの画像だけ変更
-  questMarkers[q.id].setIcon(clearIcon);
-}
 
 
   
@@ -2303,7 +2275,6 @@ function checkQuestClear() {
   showStamps(); 
 
   updateQuestPopup(currentQuest);
-  updateQuestPin(currentQuest);
   
   // 🆕 更新されたピンのポップアップを開く
   setTimeout(() => {
