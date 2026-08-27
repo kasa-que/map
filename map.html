@@ -2051,7 +2051,6 @@ function jumpToSpot(id) {
   // --------------------------------
   currentDisplayGroup = "all";
 
-  // ラジオボタンの「全て表示」もチェックする
   const allFilter = document.querySelector(
     'input[name="filter_opt"][onclick="handleFilterRadio(\'all\')"]'
   );
@@ -2060,7 +2059,6 @@ function jumpToSpot(id) {
     allFilter.checked = true;
   }
 
-  // 地図上のピンを全部表示
   updateMapMarkers();
 
   // --------------------------------
@@ -2071,7 +2069,19 @@ function jumpToSpot(id) {
   });
 
   // --------------------------------
-  // ③ 少し待ってからピンの吹き出しを開く
+  // ③ ページを地図まで自動スクロール
+  // --------------------------------
+  const mapElement = document.getElementById("map");
+
+  if (mapElement) {
+    mapElement.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+
+  // --------------------------------
+  // ④ 少し待ってからピンの吹き出しを開く
   // --------------------------------
   setTimeout(() => {
 
@@ -2081,7 +2091,6 @@ function jumpToSpot(id) {
 
   }, 500);
 }  
-  
 //🍎リセット機能
 function resetStamps() {
   if (confirm("スタンプと歩いた足跡、行きたい場所をすべて消去しますか？")) {
