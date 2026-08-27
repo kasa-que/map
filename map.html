@@ -2003,21 +2003,12 @@ function updateQuestMarkers() {
       return;
     }
 
-    // 🦊 クエストのクリア状況を確認
-    const questClearTime = localStorage.getItem(
-      "quest_clear_time_" + q.id
-    );
-    
-    // 未クリア / クリア済みでピンを切り替え
-    const questIcon = L.icon({
-      iconUrl: questClearTime
-        ? "quest_clear_pin.png"
-        : "quest_pin.png",
-      iconSize: [40, 40],
-      iconAnchor: [20, 40],
-      popupAnchor: [0, -42]
-    });
-    
+const questIcon = L.icon({
+  iconUrl: "quest_pin.png",
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+  popupAnchor: [0, -42]
+});    
     // ピンを押したときに出る内容
 // 🦊 クエストのクリア状況を確認
 const questClearTime = localStorage.getItem(
