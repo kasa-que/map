@@ -275,7 +275,69 @@
   /* 回る動きを滑らかにする設定（引き継ぎ） */
   transition: transform 0.1s ease-out; 
 } 
+/* ====================================================
+   📖 スタンプ帳 グリッド
+   ==================================================== */
 
+.stamp-grid {
+  display: grid;
+
+  /* スマホでは3列 */
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 12px 8px;
+
+  width: 100%;
+}
+
+
+/* 1個のスタンプ */
+.stamp-card {
+  text-align: center;
+  min-width: 0;
+}
+
+
+/* スタンプ画像 */
+.stamp-book-image {
+  width: 70px;
+  height: 70px;
+
+  object-fit: contain;
+
+  display: block;
+
+  margin: 0 auto 4px auto;
+}
+
+
+/* スタンプの場所名 */
+.stamp-book-name {
+  font-size: 12px;
+  line-height: 1.3;
+
+  text-align: center;
+
+  color: #4b4540;
+
+  word-break: break-word;
+}
+
+
+/* スタンプがまだ一つもない場合 */
+.stamp-empty {
+  grid-column: 1 / -1;
+
+  text-align: center;
+
+  padding: 20px 5px;
+
+  color: #7f756b;
+
+  font-size: 13px;
+}
+
+    
     
   </style>
 </head>
@@ -966,7 +1028,7 @@ const CustomBottomLeftControl = L.Control.extend({
     const mainWrapper = L.DomUtil.create('div');
     mainWrapper.style.display = 'flex';
     mainWrapper.style.gap = '10px';
-
+    mainWrapper.style.alignItems = 'flex-start';
     // ====================================================
     // ① 現在地チェック
     // ====================================================
@@ -1810,7 +1872,12 @@ function showStamps(mode = 'all') {
 
   const div = document.getElementById("stamps");
 
-  div.innerHTML = "<h3>📖 スタンプ帳</h3>";
+  div.innerHTML = `
+    <h3>📖 スタンプ帳</h3>
+    <div class="stamp-grid"></div>
+  `;
+
+  const grid = div.querySelector(".stamp-grid");
 
   let gotCount = 0;
 
@@ -1818,34 +1885,47 @@ function showStamps(mode = 'all') {
 
     const got = localStorage.getItem("stamp_" + s.id);
 
+    // --------------------------------
     // 獲得済み
+    // --------------------------------
     if (got) {
 
       gotCount++;
 
-      div.innerHTML += `
-        <div class="stamp">
-          ${s.name}：✅ 獲得済
+  const stampImage = s.imgOn ? s.imgOn : "stmpon.png";
+
+      grid.innerHTML += `
+        <div class="stamp-card">
+          <img
+            src="${stampImage}"
+            alt="${s.name}"
+            class="stamp-book-image"
+          >
+          <div class="stamp-book-name">
+            ${s.name}
+          </div>
         </div>
       `;
-
     }
 
+    // --------------------------------
     // 未獲得
+    // --------------------------------
     else if (mode === 'all') {
 
-      div.innerHTML += `
-        <div class="stamp">
-          ${s.name}：❌
-          <button
-            onclick="tryGetStamp('${s.id}')"
-            style="
-              font-size:14px;
-              padding:4px 8px;
-              margin-left:10px;
-            ">
-            ここでスタンプを押す
-          </button>
+      grid.innerHTML += `
+        <div class="stamp-card">
+
+          <img
+            src="${stampImage}"
+            alt="まだのスタンプ"
+            class="stamp-book-image"
+          >
+
+          <div class="stamp-book-name">
+            ${s.name}
+          </div>
+
         </div>
       `;
     }
@@ -1853,17 +1933,16 @@ function showStamps(mode = 'all') {
   });
 
 
-  // 「獲得したスタンプ」を選んだけど
-  // まだ一つも取っていない場合
+  // 「獲得したスタンプ」を選択したけど
+  // まだ一つも獲得していない場合
   if (mode === 'got' && gotCount === 0) {
 
-    div.innerHTML += `
-      <div class="stamp">
+    grid.innerHTML = `
+      <div class="stamp-empty">
         まだ獲得したスタンプはないよ🦊
       </div>
     `;
   }
-
 }
 //🍎リセット機能
 function resetStamps() {
