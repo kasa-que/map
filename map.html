@@ -1869,16 +1869,17 @@ function processStampVerification(s) {
 }
 
   
-// === スタンプ表示（個別ボタン付きに改造） ===
 // ====================================================
 // 📖 スタンプ帳表示
-// mode = 'all' → 全て表示
-// mode = 'got' → 獲得済みだけ表示
+// mode:
+//   'all' → 全て表示
+//   'got' → 獲得済みだけ表示
 // ====================================================
-// === スタンプ表示 ===
-function showStamps() {
+function showStamps(mode = 'all') {
+
   const div = document.getElementById("stamps");
 
+  // グリッドを作る
   div.innerHTML = `
     <h3>📖 スタンプ帳</h3>
     <div class="stamp-grid"></div>
@@ -1887,27 +1888,51 @@ function showStamps() {
   const grid = div.querySelector(".stamp-grid");
 
   spots.forEach(s => {
+
     const got = localStorage.getItem("stamp_" + s.id);
 
-    // 獲得済みなら本物のスタンプ
-    // 未獲得なら「まだ」のスタンプ
-    const stampImage = got
-      ? (s.imgOn ? s.imgOn : "stmpon.png")
-      : "stmpof.png";
+    // ==========================================
+    // 「獲得したスタンプ」を選んだ場合
+    // 未獲得のものはグリッドに入れない
+    // ==========================================
+    if (mode === 'got' && !got) {
+      return;
+    }
 
+    // ==========================================
+    // スタンプ画像を決める
+    // ==========================================
+    let stampImageUrl;
+
+    if (got) {
+      // 獲得済み → その場所の獲得済みスタンプ
+      stampImageUrl = s.imgOn ? s.imgOn : "stmpon.png";
+    } else {
+      // 未獲得 → まだのスタンプ
+      stampImageUrl = s.imgOf ? s.imgOf : "stmpof.png";
+    }
+
+    // ==========================================
+    // グリッドの1マス
+    // ==========================================
     grid.innerHTML += `
       <div class="stamp-item">
+
         <img
-          src="${stampImage}"
-          alt="${got ? "獲得済み" : "まだ未獲得"}"
+          src="${stampImageUrl}"
+          alt="スタンプ"
           class="stamp-image"
         >
-        <div class="stamp-name">${s.name}</div>
+
+        <div class="stamp-name">
+          ${s.name}
+        </div>
+
       </div>
     `;
+
   });
-}
-  
+} 
   
   
 //🍎リセット機能
