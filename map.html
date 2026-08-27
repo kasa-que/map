@@ -2529,9 +2529,8 @@ if (displayQuests.length > 0) {
     // クリア済みなら専用スタンプ
     // 未クリアなら「まだ」の画像
     const stampImageUrl = clearTime
-      ? q.stampImage
+      ? (q.stampImage ? q.stampImage : "stmpon.png")
       : "stmpof.png";
-
 
     questGrid.innerHTML += `
       <div
