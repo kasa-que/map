@@ -902,6 +902,58 @@ const CustomTrackControl = L.Control.extend({
 map.addControl(new CustomTrackControl());
   
 
+
+
+
+// === 🆕 ⑮ 自作「目印切り替え四角パネル」（右上・2段目に配置） ===
+// 選択されているグループを覚えておく変数（最初は『すべて（all）』にしておきます）
+let currentDisplayGroup = "all";
+
+const CustomFilterControl = L.Control.extend({
+  options: { position: 'topright' }, // 右上の足跡ボタンの下に綺麗に並びます
+  onAdd: function () {
+    const container = L.DomUtil.create('div');
+    container.innerHTML = `
+      <div class="control-icon control-icon-toggle">
+        <!-- 💡 閉じている時は、お気に入りのピン画像をメニューの顔にします -->
+        <img src="pin_blue.png" alt="目印" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+      </div>
+      <div class="control-content">
+        <h4>目印の切り替え</h4>
+        <label><input type="radio" name="filter_opt" checked onclick="handleFilterRadio('all')">全て表示</label>
+        <label><input type="radio" name="filter_opt" onclick="handleFilterRadio('dfc')">🥽 防御施設</label>
+        <label><input type="radio" name="filter_opt" onclick="handleFilterRadio('twn')">🏮 町名</label>
+        <label><input type="radio" name="filter_opt" onclick="handleFilterRadio('now')">🏯 現存</label>
+        <label><input type="radio" name="filter_opt" onclick="handleFilterRadio('rcm')">🌟 おすすめ</label>
+        <label><input type="radio" name="filter_opt" onclick="handleFilterRadio('bld')">🧱 建物</label>
+      </div>
+    `;
+    setupControlToggle(container);
+    return container;
+  }
+});
+map.addControl(new CustomFilterControl());
+
+// ラジオボタンが押されたときに、表示をパッと切り替える処理
+function handleFilterRadio(groupType) {
+  currentDisplayGroup = groupType; // 選ばれたグループ（all, dfc, twnなど）を記憶
+  updateMapMarkers(); // 💡 記憶したルールに基づいて、地図のピンを一斉に描き直します！
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 // === ⑧ 🆕 自作「現在地 ＆ スタンプ帳 横並び合体四角パネル」（左下） ===
 // === ⑧ 自作「現在地 ＆ スタンプ帳 横並び合体四角パネル」（左下・イラスト統一版） ===
 const CustomBottomLeftControl = L.Control.extend({
@@ -1126,6 +1178,23 @@ function updateMapMarkers() {
     const got = localStorage.getItem("stamp_" + s.id);      // 獲得済
     const wish = localStorage.getItem("wish_" + s.id);      // 行きたい
 
+
+    // 🆕 【ここを追記！】選ばれたグループ以外のピンを自動で隠す（消去する）システム
+    // s.idの頭文字が、現在選ばれているグループ名と一致しているかチェックします
+    const idStr = s.id ? String(s.id) : "";
+    const isMatched = (currentDisplayGroup === "all") || idStr.startsWith(currentDisplayGroup);
+
+    if (!isMatched) {
+      // 💡 もし選ばれていないグループのスポットなら、すでに地図にいるマークを一度消去して、次のスポットへジャンプします！
+      if (markers[s.id]) {
+        map.removeLayer(markers[s.id]);
+      }
+      return; // これでこれ以降の描画処理をスキップして非表示にします
+    }
+
+
+
+    
     // ====================================================
     // ① 【手書き画像グループ】の画像ファイル名決定（変更なし）
     // ====================================================
@@ -1606,6 +1675,17 @@ function restoreBreadcrumbs() {
 restoreBreadcrumbs();
 
 
+
+
+
+
+
+
+
+
+
+
+  
   
 // === 🆕 ⑩ 地図をクリックしたときに正確な座標（緯度経度）を取得してお狐様がつぶやく機能 ===
 // === 🆕 ⑩ 地図をクリックしたときに座標を取得し、目印の点を打つ機能（改良版） ===
