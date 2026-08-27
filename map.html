@@ -1183,54 +1183,40 @@ function handleQuestRadio(id) {
   // 「クエストが選択されていません」を選んだ場合
   if (!id) {
     currentQuest = null;
-
     const foxMsg = document.getElementById('fox-message');
-
     if (foxMsg) {
       foxMsg.innerHTML =
         "🦊 クエストを選んで、冒険を始めよう！";
     }
-
     return;
   }
-
-
-  
   // 選ばれたクエストを探す
   const q = quests.find(quest => quest.id === id);
-
   if (!q) return;
   // 🆕 現在選択中のクエストを記憶
   currentQuest = q;
   updateQuestMarkers();
-
   // クエストの開始地点へ移動
   map.setView(
     [q.startLat, q.startLng],
     17
   );
-
   // クエストのピンを開く
   if (questMarkers[q.id]) {
     questMarkers[q.id].openPopup();
   }
-
   // お狐様メッセージ
   const foxMsg = document.getElementById('fox-message');
-
   if (foxMsg) {
     foxMsg.innerHTML =
       `クエスト「${q.name}」に挑戦中だよ！`;
   }
-
   // クエストをすでにクリアしているか確認
   const questClearTime = localStorage.getItem(
     "quest_clear_time_" + q.id
-  );
-  
+  );  
   // 未クリアなら「クエスト開始！」を表示
   if (!questClearTime) {
-  
     alert(
       "🦊 クエスト開始！\n\n" +
       "「" + q.name + "」\n\n" +
@@ -1238,19 +1224,72 @@ function handleQuestRadio(id) {
       "足跡をつけながら進むか、\n" +
       "達成したら「現在地」を確認してね。"
     );
-  
   }  
-
-
-  
   // クエストパネルを閉じる
   const panels = document.querySelectorAll('.custom-map-control');
-
   panels.forEach(panel => {
     panel.classList.remove('expanded');
     panel.classList.add('collapsed');
   });
 }
+
+
+// ====================================================
+// 🦊 クエストのクリア記録だけリセット
+// ====================================================
+function resetQuestData() {
+
+  const ok = confirm(
+    "これまでにクリアしたクエストの記録をすべて消去しますか？"
+  );
+
+  // キャンセルなら何もしない
+  if (!ok) {
+    return;
+  }
+
+  // --------------------------------
+  // ① クエストのクリア記録だけ削除
+  // --------------------------------
+  quests.forEach(q => {
+    localStorage.removeItem(
+      "quest_clear_time_" + q.id
+    );
+  });
+
+  // --------------------------------
+  // ② 現在選択中のクエストを解除
+  // --------------------------------
+  currentQuest = null;
+
+  // --------------------------------
+  // ③ クエストピンを通常状態に戻す
+  // --------------------------------
+  quests.forEach(q => {
+    updateQuestPinImage(q);
+  });
+
+  // --------------------------------
+  // ④ スタンプ帳を更新
+  // --------------------------------
+  showStamps();
+
+  // --------------------------------
+  // ⑤ 狐のメッセージを更新
+  // --------------------------------
+  const foxMsg = document.getElementById("fox-message");
+
+  if (foxMsg) {
+    foxMsg.innerHTML =
+      "🦊 クエストの記録をリセットしたよ！また冒険に出かけよう！";
+  }
+  // --------------------------------
+  // ⑥ 完了メッセージ
+  // --------------------------------
+  alert("🦊 クエストのクリア記録をリセットしました！");
+}
+
+
   
 // ラジオボタンが押されたときに、表示をパッと切り替える処理
 function handleFilterRadio(groupType) {
