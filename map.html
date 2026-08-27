@@ -2176,7 +2176,23 @@ function updateQuestPopup(q) {
   // ポップアップの中身だけ更新
   questMarkers[q.id].setPopupContent(popupContent);
 }
+function updateQuestPinImage(q) {
 
+  // クエストピンが存在しなければ何もしない
+  if (!questMarkers[q.id]) {
+    return;
+  }
+
+  // クリア済みピンに変更
+  const clearIcon = L.icon({
+    iconUrl: "quest_clear_pin.png",
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+    popupAnchor: [0, -42]
+  });
+
+  questMarkers[q.id].setIcon(clearIcon);
+}
 
 
   
@@ -2276,6 +2292,7 @@ function checkQuestClear() {
   showStamps(); 
 
   updateQuestPopup(currentQuest);
+  updateQuestPinImage(currentQuest);
   
   // 🆕 更新されたピンのポップアップを開く
   setTimeout(() => {
