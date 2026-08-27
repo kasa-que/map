@@ -293,9 +293,6 @@
   box-sizing: border-box;
 }
 
-.stamp-item:nth-child(3n) {
-  border-right: none;
-}
 
 .stamp-image {
   width: 62px;
@@ -323,11 +320,23 @@
     grid-template-columns: repeat(5, 1fr);
   }
 }
-/*@media (min-width: 600px) {
-  .stamp-grid {
-    grid-template-columns: repeat(4, 1fr);
+/* === スタンプ帳：列数に合わせて右端の線を調整 === */
+
+/* スマホ：3列 */
+.stamp-item:nth-child(3n) {
+  border-right: none;
+}
+
+/* タブレット：4列 */
+@media (min-width: 600px) {
+  .stamp-item:nth-child(3n) {
+    border-right: 1px solid #c8beb1;
   }
-}*/
+
+  .stamp-item:nth-child(4n) {
+    border-right: none;
+  }
+}
     
     
   </style>
