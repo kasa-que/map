@@ -817,7 +817,7 @@ const quests = [
   {
     id: "quest01",
     name: "宇都宮から笠間城を攻め上がれ！",
-    info: "宇都宮口をスタートして笠間城の天守まで攻めてみよう！",
+    info: "小貫口（宇都宮口）をから笠間城下に入って、笠間城の天守まで攻めてみよう！",
     // クエスト開始地点
     startLat: 36.390102,
     startLng: 140.251181,
@@ -1134,7 +1134,43 @@ const CustomQuestControl = L.Control.extend({
 
 map.addControl(new CustomQuestControl());
 
+// ====================================================
+// 🦊 クエスト選択時の処理
+// ====================================================
+function handleQuestRadio(id) {
 
+  // 選ばれたクエストを探す
+  const q = quests.find(quest => quest.id === id);
+
+  if (!q) return;
+
+  // クエストの開始地点へ移動
+  map.setView(
+    [q.startLat, q.startLng],
+    17
+  );
+
+  // クエストのピンを開く
+  if (questMarkers[q.id]) {
+    questMarkers[q.id].openPopup();
+  }
+
+  // お狐様メッセージ
+  const foxMsg = document.getElementById('fox-message');
+
+  if (foxMsg) {
+    foxMsg.innerHTML =
+      `🦊「${q.name}」のスタート地点だよ！`;
+  }
+
+  // クエストパネルを閉じる
+  const panels = document.querySelectorAll('.custom-map-control');
+
+  panels.forEach(panel => {
+    panel.classList.remove('expanded');
+    panel.classList.add('collapsed');
+  });
+}
   
 // ラジオボタンが押されたときに、表示をパッと切り替える処理
 function handleFilterRadio(groupType) {
