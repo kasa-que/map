@@ -443,7 +443,12 @@ const markers = {};    // 各スポットのマーカーを管理する箱
 // 🦊 クエスト用マーカーを入れておく箱
 // ====================================================
 const questMarkers = {};
-
+// ====================================================
+// 🦊 クエストクリア情報
+// ====================================================
+function getQuestClearTime(id) {
+  return localStorage.getItem("quest_clear_" + id);
+}
   
 // === 史跡データ ===
 const spots = [
@@ -1096,6 +1101,22 @@ const CustomQuestControl = L.Control.extend({
 
     const container = L.DomUtil.create('div');
 
+    // クエスト一覧を自動生成
+    let questListHTML = "";
+
+    quests.forEach(q => {
+      questListHTML += `
+        <label>
+          <input
+            type="radio"
+            name="quest_opt"
+            onclick="handleQuestRadio('${q.id}')"
+          >
+          ${q.name}
+        </label>
+      `;
+    });
+
     container.innerHTML = `
       <div class="control-icon control-icon-toggle">
         <img
@@ -1114,14 +1135,7 @@ const CustomQuestControl = L.Control.extend({
 
         <h4>🦊 クエスト</h4>
 
-        <label>
-          <input
-            type="radio"
-            name="quest_opt"
-            onclick="handleQuestRadio('quest01')"
-          >
-          宇都宮から笠間城を攻め上がれ！
-        </label>
+        ${questListHTML}
 
       </div>
     `;
