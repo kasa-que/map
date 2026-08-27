@@ -2195,45 +2195,50 @@ function agreeSafety() {
 // ====================================================
 // ⑫ 注意書きを最後まで読んだら「同意」ボタンを有効化
 // ====================================================
+// === 注意書きを最後までスクロールしたら「同意」ボタンを出す ===
 document.addEventListener("DOMContentLoaded", function() {
 
   const scrollBox = document.getElementById("safety-scroll");
   const agreeBtn = document.getElementById("agree-button");
 
   if (!scrollBox || !agreeBtn) {
-    console.error("⚠️ safety-scroll または agree-button が見つかりません");
+    console.error("同意画面の要素が見つかりません");
     return;
   }
 
-  function checkSafetyScroll() {
+  // 最初はボタンを無効化
+  agreeBtn.disabled = true;
 
+  // スクロールできるようにする
+  scrollBox.style.overflowY = "auto";
+  scrollBox.style.webkitOverflowScrolling = "touch";
+
+  function checkScroll() {
     const maxScroll =
       scrollBox.scrollHeight - scrollBox.clientHeight;
 
-    // 内容が最初から全部表示できる場合
-    // または一番下までスクロールした場合
-    if (
-      maxScroll <= 1 ||
-      scrollBox.scrollTop >= maxScroll - 5
-    ) {
-
+    // 内容が最初から全部表示されている場合
+    if (maxScroll <= 1) {
       agreeBtn.disabled = false;
+      agreeBtn.style.display = "block";
+      agreeBtn.innerText = "上記の内容に同意して旅を始める";
+      return;
+    }
 
-      agreeBtn.innerText =
-        "上記の内容に同意して旅を始める";
-
-      console.log("✅ 同意ボタンを有効にしました");
+    // 一番下まで到達したか
+    if (scrollBox.scrollTop >= maxScroll - 5) {
+      agreeBtn.disabled = false;
+      agreeBtn.style.display = "block";
+      agreeBtn.innerText = "上記の内容に同意して旅を始める";
     }
   }
 
-  // スクロールしたとき
-  scrollBox.addEventListener("scroll", checkSafetyScroll);
+  // スクロールしたら毎回チェック
+  scrollBox.addEventListener("scroll", checkScroll);
 
-  // スマホでのタッチ操作対策
-  scrollBox.addEventListener("touchend", checkSafetyScroll);
+  // 画面を開いた直後にもチェック
+  checkScroll();
 
-  // 念のため最初にもチェック
-  checkSafetyScroll();
 });
 
   
