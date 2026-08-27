@@ -1085,6 +1085,57 @@ const CustomFilterControl = L.Control.extend({
 });
 map.addControl(new CustomFilterControl());
 
+
+// ====================================================
+// 🦊 クエスト切り替えパネル
+// ====================================================
+const CustomQuestControl = L.Control.extend({
+  options: { position: 'topright' },
+
+  onAdd: function () {
+
+    const container = L.DomUtil.create('div');
+
+    container.innerHTML = `
+      <div class="control-icon control-icon-toggle">
+        <img
+          src="quest_pin.png"
+          alt="クエスト"
+          style="
+            width:100%;
+            height:100%;
+            object-fit:contain;
+            display:block;
+          "
+        >
+      </div>
+
+      <div class="control-content">
+
+        <h4>🦊 クエスト</h4>
+
+        <label>
+          <input
+            type="radio"
+            name="quest_opt"
+            onclick="handleQuestRadio('quest01')"
+          >
+          宇都宮から笠間城を攻め上がれ！
+        </label>
+
+      </div>
+    `;
+
+    setupControlToggle(container);
+
+    return container;
+  }
+});
+
+map.addControl(new CustomQuestControl());
+
+
+  
 // ラジオボタンが押されたときに、表示をパッと切り替える処理
 function handleFilterRadio(groupType) {
   currentDisplayGroup = groupType; // 選ばれたグループ（all, dfc, twnなど）を記憶
