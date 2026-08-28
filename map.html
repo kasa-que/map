@@ -22,6 +22,7 @@
     #panel { padding: 10px; }
     button { font-size: 16px; padding: 8px 12px; cursor: pointer; }
     .stamp { font-size: 20px; margin-bottom: 10px; }
+
     
     /* ピンの色を変えるためのスタイル定義 */
     /* ⭕️ SVGピン専用の新しい色定義 */
@@ -41,11 +42,11 @@
       filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.3));
     }
 
-.yuji-syuku-regular {
-  font-family: "Yuji Syuku", serif;
-  font-weight: 400;
-  font-style: normal;
-}
+    .yuji-syuku-regular {
+      font-family: "Yuji Syuku", serif;
+      font-weight: 400;
+      font-style: normal;
+    }
     
 
 
@@ -137,6 +138,9 @@
 
 
 
+
+
+    
 
 /* === 🆕 画面をロックする注意書き画面（モーダル）のスタイル === */
 #safety-modal {
@@ -277,6 +281,17 @@
 } 
 
 
+
+
+
+    /* 📱 スマホ：吹き出しが横に広がりすぎないようにする */
+@media (max-width: 600px) {
+  .leaflet-popup-content-wrapper {
+    max-width: 220px;
+  }
+}
+
+    
 
     /* =================================
    スタンプ帳
