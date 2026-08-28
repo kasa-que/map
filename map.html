@@ -2259,20 +2259,29 @@ function updateQuestPinImage(q) {
     return;
   }
 
-  // クリア済みクエスト用のピン
-  const questClearIcon = L.icon({
-    iconUrl: "quest_clear_pin.png",
+  // 最新のクリア状況を確認
+  const clearTime = localStorage.getItem(
+    "quest_clear_time_" + q.id
+  );
+
+  // クリア済みならクリアピン
+  // 未クリアなら通常ピン
+  const iconUrl = clearTime
+    ? "quest_clear_pin.png"
+    : "quest_pin.png";
+
+  const questIcon = L.icon({
+    iconUrl: iconUrl,
     iconSize: L.point(40, 40),
     iconAnchor: L.point(20, 40),
     popupAnchor: L.point(0, -42)
   });
 
-  // 既存のクエストピンの画像だけ変更
+  // 既存のクエストピンの画像を更新
   if (typeof questMarkers[q.id].setIcon === "function") {
-    questMarkers[q.id].setIcon(questClearIcon);
+    questMarkers[q.id].setIcon(questIcon);
   }
 }
-
   
   
 // === 🆕 「行きたい」ボタンが押された時のオンオフ処理 ===
