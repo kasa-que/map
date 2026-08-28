@@ -1148,6 +1148,7 @@ const CustomQuestControl = L.Control.extend({
     container.innerHTML = `
       <div class="control-icon control-icon-toggle">
         <img
+          id="quest-menu-icon"
           src="quest_menu.png"
           alt="クエスト"
           style="
@@ -1176,6 +1177,22 @@ const CustomQuestControl = L.Control.extend({
 
 map.addControl(new CustomQuestControl());
 
+
+// 🦊 クエストメニューのアイコンを切り替える
+function updateQuestMenuIcon() {
+
+  const icon = document.getElementById("quest-menu-icon");
+
+  if (!icon) return;
+
+  if (currentQuest) {
+    icon.src = "quest_active.png";
+  } else {
+    icon.src = "quest_menu.png";
+  }
+}
+
+  
 // ====================================================
 // 🦊 クエスト選択時の処理
 // ====================================================
@@ -1183,6 +1200,7 @@ function handleQuestRadio(id) {
   // 「クエストが選択されていません」を選んだ場合
   if (!id) {
     currentQuest = null;
+    updateQuestMenuIcon();
     const foxMsg = document.getElementById('fox-message');
     if (foxMsg) {
       foxMsg.innerHTML =
@@ -1196,6 +1214,7 @@ function handleQuestRadio(id) {
   // 🆕 現在選択中のクエストを記憶
   currentQuest = q;
   updateQuestMarkers();
+  updateQuestMenuIcon();
   // クエストの開始地点へ移動
   map.setView(
     [q.startLat, q.startLng],
@@ -1561,7 +1580,7 @@ function handleTrackRadio(mode) {
     
     // 【新設定】四角ボタンの画像の中身を「🟢用のスタート画像」に差し替えます
     if (iconStatus) {
-      iconStatus.innerHTML = `<img src="icon_start.png" alt="足跡(記録中)" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
+      iconStatus.innerHTML = `<img src="icon_track_start.png" alt="足跡(記録中)" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
     }
     if (foxMsg) foxMsg.innerHTML = `歩いたら地図に足跡がつくよ！笠間城や城下町を探検していこう！`;
   } 
