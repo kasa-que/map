@@ -4,321 +4,305 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>稲荷町クエスト</title>
+  <title>笠間城クエスト</title>
+
+  <!-- DotGothic16 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap"
+    rel="stylesheet"
+  >
 
   <style>
-    /* =========================
-       基本設定
-    ========================= */
 
-    :root {
-      --paper: #F3E9D2;
-      --card: #F8F3E8;
-      --ink: #332F29;
-      --sub-ink: #6B6254;
-      --line: #C9B99B;
-      --accent: #B4553D;
-      --water: #8FA6A6;
-    }
+    /* =====================================
+       基本
+    ===================================== */
 
     * {
       box-sizing: border-box;
     }
 
+    html,
     body {
       margin: 0;
-      background: var(--paper);
-      color: var(--ink);
-      font-family:
-        "Hiragino Mincho ProN",
-        "Yu Mincho",
-        "YuMincho",
-        serif;
+      padding: 0;
+      background: #ffffff;
+      color: #333;
+      font-family: "DotGothic16", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
     }
 
 
-    /* =========================
-       ページ全体
-    ========================= */
+    /* =====================================
+       メイン
+    ===================================== */
 
     .page {
       width: 100%;
-      max-width: 600px;
+      max-width: 430px;
       min-height: 100vh;
       margin: 0 auto;
-      padding: 32px 18px 28px;
-      overflow: hidden;
 
-      background:
-        radial-gradient(
-          ellipse at 20% 20%,
-          rgba(255,255,255,0.35),
-          transparent 45%
-        ),
-        radial-gradient(
-          ellipse at 80% 70%,
-          rgba(120,90,50,0.04),
-          transparent 45%
-        ),
-        var(--paper);
+      padding: 18px 18px 20px;
+
+      display: flex;
+      flex-direction: column;
     }
 
 
-    /* =========================
-       タイトル
-    ========================= */
+    /* =====================================
+       ロゴ
+    ===================================== */
 
-    .header {
+    .logo {
       text-align: center;
-      margin-bottom: 18px;
+      margin-bottom: 4px;
     }
 
-    .torii {
-      font-size: 42px;
-      color: var(--accent);
-      line-height: 1;
-      margin-bottom: 12px;
-    }
-
-    .title {
-      margin: 0;
-      font-size: clamp(32px, 9vw, 48px);
-      letter-spacing: 0.12em;
-      font-weight: 600;
-    }
-
-    .subtitle {
-      margin: 12px 0 0;
-      color: var(--sub-ink);
-      font-size: 14px;
-      letter-spacing: 0.12em;
+    .logo img {
+      width: min(82%, 300px);
+      height: auto;
+      display: block;
+      margin: 0 auto;
     }
 
 
-    /* =========================
-       古地図イメージ部分
-    ========================= */
+    /* =====================================
+       イラスト
+    ===================================== */
 
-    .town-image {
-      position: relative;
-      height: 155px;
-      margin: 0 -18px 22px;
+    .hero {
+      text-align: center;
+      margin: 2px 0 8px;
+    }
+
+    .hero img {
+      width: min(48%, 180px);
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+
+    /* =====================================
+       お知らせ
+    ===================================== */
+
+    .news {
+      border-top: 2px solid #bd1928;
+      border-bottom: 2px solid #bd1928;
+
+      margin: 4px 0 12px;
+      padding: 6px 0;
+
       overflow: hidden;
-
-      background:
-        linear-gradient(
-          to bottom,
-          transparent 0%,
-          rgba(229,211,175,0.25) 100%
-        );
-    }
-
-    .town-image::before {
-      content: "稲荷町";
-      position: absolute;
-      left: 50%;
-      top: 45%;
-      transform: translate(-50%, -50%);
-
-      font-size: 70px;
-      color: rgba(80,70,55,0.08);
       white-space: nowrap;
-      pointer-events: none;
+
+      font-size: 13px;
+      color: #333;
     }
 
-    .town-image::after {
-      content: "";
-      position: absolute;
-      left: -10%;
-      right: -10%;
-      bottom: 0;
-      height: 35px;
-
-      background:
-        linear-gradient(
-          175deg,
-          transparent 40%,
-          rgba(143,166,166,0.55) 42%,
-          rgba(143,166,166,0.55) 60%,
-          transparent 62%
-        );
+    .news-label {
+      color: #bd1928;
+      font-weight: bold;
+      margin-right: 10px;
     }
 
 
-    /* =========================
+    /* =====================================
        メニュー
-    ========================= */
+    ===================================== */
 
     .menu {
       display: flex;
       flex-direction: column;
-      gap: 13px;
+      gap: 8px;
     }
 
-    .menu-item {
+
+    /* =====================================
+       メニューボタン
+    ===================================== */
+
+    .menu-button {
+      width: 100%;
+
       display: flex;
       align-items: center;
+      justify-content: space-between;
 
-      width: 100%;
-      min-height: 105px;
-      padding: 15px 16px;
+      padding: 10px 14px;
 
-      background: rgba(248,243,232,0.92);
-      border: 1px solid rgba(201,185,155,0.7);
-      border-radius: 12px;
+      background: #ffffff;
+      color: #333;
 
-      box-shadow:
-        0 2px 6px rgba(80,60,30,0.08);
+      border: 2px solid #bd1928;
+      border-radius: 7px;
 
-      color: var(--ink);
       text-decoration: none;
 
-      transition:
-        transform 0.15s ease,
-        box-shadow 0.15s ease,
-        background 0.15s ease;
+      font-family: "DotGothic16", sans-serif;
+      font-size: 15px;
+
+      cursor: pointer;
+
+      transition: background 0.15s ease;
     }
 
-    .menu-item:hover {
-      transform: translateY(-2px);
-      box-shadow:
-        0 5px 12px rgba(80,60,30,0.12);
-    }
-
-    .menu-item:active {
-      transform: translateY(0);
-    }
-
-
-    /* =========================
-       アイコン
-    ========================= */
-
-    .menu-icon {
-      flex: 0 0 64px;
-      width: 64px;
-      height: 64px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 50%;
-
-      background: #334B52;
-      color: white;
-
-      font-size: 30px;
-      margin-right: 18px;
-    }
-
-    .menu-item.quest .menu-icon {
-      background: var(--accent);
-    }
-
-    .menu-item.about .menu-icon {
-      background: #4B4A43;
-    }
-
-
-    /* =========================
-       文字
-    ========================= */
-
-    .menu-text {
-      flex: 1;
+    .menu-button:hover {
+      background: #fff5f5;
     }
 
     .menu-title {
-      margin: 0 0 6px;
-
-      font-size: 21px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
+      color: #bd1928;
+      font-size: 16px;
     }
 
-    .menu-description {
-      margin: 0;
-
-      font-family:
-        "Hiragino Sans",
-        "Yu Gothic",
-        sans-serif;
-
-      font-size: 13px;
-      color: var(--sub-ink);
-    }
-
-    .arrow {
-      font-family: sans-serif;
-      font-size: 30px;
-      color: var(--sub-ink);
+    .menu-sub {
+      font-size: 11px;
+      color: #777;
       margin-left: 10px;
     }
 
+    .arrow {
+      color: #bd1928;
+      font-size: 18px;
+    }
 
-    /* =========================
+
+    /* =====================================
+       参考文献
+    ===================================== */
+
+    .reference-button {
+      width: 100%;
+      border: 2px solid #bd1928;
+      border-radius: 7px;
+
+      background: #ffffff;
+
+      padding: 10px 14px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      font-family: "DotGothic16", sans-serif;
+      font-size: 15px;
+
+      color: #333;
+
+      cursor: pointer;
+    }
+
+    .reference-button .menu-title {
+      color: #bd1928;
+    }
+
+
+    /* =====================================
+       参考文献の中身
+    ===================================== */
+
+    .reference-list {
+      display: none;
+
+      margin-top: -2px;
+      padding: 5px 8px 4px;
+
+      border-left: 2px solid #bd1928;
+      border-right: 2px solid #bd1928;
+      border-bottom: 2px solid #bd1928;
+
+      border-radius: 0 0 7px 7px;
+
+      background: #fffafa;
+    }
+
+    .reference-list.open {
+      display: block;
+    }
+
+    .reference-item {
+      display: block;
+
+      padding: 8px 8px;
+
+      color: #333;
+      text-decoration: none;
+
+      font-size: 13px;
+
+      border-bottom: 1px dotted #bd1928;
+    }
+
+    .reference-item:last-child {
+      border-bottom: none;
+    }
+
+    .reference-item strong {
+      color: #bd1928;
+      font-weight: normal;
+    }
+
+    .reference-item span {
+      display: block;
+      font-size: 10px;
+      color: #777;
+      margin-top: 2px;
+    }
+
+
+    /* =====================================
        フッター
-    ========================= */
+    ===================================== */
 
     .footer {
+      margin-top: auto;
+
+      padding-top: 12px;
+
       text-align: center;
-      margin-top: 35px;
-      padding-bottom: 20px;
-    }
 
-    .footer-title {
-      font-size: 18px;
-      letter-spacing: 0.15em;
-    }
-
-    .footer-credit {
-      margin-top: 8px;
-
-      font-family: sans-serif;
-      font-size: 11px;
-      color: var(--sub-ink);
-      letter-spacing: 0.1em;
+      font-size: 10px;
+      color: #999;
     }
 
 
-    /* =========================
-       スマホ小画面対応
-    ========================= */
+    /* =====================================
+       小さいスマホ
+    ===================================== */
 
-    @media (max-width: 380px) {
+    @media (max-height: 700px) {
 
       .page {
-        padding-left: 12px;
-        padding-right: 12px;
+        padding-top: 10px;
       }
 
-      .town-image {
-        margin-left: -12px;
-        margin-right: -12px;
+      .hero img {
+        width: 38%;
       }
 
-      .menu-item {
-        min-height: 90px;
-        padding: 12px;
+      .news {
+        margin-bottom: 8px;
       }
 
-      .menu-icon {
-        flex-basis: 52px;
-        width: 52px;
-        height: 52px;
-        font-size: 24px;
-        margin-right: 12px;
+      .menu {
+        gap: 6px;
       }
 
-      .menu-title {
-        font-size: 17px;
+      .menu-button,
+      .reference-button {
+        padding: 8px 12px;
       }
 
-      .menu-description {
-        font-size: 11px;
-      }
     }
+
   </style>
 </head>
 
@@ -327,152 +311,234 @@
 
   <main class="page">
 
-    <!-- タイトル -->
-    <header class="header">
 
-      <div class="torii">⛩</div>
+    <!-- =================================
+         ロゴ
+    ================================== -->
 
-      <h1 class="title">
-        稲荷町クエスト
-      </h1>
+    <div class="logo">
 
-      <p class="subtitle">
-        古地図を持って、江戸の町を歩こう
-      </p>
-
-    </header>
-
-
-    <!-- 古地図っぽいイメージ -->
-    <div class="town-image"></div>
-
-
-    <!-- メニュー -->
-    <nav class="menu">
-
-      <!-- 古地図 -->
-      <a
-        class="menu-item"
-        href="map.html"
+      <!-- ファイル名は実際のロゴ画像に変更 -->
+      <img
+        src="logo.png"
+        alt="笠間城クエスト"
       >
-        <div class="menu-icon">🗺</div>
 
-        <div class="menu-text">
-          <h2 class="menu-title">
+    </div>
+
+
+    <!-- =================================
+         狐イラスト
+    ================================== -->
+
+    <div class="hero">
+
+      <!-- ファイル名は実際のイラストに変更 -->
+      <img
+        src="fox.png"
+        alt="お狐様"
+      >
+
+    </div>
+
+
+    <!-- =================================
+         お知らせ
+    ================================== -->
+
+    <div class="news">
+
+      <span class="news-label">お知らせ</span>
+
+      <marquee scrollamount="4">
+        笠間城クエストへようこそ！　古地図を片手に、笠間のまちを歩いてみよう！
+      </marquee>
+
+    </div>
+
+
+    <!-- =================================
+         メニュー
+    ================================== -->
+
+    <div class="menu">
+
+
+      <!-- 古地図を歩く -->
+
+      <a
+        href="map.html"
+        class="menu-button"
+      >
+
+        <div>
+          <span class="menu-title">
             古地図を歩く
-          </h2>
+          </span>
 
-          <p class="menu-description">
-            WEB地図アプリへ
-          </p>
+          <span class="menu-sub">
+            web地図アプリへ
+          </span>
         </div>
 
-        <div class="arrow">›</div>
+        <span class="arrow">›</span>
+
       </a>
 
 
-      <!-- レポート -->
+      <!-- 研究レポート -->
+
       <a
-        class="menu-item"
         href="report.pdf"
+        class="menu-button"
         target="_blank"
       >
-        <div class="menu-icon">📜</div>
 
-        <div class="menu-text">
-          <h2 class="menu-title">
+        <div>
+          <span class="menu-title">
             研究レポート
-          </h2>
+          </span>
 
-          <p class="menu-description">
-            PDFを開く
-          </p>
+          <span class="menu-sub">
+            PDFファイルを見る
+          </span>
         </div>
 
-        <div class="arrow">›</div>
+        <span class="arrow">›</span>
+
       </a>
 
 
-      <!-- クエスト -->
-      <a
-        class="menu-item quest"
-        href="quest.html"
-      >
-        <div class="menu-icon">🦊</div>
+      <!-- =================================
+           参考文献
+      ================================== -->
 
-        <div class="menu-text">
-          <h2 class="menu-title">
-            クエスト記録
-          </h2>
+      <div>
 
-          <p class="menu-description">
-            調べて歩いた記録を見る
-          </p>
+        <button
+          class="reference-button"
+          onclick="toggleReferences()"
+        >
+
+          <div>
+            <span class="menu-title">
+              参考文献
+            </span>
+          </div>
+
+          <span
+            class="arrow"
+            id="reference-arrow"
+          >
+            ＋
+          </span>
+
+        </button>
+
+
+        <div
+          class="reference-list"
+          id="reference-list"
+        >
+
+          <!-- 正保の地図 -->
+
+          <a
+            href="#"
+            class="reference-item"
+            target="_blank"
+          >
+
+            <strong>
+              正保の地図を見る
+            </strong>
+
+            <span>
+              デジタルアーカイブへ
+            </span>
+
+          </a>
+
+
+          <!-- 文政の地図 -->
+
+          <a
+            href="#"
+            class="reference-item"
+            target="_blank"
+          >
+
+            <strong>
+              文政の地図を見る
+            </strong>
+
+            <span>
+              デジタルアーカイブへ
+            </span>
+
+          </a>
+
         </div>
 
-        <div class="arrow">›</div>
-      </a>
+      </div>
 
 
-      <!-- ABOUT -->
+      <!-- このサイトについて -->
+
       <a
-        class="menu-item about"
         href="about.html"
+        class="menu-button"
       >
-        <div class="menu-icon">⛩</div>
 
-        <div class="menu-text">
-          <h2 class="menu-title">
-            稲荷町クエストについて
-          </h2>
-
-          <p class="menu-description">
-            はじめに・動機など
-          </p>
+        <div>
+          <span class="menu-title">
+            このサイトについて
+          </span>
         </div>
 
-        <div class="arrow">›</div>
+        <span class="arrow">›</span>
+
       </a>
 
-    </nav>
+
+    </div>
 
 
-    <!-- フッター -->
-    <footer class="footer">
+    <!-- =================================
+         フッター
+    ================================== -->
 
-      <div class="footer-title">
-        稲荷町クエスト 🐾
-      </div>
+    <div class="footer">
+      笠間城クエスト
+    </div>
 
-      <div class="footer-credit">
-        presented by ○○
-      </div>
-
-    </footer>
 
   </main>
 
 
-  <!-- =========================
-       JavaScript
-  ========================= -->
-
   <script>
 
-    // メニューを押したときのちょっとした効果
-    document.querySelectorAll(".menu-item").forEach(item => {
+    // =====================================
+    // 参考文献メニュー開閉
+    // =====================================
 
-      item.addEventListener("click", () => {
+    function toggleReferences() {
 
-        item.style.transform = "scale(0.98)";
+      const list =
+        document.getElementById("reference-list");
 
-        setTimeout(() => {
-          item.style.transform = "";
-        }, 120);
+      const arrow =
+        document.getElementById("reference-arrow");
 
-      });
+      list.classList.toggle("open");
 
-    });
+      if (list.classList.contains("open")) {
+        arrow.textContent = "−";
+      } else {
+        arrow.textContent = "＋";
+      }
+
+    }
 
   </script>
 
