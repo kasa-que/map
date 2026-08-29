@@ -24,7 +24,7 @@
     button { font-size: 16px; padding: 8px 12px; cursor: pointer; }
     .stamp { font-size: 20px; margin-bottom: 10px; }
 
-    
+/* ピン： */    
     /* ピンの色を変えるためのスタイル定義 */
     /* ⭕️ SVGピン専用の新しい色定義 */
     /* 未訪問（デフォルト：赤） */
@@ -43,6 +43,7 @@
       filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.3));
     }
 
+/* フォント： */
     .yuji-syuku-regular {
       font-family: "Yuji Syuku", serif;
       font-weight: 400;
@@ -50,10 +51,16 @@
     }
     
 
-    
+ /* =================================
+    🦊 フォックスメッセージ
+   ================================= */
 #fox-message {
   font-family: "DotGothic16", sans-serif;
-  margin: 0; color: #332F29;  line-height: 1.4; font-size: 14px; letter-spacing: 0.5px;
+  margin: 0;
+  color: #333333;
+  line-height: 1.5;
+  font-size: 14px;
+  letter-spacing: 0.5px;
 }
 .m-h-l {
   background: linear-gradient(
@@ -66,6 +73,8 @@
   font-weight: bold;
 }
 
+
+    
 /* === ⭕️ 四角ボタンの透過 ＆ イラストサイズ固定CSS === */
 .custom-map-control {
   background: rgba(255, 255, 255, 0.65); 
@@ -77,7 +86,6 @@
   color: #333;
   box-sizing: border-box;
 }
-
 /* ★超重要：閉じている時も開いている時も、すべての四角パネルの最小高さを「36px」に固定します */
 .custom-map-control.collapsed,
 .custom-map-control.expanded {
@@ -85,14 +93,12 @@
   display: flex;
   align-items: center; /* これで中の文字や画像が自動的に縦中央に揃います */
 }
-
 /* 最小化（閉じている時）の見た目（36px四方の正方形） */
 .custom-map-control.collapsed {
   width: 36px;
   height: 36px;
   justify-content: center;
 }
-
 /* 共通：イラストアイコンを縦横28pxに固定 */
 .custom-map-control .control-icon {
   width: 28px !important;
@@ -102,12 +108,10 @@
   align-items: center;
   justify-content: center;
 }
-
 /* 右上パネル用：【新設定】展開（expanded）された時は、大元の四角アイコンを完全に画面から消去します */
 .custom-map-control.expanded .control-icon-toggle {
   display: none !important;
 }
-
 /* 中の手書きイラスト画像自体の設定 */
 .custom-map-control .control-icon img {
   width: 100%;
@@ -115,13 +119,11 @@
   object-fit: contain;
   display: block;
 }
-
 /* 展開している（開いている時）の見た目 */
 .custom-map-control.expanded {
   width: auto;
   padding: 6px 10px; /* 高さを揃えるために上下の余白を少しだけ詰めました */
 }
-
 .custom-map-control h4 {
   margin: 0 0 6px 0;
   font-size: 12px;
@@ -130,23 +132,19 @@
   padding-bottom: 3px;
   white-space: nowrap;
 }
-
 .custom-map-control label {
   display: block;
   margin: 6px 0;
   cursor: pointer;
   white-space: nowrap;
 }
-
 .custom-map-control input {
   margin-right: 5px;
   vertical-align: middle;
 }
-
 .custom-map-control .control-content {
   display: none;
 }
-
 .custom-map-control.expanded .control-content {
   display: block;
 }
@@ -312,7 +310,7 @@
 
 
 
-    /* 📱 スマホ：吹き出しが横に広がりすぎないようにする */
+/* 📱 スマホ：吹き出しが横に広がりすぎないようにする */
 @media (max-width: 600px) {
   .leaflet-popup-content-wrapper {
     max-width: 280px;
@@ -321,10 +319,9 @@
 
     
 
-    /* =================================
-   スタンプ帳
+/* =================================
+   📕 スタンプ帳
    ================================= */
-
 .stamp-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -333,15 +330,18 @@
   max-width: 520px;
   margin: 0 auto;
 }
-
 .stamp-item {
   text-align: center;
   padding: 10px 4px 8px;
-  border-right: 1px solid #c8beb1;
-  border-bottom: 1px solid #c8beb1;
+  border-right: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
   box-sizing: border-box;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    transform 0.15s;
 }
-
+/* スタンプ画像 */
 .stamp-image {
   width: 62px;
   height: 62px;
@@ -349,67 +349,58 @@
   display: block;
   margin: 0 auto 4px;
 }
-
+/* スタンプ名 */
 .stamp-name {
+  font-family: "DotGothic16", sans-serif;
   font-size: 13px;
   line-height: 1.3;
   text-align: center;
+  color: #333333;
 }
+/* =================================
+   カテゴリータイトル
+   ================================= */
 .stamp-category-title {
   margin: 18px 0 6px;
   padding: 6px 8px;
-
+  font-family: "DotGothic16", sans-serif;
   font-size: 16px;
-  font-weight: bold;
-
-  border-bottom: 2px solid #c8beb1;
-  color: #5f574f;
+  font-weight: normal;
+  border-bottom: 1px solid #dddddd;
+  color: #bd1928;
 }
-
 /* 最初の分類だけ少し上の余白を小さく */
 .stamp-category-title:first-of-type {
   margin-top: 8px;
 }
-
-/* -----------------------------
+/* =================================
    スマホ：3列
-   ----------------------------- */
-
+   ================================= */
 .stamp-item:nth-child(3n) {
   border-right: none;
 }
-
-
-/* -----------------------------
+/* =================================
    タブレット・PC：4列
-   ----------------------------- */
-
+   ================================= */
 @media (min-width: 600px) {
-
   .stamp-grid {
     grid-template-columns: repeat(4, 1fr);
   }
-
   /* いったん全部右線ありに戻す */
   .stamp-item:nth-child(3n) {
-    border-right: 1px solid #c8beb1;
+    border-right: 1px solid #dddddd;
   }
-
   /* 4列目だけ右線なし */
-  .stamp-item:nth-child(4n) {
+ .stamp-item:nth-child(4n) {
     border-right: none;
   }
 }
-    
-.stamp-item {
-  cursor: pointer;
-  transition: background-color 0.15s, transform 0.15s;
-}
-
+/* =================================
+   タッチ・ホバー
+   ================================= */
 .stamp-item:hover {
-  background-color: rgba(127, 117, 107, 0.08);
+  background-color: rgba(0, 0, 0, 0.03);
 }
-
 .stamp-item:active {
   transform: scale(0.96);
 }
