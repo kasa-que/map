@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,9 +17,9 @@
 
   <style>
 
-    /* =====================================
+    /* ==============================
        基本
-    ===================================== */
+    ============================== */
 
     * {
       box-sizing: border-box;
@@ -38,190 +39,177 @@
     }
 
 
-    /* =====================================
-       メイン
-    ===================================== */
+    /* ==============================
+       ページ
+    ============================== */
 
     .page {
       width: 100%;
       max-width: 430px;
       min-height: 100vh;
+
       margin: 0 auto;
 
-      padding: 18px 18px 20px;
+      padding: 28px 22px 18px;
 
       display: flex;
       flex-direction: column;
     }
 
 
-    /* =====================================
+    /* ==============================
        ロゴ
-    ===================================== */
+    ============================== */
 
     .logo {
       text-align: center;
-      margin: 40px 40px 40px 40px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      margin-bottom: 18px;
     }
 
-    .logo img {
-      width: min(82%, 300px);
+    .logo img:first-child {
+      width: 35px;
+      height: 35px;
+      object-fit: contain;
+
+      margin-bottom: 8px;
+    }
+
+    .logo img:last-child {
+      width: 150px;
       height: auto;
-      display: block;
-      margin: 0 auto;
+      object-fit: contain;
     }
 
 
-    /* =====================================
-       イラスト
-    ===================================== */
-
-    .hero {
-      text-align: center;
-      margin: 2px 0 8px;
-    }
-
-    .hero img {
-      width: min(48%, 180px);
-      height: auto;
-      display: block;
-      margin: 0 auto;
-    }
-
-
-    /* =====================================
+    /* ==============================
        お知らせ
-    ===================================== */
+    ============================== */
 
     .news {
-      border-top: 2px solid #bd1928;
-      border-bottom: 2px solid #bd1928;
+      margin: 0 0 22px;
 
-      margin: 4px 0 12px;
-      padding: 6px 0;
+      padding: 7px 0;
+
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
 
       overflow: hidden;
       white-space: nowrap;
 
-      font-size: 13px;
-      color: #333;
+      font-size: 12px;
     }
 
     .news-label {
       color: #bd1928;
       font-weight: bold;
-      margin-right: 10px;
+
+      margin-right: 8px;
     }
 
 
-    /* =====================================
+    /* ==============================
        メニュー
-    ===================================== */
+    ============================== */
 
     .menu {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+
+      gap: 10px;
     }
 
 
-    /* =====================================
-       メニューボタン
-    ===================================== */
+    /* ==============================
+       ボタン
+    ============================== */
 
-    .menu-button {
+    .menu-button,
+    .reference-button {
+
       width: 100%;
+
+      min-height: 54px;
 
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      padding: 10px 14px;
+      padding: 9px 14px;
 
       background: #ffffff;
+
       color: #333;
 
-      border: 2px solid #bd1928;
-      border-radius: 7px;
+      border: 1px solid #d8d8d8;
+      border-radius: 6px;
 
       text-decoration: none;
 
       font-family: "DotGothic16", sans-serif;
-      font-size: 15px;
 
       cursor: pointer;
 
       transition: background 0.15s ease;
     }
 
-    .menu-button:hover {
-      background: #fff5f5;
+    .menu-button:hover,
+    .reference-button:hover {
+      background: #fafafa;
     }
+
+
+    /* ==============================
+       ボタン文字
+    ============================== */
 
     .menu-title {
       color: #bd1928;
-      font-size: 16px;
+
+      font-size: 15px;
     }
 
     .menu-sub {
-      font-size: 11px;
-      color: #777;
-      margin-left: 10px;
+      display: block;
+
+      margin-top: 2px;
+
+      font-size: 10px;
+
+      color: #888;
     }
 
     .arrow {
       color: #bd1928;
-      font-size: 18px;
+
+      font-size: 20px;
     }
 
 
-    /* =====================================
+    /* ==============================
        参考文献
-    ===================================== */
+    ============================== */
 
     .reference-button {
-      width: 100%;
-      border: 2px solid #bd1928;
-      border-radius: 7px;
-
-      background: #ffffff;
-
-      padding: 10px 14px;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      font-family: "DotGothic16", sans-serif;
-      font-size: 15px;
-
-      color: #333;
-
-      cursor: pointer;
+      text-align: left;
     }
-
-    .reference-button .menu-title {
-      color: #bd1928;
-    }
-
-
-    /* =====================================
-       参考文献の中身
-    ===================================== */
 
     .reference-list {
       display: none;
 
-      margin-top: -2px;
-      padding: 5px 8px 4px;
+      padding: 3px 10px;
 
-      border-left: 2px solid #bd1928;
-      border-right: 2px solid #bd1928;
-      border-bottom: 2px solid #bd1928;
+      border-left: 1px solid #ddd;
+      border-right: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
 
-      border-radius: 0 0 7px 7px;
+      border-radius: 0 0 6px 6px;
 
-      background: #fffafa;
+      background: #fafafa;
     }
 
     .reference-list.open {
@@ -231,14 +219,15 @@
     .reference-item {
       display: block;
 
-      padding: 8px 8px;
+      padding: 8px 5px;
 
       color: #333;
+
       text-decoration: none;
 
-      font-size: 13px;
+      font-size: 12px;
 
-      border-bottom: 1px dotted #bd1928;
+      border-bottom: 1px dotted #ccc;
     }
 
     .reference-item:last-child {
@@ -247,63 +236,69 @@
 
     .reference-item strong {
       color: #bd1928;
+
       font-weight: normal;
     }
 
     .reference-item span {
       display: block;
-      font-size: 10px;
-      color: #777;
+
       margin-top: 2px;
+
+      font-size: 9px;
+
+      color: #888;
     }
 
 
-    /* =====================================
+    /* ==============================
        フッター
-    ===================================== */
+    ============================== */
 
     .footer {
       margin-top: auto;
 
-      padding-top: 12px;
+      padding-top: 18px;
 
       text-align: center;
 
-      font-size: 10px;
-      color: #999;
+      font-size: 9px;
+
+      color: #aaa;
     }
 
 
-    /* =====================================
+    /* ==============================
        小さいスマホ
-    ===================================== */
+    ============================== */
 
     @media (max-height: 700px) {
 
       .page {
-        padding-top: 10px;
+        padding-top: 18px;
       }
 
-      .hero img {
-        width: 38%;
+      .logo {
+        margin-bottom: 12px;
       }
 
       .news {
-        margin-bottom: 8px;
+        margin-bottom: 14px;
       }
 
       .menu {
-        gap: 6px;
+        gap: 7px;
       }
 
       .menu-button,
       .reference-button {
-        padding: 8px 12px;
+        min-height: 48px;
       }
 
     }
 
   </style>
+
 </head>
 
 
@@ -312,30 +307,34 @@
   <main class="page">
 
 
-    <!-- =================================
+    <!-- ==========================
          ロゴ
-    ================================== -->
+    =========================== -->
 
     <div class="logo">
 
-      <!-- ファイル名は実際のロゴ画像に変更 -->
-  <img src="torii.png" alt="⛩" style="width: 35px; height: 35px; object-fit: contain; display: block;">
-  
-  <!-- ② 下段：手書きロゴイラスト（logo.png） -->
-  <img src="logo.png" alt="笠間城クエスト" style="width: 150px; height: auto; object-fit: contain; display: block; margin-top: 2px;">
+      <img
+        src="torii.png"
+        alt="⛩"
+      >
+
+      <img
+        src="logo.png"
+        alt="笠間城クエスト"
+      >
 
     </div>
 
 
-
-
-    <!-- =================================
+    <!-- ==========================
          お知らせ
-    ================================== -->
+    =========================== -->
 
     <div class="news">
 
-      <span class="news-label">お知らせ</span>
+      <span class="news-label">
+        お知らせ
+      </span>
 
       <marquee scrollamount="4">
         笠間城クエストへようこそ！　古地図を片手に、笠間のまちを歩いてみよう！
@@ -344,9 +343,9 @@
     </div>
 
 
-    <!-- =================================
+    <!-- ==========================
          メニュー
-    ================================== -->
+    =========================== -->
 
     <div class="menu">
 
@@ -359,6 +358,7 @@
       >
 
         <div>
+
           <span class="menu-title">
             古地図を歩く
           </span>
@@ -366,6 +366,7 @@
           <span class="menu-sub">
             web地図アプリへ
           </span>
+
         </div>
 
         <span class="arrow">›</span>
@@ -382,6 +383,7 @@
       >
 
         <div>
+
           <span class="menu-title">
             研究レポート
           </span>
@@ -389,6 +391,7 @@
           <span class="menu-sub">
             PDFファイルを見る
           </span>
+
         </div>
 
         <span class="arrow">›</span>
@@ -396,9 +399,7 @@
       </a>
 
 
-      <!-- =================================
-           参考文献
-      ================================== -->
+      <!-- 参考文献 -->
 
       <div>
 
@@ -407,11 +408,9 @@
           onclick="toggleReferences()"
         >
 
-          <div>
-            <span class="menu-title">
-              参考文献
-            </span>
-          </div>
+          <span class="menu-title">
+            参考文献
+          </span>
 
           <span
             class="arrow"
@@ -427,8 +426,6 @@
           class="reference-list"
           id="reference-list"
         >
-
-          <!-- 正保の地図 -->
 
           <a
             href="#"
@@ -446,8 +443,6 @@
 
           </a>
 
-
-          <!-- 文政の地図 -->
 
           <a
             href="#"
@@ -478,9 +473,11 @@
       >
 
         <div>
+
           <span class="menu-title">
             このサイトについて
           </span>
+
         </div>
 
         <span class="arrow">›</span>
@@ -491,9 +488,9 @@
     </div>
 
 
-    <!-- =================================
+    <!-- ==========================
          フッター
-    ================================== -->
+    =========================== -->
 
     <div class="footer">
       笠間城クエスト
@@ -504,10 +501,6 @@
 
 
   <script>
-
-    // =====================================
-    // 参考文献メニュー開閉
-    // =====================================
 
     function toggleReferences() {
 
@@ -530,4 +523,5 @@
   </script>
 
 </body>
+
 </html>
