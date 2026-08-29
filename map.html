@@ -157,98 +157,111 @@
 
     
 
-/* === 🆕 画面をロックする注意書き画面（モーダル）のスタイル === */
+ /* === 🦊 安全上の注意・門番画面 === */
 #safety-modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.75); /* 後ろの画面を75%の暗さで完全にロックします */
-  backdrop-filter: blur(5px);      /* 地図をボカして見えなくします */
-  z-index: 99999;                  /* 地図やボタンよりも絶対に上に表示させる設定 */
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(5px);
+  z-index: 99999;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* 注意書きの白い巻物風ボックス */
+/* ==============================
+   注意書きボックス
+============================== */
 .safety-content {
-  background: #fdfaf2;
-  border: 3px double #8e3522;    /* お狐様ウィンドウとお揃いの渋い二本線枠 */
-  border-radius: 4px;
+  background: #ffffff;
+  border: 1px solid #d8d8d8;
+  border-radius: 7px;
   width: 90%;
   max-width: 400px;
   padding: 20px;
   text-align: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
+  font-family: "DotGothic16", sans-serif;
 }
 
+/* ==============================
+   タイトル
+============================== */
 .safety-content h3 {
   margin: 0 0 15px 0;
-  color: #8e3522;
-  font-family: 'Yuji Boku', serif;
-  font-size: 18px;
+  color: #bd1928;
+  font-family: "DotGothic16", sans-serif;
+  font-size: 17px;
+  font-weight: normal;
 }
-
-/* スマホでも文章がハミ出さずにササッとスクロールできる親切な箱 */
+/* ==============================
+   スクロール部分
+============================== */
 .safety-scroll-box {
   text-align: left;
   max-height: 50vh;
   overflow-y: auto;
-  background: #ffffff;
-  border: 1px solid #bdc3c7;
+  background: #fafafa;
+  border: 1px solid #ddd;
   padding: 12px;
-  border-radius: 4px;
+  border-radius: 5px;
+  font-family: sans-serif;
   font-size: 14px;
-  line-height: 1.5;
-  color: #2c3e50;
+  line-height: 1.6;
+  color: #333;
 }
-
+/* ==============================
+   本文
+============================== */
 .safety-scroll-box p {
   margin: 0 0 10px 0;
 }
-
 .safety-scroll-box ul {
   margin: 0;
   padding-left: 20px;
 }
-
 .safety-scroll-box li {
   margin-bottom: 12px;
 }
-
-/* ⭕️ 修正後：同意ボタンを美しい「お稲荷様の朱色」にするCSS */
-/* ⭕️ 修正後：フォントを普通に戻し、ロック状態の見た目を追加したCSS */
+/* ==============================
+   同意ボタン
+============================== */
 .agree-btn {
   width: 100%;
   margin-top: 15px;
-  background-color: #e64a19; /* 稲荷の朱色 */
-  color: white;
+  background-color: #bd1928;
+  color: #ffffff;
   border: none;
-  font-weight: bold;
-  border-radius: 4px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  /* 💡 フォントを普通（sans-serif）に戻しました */
-  font-family: sans-serif; 
-  font-size: 14px;
+  border-radius: 5px;
+  font-family: "DotGothic16", sans-serif;
+  font-size: 13px;
   padding: 10px 12px;
   cursor: pointer;
   transition: all 0.2s;
 }
-
+/* 押せる状態 */
 .agree-btn:hover:not(:disabled) {
-  background-color: #c8390c;
+  background-color: #9f1622;
 }
-
-/* 🆕 【新設定】まだ最後までスクロールしていない（無効化されている）時のボタンの見た目 */
+/* まだ読んでいない状態 */
 .agree-btn:disabled {
-  background-color: #bdc3c7 !important; /* 読まない間は灰色になります */
-  color: #7f8c8d !important;
-  cursor: not-allowed;                  /* マウスカーソルを禁止マークに */
+  background-color: #ddd !important;
+  color: #999 !important;
+  cursor: not-allowed;
   box-shadow: none;
 }
+
+
+
+
+
+
+
+    
 
 /* 🧭 A. 土台となる「回転しない背景画像」の部屋（ズームボタンの真横に配置） */
 #my-compass-wrapper {
