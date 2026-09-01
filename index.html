@@ -34,6 +34,47 @@
     body {
       min-height: 100vh;
     }
+    
+    /* ==============================
+       今日のピックアップ
+    ============================== */
+    
+    .pickup {
+      margin: 0 0 16px;
+      padding: 10px 0 12px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .pickup-label {
+      margin-bottom: 7px;
+      color: #888;
+      font-size: 10px;
+      letter-spacing: 0.5px;
+    }
+    
+    .pickup-image {
+      width: 100%;
+      height: 82px;
+      object-fit: cover;
+      display: block;
+      border-radius: 4px;
+      margin-bottom: 7px;
+    }
+    
+    .pickup-title {
+      margin: 0 0 3px;
+      color: #333;
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 1.4;
+    }
+    
+    .pickup-text {
+      margin: 0;
+      color: #777;
+      font-size: 10px;
+      line-height: 1.5;
+    }
     /* ==============================
        ページ
     ============================== */
@@ -235,7 +276,34 @@
     </div>
 
     <!-- ==========================
-        メニュー
+         今日のピックアップ
+    =========================== -->
+    
+    <section class="pickup">
+    
+      <div class="pickup-label">
+       今週のおすすめ
+      </div>
+    
+      <img
+        src="2026-09-01-17.30.18.png"
+        alt="八幡台櫓"
+        class="hachimandai"
+      >
+    
+      <div class="pickup-title">
+        真浄寺の八幡台櫓
+      </div>
+    
+      <p class="pickup-text">
+        今の季節は笠間城は蚊がすごいから、真浄寺の八幡台櫓がおすすめです。
+      </p>
+    
+    </section>
+    
+    
+    <!-- ==========================
+         メニュー
     =========================== -->
     <div class="menu">
         <!-- 古地図を歩く -->
