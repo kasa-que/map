@@ -250,11 +250,12 @@
       color: #aaa;
     }
     
-    #site-counter {
+    .site-counter {
       margin-top: 4px;
       font-size: 8px;
       color: #aaa;
     }
+    
     /* ==============================
        小さいスマホ
     ============================== */
@@ -479,8 +480,11 @@
 
 <div class="footer">
   <div>笠間城クエスト</div>
-  <div id="site-counter">👣 ---</div>
+  <div class="site-counter">
+    👣 <span id="visitor-count">---</span>
+  </div>
 </div>
+
     
   </main>
 
@@ -505,18 +509,16 @@
 
   </script>
 
-<script>
-  fetch("https://あなたのCODE.goatcounter.com/counter/TOTAL.json")
-    .then(response => response.json())
-    .then(data => {
-      document.getElementById("site-counter").textContent =
-        "👣 " + data.count;
-    })
-    .catch(() => {
-      document.getElementById("site-counter").style.display = "none";
-    });
-</script>
-
+  <script>
+    fetch("https://www.daniel-marschall.de/counter/counter.php?id=kasamajoquest&format=json")
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("visitor-count").textContent = data.count;
+      })
+      .catch(() => {
+        document.getElementById("visitor-count").textContent = "";
+      });
+  </script>
 
 </body>
 
