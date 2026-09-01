@@ -479,9 +479,9 @@
 
 <div class="footer">
   <div>笠間城クエスト</div>
-  <div id="site-counter">👣 <span id="site-count">---</span></div>
-</div>  
-  
+  <div id="site-counter">👣 ---</div>
+</div>
+    
   </main>
 
 
@@ -505,37 +505,18 @@
 
   </script>
 
+<script>
+  fetch("https://あなたのCODE.goatcounter.com/counter/TOTAL.json")
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById("site-counter").textContent =
+        "👣 " + data.count;
+    })
+    .catch(() => {
+      document.getElementById("site-counter").style.display = "none";
+    });
+</script>
 
-  <script>
-    var t = setInterval(function () {
-      if (window.goatcounter && window.goatcounter.visit_count) {
-        clearInterval(t);
-  
-        window.goatcounter.visit_count({
-          append: "#site-counter",
-          path: "TOTAL",
-          no_branding: true,
-          style: `
-            div {
-              border: none !important;
-              background: transparent !important;
-              color: #aaa !important;
-              font-family: "DotGothic16", sans-serif !important;
-              font-size: 8px !important;
-              width: auto !important;
-              height: auto !important;
-              padding: 0 !important;
-              margin: 0 !important;
-            }
-  
-            #gcvc-views {
-              font-size: 8px !important;
-            }
-          `
-        });
-      }
-    }, 100);
-  </script>
 
 </body>
 
