@@ -510,7 +510,7 @@
   // ====================================================
   // 🦊 データ　🦊
   // ====================================================
-const spots = [
+  const spots = [
   {
     id: "gmstert",
     name: "取水口？",
@@ -870,63 +870,57 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
     lat: 36, lng: 140,    radius: 30,
     info: ""
   }  
-
 ];
 
 
 
-
-
-
-
-let currentQuest = null;
-const quests = [
-
-  {
-    id: "quest01",
-    name: "宇都宮から笠間城を攻め上がれ！",
-    info: "小貫口（宇都宮口）をから笠間城下に入って、笠間城の天守まで攻めてみよう！",
-    // クエスト開始地点
-    startLat: 36.390102,
-    startLng: 140.251181,
-   // クエストクリア地点
-    clearLat: 36.382674,
-    clearLng: 140.267445,
-    clearRadius: 50000
-  },
-
-  {
-    id: "quest02",
-
-    name: "蒲生用水をたどれ！",
-
-    info: "蒲生用水の取水口を探してから、桜町時習館の堀まで蒲生用水をたどってみよう！",
-
-
-    // 🏁 クエスト開始地点
-    startLat: 36.393237,
-    startLng: 140.262333,
-
-    // 🎯 クエストクリア地点
-    clearLat: 36.378247,
-    clearLng: 140.253383,
-
-    clearRadius: 30,
-
-    stampImage: "qst02_cl.png"
-  }
-
-];
-
-
-
-
-
+  // ====================================================
+  // 🦊 クエストデータ　🦊
+  // ====================================================
+  let currentQuest = null;
+  const quests = [
+    {
+      id: "quest01",
+      name: "宇都宮から笠間城を攻め上がれ！",
+      info: "小貫口（宇都宮口）をから笠間城下に入って、笠間城の天守まで攻めてみよう！",
+      // クエスト開始地点
+      startLat: 36.390102,
+      startLng: 140.251181,
+      // クエストクリア地点
+      clearLat: 36.382674,
+      clearLng: 140.267445,
+      clearRadius: 50000
+    },
   
-// === 地図表示 ===
-// ズームレベルを「15」から、確実に航空写真が表示される「16」（より拡大された状態）に変更します
-const map = L.map("map", { zoomControl: false }).setView([36.385662,140.254050], 16);
+    {
+      id: "quest02",
+      name: "蒲生用水をたどれ！",
+      info: "蒲生用水の取水口を探してから、桜町時習館の堀まで蒲生用水をたどってみよう！",
+      // クエスト開始地点
+      startLat: 36.393237,
+      startLng: 140.262333,
+      // クエストクリア地点
+      clearLat: 36.378247,
+      clearLng: 140.253383,
+      clearRadius: 30,
+      stampImage: "qst02_cl.png"
+    }
 
+
+  ];
+
+
+
+
+
+// ====================================================
+// 🗺️　地図の登録　🗺️
+// ====================================================
+
+// === 地図表示 ===
+// 航空写真が表示される「16」
+const map = L.map("map", { zoomControl: false }).setView([36.385662,140.254050], 16);
+  
 // 1. 通常地図（OpenStreetMap）レイヤー
 const baseMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: "© OpenStreetMap",
@@ -934,45 +928,28 @@ const baseMap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 });
 
 // 2. 航空写真（国土地理院）レイヤー
-// maxNativeZoomを指定することで、これ以上ズームアウト・ズームインしても画像が消えないように保護します
 const satelliteMap = L.tileLayer("https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/{z}/{x}/{y}.jpg", {
   attribution: "© 国土地理院",
   minZoom: 2,
   maxZoom: 19,
-  maxNativeZoom: 18
+  maxNativeZoom: 18 // これ以上ズームアウト・ズームインしても画像が消えないように保護
 });
-
-
-/*const satelliteMap = L.tileLayer(
-  "https://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png",
-  {
-    attribution: "© 国土地理院",
-    minZoom: 5,
-    maxZoom: 19,
-    maxNativeZoom: 15
-  }
-);
-*/
-
-const elevationMap = L.tileLayer(
-  "https://cyberjapandata.gsi.go.jp/xyz/hillshademap/{z}/{x}/{y}.png",
-  {
+ 
+// 3. 陰影起伏図（国土地理院）レイヤー
+const elevationMap = L.tileLayer("https://cyberjapandata.gsi.go.jp/xyz/hillshademap/{z}/{x}/{y}.png",{
     attribution: "© 国土地理院",
     minZoom: 2,
     maxZoom: 19,
     maxNativeZoom: 16
-  }
-);  
+});  
   
-// === 3. オリジナルマップ（背景グループ）を別々の座標で作成 ===
+// 4. オリジナルマップ レイヤー
 const originalMapGroup = L.layerGroup();
-
-// 🗺【1枚目：joka.png】のカバーする範囲
+// 【1枚目：joka.png】のカバーする範囲
 const boundsMeiji = [
   [36.374537, 140.246776], // 左下
   [36.396091, 140.278200]  // 右上
 ];
-
 L.imageOverlay("joka_cl.webp", boundsMeiji, {
   opacity: 1.0,     
   alt: "joka"
@@ -980,32 +957,24 @@ L.imageOverlay("joka_cl.webp", boundsMeiji, {
 
 //"meijiline.png" [36.376273, 140.246029], [36.396837, 140.278823] 
 
-// 🏰【2枚目：shiro.png】のカバーする範囲（★お好みの座標に書き換えてください！）
+// 【2枚目：shiro.png】のカバーする範囲
 const boundsShiro = [
-  [36.379167, 140.260343], // 👈 shiro.png の正しい【左下】の緯度経度
-  [36.386874, 140.271266]  // 👈 shiro.png の正しい【右上】の緯度経度
+  [36.379167, 140.260343], // 左下
+  [36.386874, 140.271266]  // 右上
 ];
-
 L.imageOverlay("shiro3.webp", boundsShiro, {
   opacity: 1.0,     
-  alt: "お城イラスト"
+  alt: "shiro"
 }).addTo(originalMapGroup);
 
 
-
-
-
-
-
-
-  
-
-// === 4. 最初は「オリジナルマップ」を画面に表示しておく ===
+// 最初は「オリジナルマップ」を画面に表示しておく
 originalMapGroup.addTo(map);
 
 
-// === 5. 右上の切り替えボタンに3つの選択肢を登録 ===
-// === 🆕 ① スマホでも絶対に誤作動しない「四角パネル自動開閉システム」 ===
+// ====================================================
+// ◽️ ボタン：
+// ====================================================
 function setupControlToggle(container) {
   // 最初からexpandedが付いている（左下）場合はcollapsedをつけない
   if (!container.classList.contains('expanded')) {
@@ -1013,8 +982,7 @@ function setupControlToggle(container) {
   } else {
     container.classList.add('custom-map-control');
   }
-
-  // 【新ロジック】すべての自作四角パネルを一度「閉じる」共通の命令
+  // すべての自作四角パネルを一度「閉じる」共通の命令
   const closeAllPanels = () => {
     const allPanels = document.querySelectorAll('.custom-map-control');
     allPanels.forEach(p => {
@@ -1022,7 +990,6 @@ function setupControlToggle(container) {
       p.classList.add('collapsed');
     });
   };
-
   // アイコンをタップ、またはマウスが乗ったら「開く」
   const expand = () => {
     // 自分が開く前に、まずは他のすべてのパネルを綺麗に閉じさせる
@@ -1032,13 +999,11 @@ function setupControlToggle(container) {
   };
   container.addEventListener('mouseenter', expand);
   container.addEventListener('touchstart', expand, { passive: true });
-
   // マウスが完全に離れたら折りたたむ（最小化）
   container.addEventListener('mouseleave', () => {
     container.classList.remove('expanded');
     container.classList.add('collapsed');
   });
-
   // ラジオボタンをクリックした時は、タッチのズレを防ぐため「0.3秒待ってから」閉じる
   container.addEventListener('change', () => {
     setTimeout(() => {
@@ -1046,18 +1011,18 @@ function setupControlToggle(container) {
       container.classList.add('collapsed');
     }, 300);
   });
-
   // 地図画面をタップしたら折りたたむ
   map.on('click', () => {
     container.classList.remove('expanded');
     container.classList.add('collapsed');
   });
-
   // パネル内を触ったときに後ろの地図が勝手に動くのを防ぐ
   L.DomEvent.disableClickPropagation(container);
 }
 
-// === 🆕 ② 自作「地図切り替え四角パネル」 ===
+// ====================================================
+// ◽️ ボタン：地図 切り替え 🗺️
+// ====================================================
 const CustomLayersControl = L.Control.extend({
   options: { position: 'topright' },
   onAdd: function () {
@@ -1071,7 +1036,6 @@ const CustomLayersControl = L.Control.extend({
         <label><input type="radio" name="layer_opt" checked onclick="handleLayerRadio('original')">クエストマップ</label>
         <label><input type="radio" name="layer_opt" onclick="handleLayerRadio('base')">現代の地図</label>
         <label><input type="radio" name="layer_opt" onclick="handleLayerRadio('satellite')">航空写真</label>
-        <!-- 🆕 1. メニューの中に、4つ目の選択肢の「文字」だけを安全に追加します -->
         <label><input type="radio" name="layer_opt" onclick="handleLayerRadio('elevation')">陰影起伏図</label>
       </div>
     `;
@@ -1081,7 +1045,7 @@ const CustomLayersControl = L.Control.extend({
 });
 map.addControl(new CustomLayersControl());
   
-// 🆕 ③ 地図切り替えの実際の処理
+// 地図切り替えの実際の処理
 function handleLayerRadio(type) {
   map.removeLayer(originalMapGroup);
   map.removeLayer(baseMap);
@@ -1091,21 +1055,20 @@ function handleLayerRadio(type) {
   if (type === 'original') originalMapGroup.addTo(map);
   if (type === 'base') baseMap.addTo(map);
   if (type === 'satellite') satelliteMap.addTo(map);
-  if (type === 'elevation') elevationMap.addTo(map);
-  
+  if (type === 'elevation') elevationMap.addTo(map);  
 }
 
-// === 🆕 ⑮ 自作「目印切り替え四角パネル」（右上・2段目に配置） ===
-// 選択されているグループを覚えておく変数（最初は『すべて（all）』にしておきます）
+// ====================================================
+// ◽️ ボタン：目印 切り替え 📌
+// ====================================================
 let currentDisplayGroup = "all";
 
 const CustomFilterControl = L.Control.extend({
-  options: { position: 'topright' }, // 右上の足跡ボタンの下に綺麗に並びます
+  options: { position: 'topright' }, 
   onAdd: function () {
     const container = L.DomUtil.create('div');
     container.innerHTML = `
       <div class="control-icon control-icon-toggle">
-        <!-- 💡 閉じている時は、お気に入りのピン画像をメニューの顔にします -->
         <img src="pin_brown.png" alt="目印" style="width: 100%; height: 100%; object-fit: contain; display: block;">
       </div>
       <div class="control-content">
@@ -1125,9 +1088,9 @@ const CustomFilterControl = L.Control.extend({
 map.addControl(new CustomFilterControl());
 
 
-
-  
-// === ② 自作「足跡の記録四角パネル」（画像版） ===
+// ====================================================
+// ◽️ ボタン：足跡 切り替え🐾
+// ====================================================
 const CustomTrackControl = L.Control.extend({
   options: { position: 'topright' },
   onAdd: function () {
@@ -1149,112 +1112,64 @@ const CustomTrackControl = L.Control.extend({
   }
 });
 map.addControl(new CustomTrackControl());
+
   
-
-
-
-
-
-
 // ====================================================
-// 🦊 クエスト切り替えパネル
+// ◽️ ボタン：クエスト 切り替え🦊
 // ====================================================
 const CustomQuestControl = L.Control.extend({
   options: { position: 'topright' },
-
   onAdd: function () {
-
     const container = L.DomUtil.create('div');
-
     // クエスト一覧を自動生成
     let questListHTML = `
       <label>
-        <input
-          type="radio"
-          name="quest_opt"
-          value=""
-          checked
-          onclick="handleQuestRadio('')"
-        >
+        <input type="radio" name="quest_opt" value="" checked onclick="handleQuestRadio('')">
         クエストが選択されていません
       </label>
     `;
-
     quests.forEach(q => {
       questListHTML += `
         <label>
-          <input
-            type="radio"
-            name="quest_opt"
-            onclick="handleQuestRadio('${q.id}')"
-          >
+          <input type="radio" name="quest_opt" onclick="handleQuestRadio('${q.id}')">
           ${q.name}
         </label>
       `;
     });
-
-
     // 🗑️ クエストのクリア記録をリセット
     questListHTML += `
       <label>
-        <input
-          type="radio"
-          name="quest_opt"
-          onclick="resetQuestData()"
-        >
+        <input type="radio" name="quest_opt" onclick="resetQuestData()">
         クエストをリセット
       </label>
     `;
-
-    
-
     container.innerHTML = `
       <div class="control-icon control-icon-toggle">
-        <img
-          id="quest-menu-icon"
-          src="quest_menu.png"
-          alt="クエスト"
-          style="
-            width:100%;
-            height:100%;
-            object-fit:contain;
-            display:block;
-          "
-        >
+        <img id="quest-menu-icon" src="quest_menu.png" alt="クエスト" style="width:100%;height:100%;object-fit:contain;display:block;">
       </div>
 
       <div class="control-content">
-
         <h4>🦊 クエスト</h4>
-
         ${questListHTML}
-
       </div>
     `;
-
     setupControlToggle(container);
-
     return container;
   }
 });
-
 map.addControl(new CustomQuestControl());
 
 
 // 🦊 クエストメニューのアイコンを切り替える
 function updateQuestMenuIcon() {
-
   const icon = document.getElementById("quest-menu-icon");
-
   if (!icon) return;
-
   if (currentQuest) {
     icon.src = "quest_active.png";
   } else {
     icon.src = "quest_menu.png";
   }
 }
-
   
 // ====================================================
 // 🦊 クエスト選択時の処理
@@ -1287,7 +1202,7 @@ function handleQuestRadio(id) {
   if (questMarkers[q.id]) {
     questMarkers[q.id].openPopup();
   }
-  // お狐様メッセージ
+  // フォックスメッセージ
   const foxMsg = document.getElementById('fox-message');
   if (foxMsg) {
     foxMsg.innerHTML =
@@ -1315,21 +1230,17 @@ function handleQuestRadio(id) {
   });
 }
 
-
 // ====================================================
 // 🦊 クエストのクリア記録だけリセット
 // ====================================================
 function resetQuestData() {
-
   const ok = confirm(
     "これまでにクリアしたクエストの記録をすべて消去しますか？"
   );
-
   // キャンセルなら何もしない
   if (!ok) {
     return;
   }
-
   // --------------------------------
   // ① クエストのクリア記録だけ削除
   // --------------------------------
@@ -1338,32 +1249,27 @@ function resetQuestData() {
       "quest_clear_time_" + q.id
     );
   });
-
   // --------------------------------
   // ② 現在選択中のクエストを解除
   // --------------------------------
   currentQuest = null;
-
   // --------------------------------
   // ③ クエストピンを通常状態に戻す
   // --------------------------------
   quests.forEach(q => {
     updateQuestPinImage(q);
   });
-
-// クエストの吹き出しも最新状態に更新
-updateQuestMarkers();
-
+  
+  // クエストの吹き出しも最新状態に更新
+  updateQuestMarkers();
   // --------------------------------
   // ④ スタンプ帳を更新
   // --------------------------------
   showStamps();
-
   // --------------------------------
-  // ⑤ 狐のメッセージを更新
+  // ⑤ フォックスメッセージを更新
   // --------------------------------
   const foxMsg = document.getElementById("fox-message");
-
   if (foxMsg) {
     foxMsg.innerHTML =
       "🦊 クエストの記録をリセットしたよ！また冒険に出かけよう！";
@@ -1374,8 +1280,6 @@ updateQuestMarkers();
   alert("🦊 クエストのクリア記録をリセットしました！");
 }
 
-
-  
 // ラジオボタンが押されたときに、表示をパッと切り替える処理
 function handleFilterRadio(groupType) {
   currentDisplayGroup = groupType; // 選ばれたグループ（all, dfc, twnなど）を記憶
@@ -1395,23 +1299,17 @@ function handleFilterRadio(groupType) {
 
 
 
-  
-// === ⑧ 🆕 自作「現在地 ＆ スタンプ帳 横並び合体四角パネル」（左下） ===
-
-
-// === 📍 現在地 ＆ 📕 スタンプ帳 横並びパネル ===
+// === 現在地 🧭 ＆ 📕 スタンプ帳 横並びパネル ===
 const CustomBottomLeftControl = L.Control.extend({
   options: { position: 'bottomleft' },
-
   onAdd: function () {
-
     const mainWrapper = L.DomUtil.create('div');
     mainWrapper.style.display = 'flex';
     mainWrapper.style.gap = '10px';
     mainWrapper.style.alignItems = 'flex-start';
 
     // ====================================================
-    // ① 現在地チェック
+    // ◽️ ボタン：現在地 🧭
     // ====================================================
     const locContainer = L.DomUtil.create('div', '', mainWrapper);
 
@@ -1441,7 +1339,6 @@ const CustomBottomLeftControl = L.Control.extend({
         </div>
       </div>
     `;
-
     // 現在地は今まで通り最初から開いている
     locContainer.classList.add('expanded');
     setupControlToggle(locContainer);
@@ -1449,7 +1346,7 @@ const CustomBottomLeftControl = L.Control.extend({
 
 
     // ====================================================
-    // ② スタンプ帳
+    // ◽️ ボタン：現在地 📕
     // ====================================================
     const bookContainer = L.DomUtil.create('div', '', mainWrapper);
 
