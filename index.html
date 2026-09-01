@@ -12,6 +12,13 @@
   async
   src="//gc.zgo.at/count.js">
   </script>
+  <script>
+    window.goatcounter.visit_count({
+      append: "#site-counter",
+      path: "TOTAL",
+      no_branding: true
+    });
+  </script>
   
   <!-- DotGothic16 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -247,6 +254,12 @@
       font-size: 9px;
       color: #aaa;
     }
+    
+    #site-counter {
+      margin-top: 4px;
+      font-size: 8px;
+      opacity: 0.7;
+    }
     /* ==============================
        小さいスマホ
     ============================== */
@@ -469,8 +482,12 @@
 =========================== -->
 
 <div class="footer">
-  笠間城クエスト
+  <div>笠間城クエスト</div>
+  <div id="site-counter"></div>
 </div>
+  
+  
+  
   </main>
 
 
