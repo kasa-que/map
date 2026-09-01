@@ -13,13 +13,19 @@
   src="//gc.zgo.at/count.js">
   </script>
   <script>
-    window.goatcounter.visit_count({
-      append: "#site-counter",
-      path: "TOTAL",
-      no_branding: true
-    });
-  </script>
+    var t = setInterval(function () {
+      if (window.goatcounter && window.goatcounter.visit_count) {
+        clearInterval(t);
   
+        window.goatcounter.visit_count({
+          append: "#site-counter",
+          path: "TOTAL",
+          no_branding: true
+        });
+      }
+    }, 100);
+  </script>
+    
   <!-- DotGothic16 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -258,7 +264,7 @@
     #site-counter {
       margin-top: 4px;
       font-size: 8px;
-      opacity: 0.7;
+      color: #aaa;
     }
     /* ==============================
        小さいスマホ
@@ -485,8 +491,7 @@
 <div class="footer">
   <div>笠間城クエスト</div>
   <div id="site-counter"></div>
-</div>
-  
+</div>  
   
   
   </main>
