@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>笠間城クエスト!</title>
+  <title>笠間城クエスト</title>
 
   <script
   data-goatcounter="https://kasa-que.goatcounter.com/count"
@@ -250,12 +250,18 @@
       color: #aaa;
     }
     
-    .site-counter {
-      margin-top: 4px;
-      font-size: 8px;
-      color: #aaa;
-    }
-    
+.site-counter {
+  margin-top: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+}
+
+.site-counter img {
+  height: 12px;
+  width: auto;
+}    
     /* ==============================
        小さいスマホ
     ============================== */
@@ -480,11 +486,14 @@
 
 <div class="footer">
   <div>笠間城クエスト</div>
+
   <div class="site-counter">
-    👣 <span id="visitor-count">---</span>
+    <img
+      src="https://www.daniel-marschall.de/counter/counter.php?id=kasamajoquest202609&format=graphic&theme=digital"
+      alt="訪問数"
+    >
   </div>
 </div>
-
     
   </main>
 
@@ -509,16 +518,7 @@
 
   </script>
 
-  <script>
-    fetch("https://www.daniel-marschall.de/counter/counter.php?id=kasamajoquest202609&format=json")
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById("visitor-count").textContent = data.visitors;
-      })
-      .catch(() => {
-        document.getElementById("visitor-count").textContent = "";
-      });
-  </script>
+
 
 </body>
 
