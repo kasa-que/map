@@ -505,16 +505,6 @@
 
   </script>
 
-  <script>
-    fetch("https://kasa-que.goatcounter.com/counter/%2F.json")
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById("site-count").textContent = data.count;
-      })
-      .catch(() => {
-        document.getElementById("site-counter").style.display = "none";
-      });
-  </script>
 
   <script>
     var t = setInterval(function () {
