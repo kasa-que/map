@@ -510,10 +510,10 @@
   </script>
 
   <script>
-    fetch("https://www.daniel-marschall.de/counter/counter.php?id=kasamajoquest&format=json")
+    fetch("https://www.daniel-marschall.de/counter/counter.php?id=kasamajoquest202609&format=json")
       .then(response => response.json())
       .then(data => {
-        document.getElementById("visitor-count").textContent = data.count;
+        document.getElementById("visitor-count").textContent = data.visitors;
       })
       .catch(() => {
         document.getElementById("visitor-count").textContent = "";
