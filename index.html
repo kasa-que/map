@@ -12,20 +12,9 @@
   async
   src="//gc.zgo.at/count.js">
   </script>
-  <script>
-    var t = setInterval(function () {
-      if (window.goatcounter && window.goatcounter.visit_count) {
-        clearInterval(t);
+
+
   
-        window.goatcounter.visit_count({
-          append: "#site-counter",
-          path: "TOTAL",
-          no_branding: true
-        });
-      }
-    }, 100);
-  </script>
-    
   <!-- DotGothic16 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -490,9 +479,8 @@
 
 <div class="footer">
   <div>笠間城クエスト</div>
-  <div id="site-counter"></div>
+  <div id="site-counter">👣 <span id="site-count">---</span></div>
 </div>  
-  
   
   </main>
 
@@ -515,6 +503,48 @@
       }
     }
 
+  </script>
+
+  <script>
+    fetch("https://kasa-que.goatcounter.com/counter/%2F.json")
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("site-count").textContent = data.count;
+      })
+      .catch(() => {
+        document.getElementById("site-counter").style.display = "none";
+      });
+  </script>
+
+  <script>
+    var t = setInterval(function () {
+      if (window.goatcounter && window.goatcounter.visit_count) {
+        clearInterval(t);
+  
+        window.goatcounter.visit_count({
+          append: "#site-counter",
+          path: "TOTAL",
+          no_branding: true,
+          style: `
+            div {
+              border: none !important;
+              background: transparent !important;
+              color: #aaa !important;
+              font-family: "DotGothic16", sans-serif !important;
+              font-size: 8px !important;
+              width: auto !important;
+              height: auto !important;
+              padding: 0 !important;
+              margin: 0 !important;
+            }
+  
+            #gcvc-views {
+              font-size: 8px !important;
+            }
+          `
+        });
+      }
+    }, 100);
   </script>
 
 </body>
