@@ -1363,7 +1363,6 @@ const CustomBottomLeftControl = L.Control.extend({
 
         <!-- スタンプ帳メニュー -->
         <div class="control-content" style="margin-left:5px;">
-
           <h4 style="
             margin:0 0 8px 0;
             padding:0;
@@ -1449,29 +1448,24 @@ function handleStampBookRadio(type) {
     );
 
     if (answer) {
-
       // スタンプだけ削除
       spots.forEach(s => {
         localStorage.removeItem("stamp_" + s.id);
         localStorage.removeItem("stamp_time_" + s.id);
       });
-
       // 地図のピンを更新
       updateMapMarkers();
-
       // スタンプ帳を「全て」に戻す
       showStamps('all');
-
-      // お狐様メッセージ
+      // フォックスメッセージ
       const foxMsg = document.getElementById('fox-message');
 
       if (foxMsg) {
         foxMsg.innerHTML =
           "🦊 スタンプ帳をまっさらにしたよ！また集めに行こう！";
       }
-
       alert("御集印帳をリセットしました。");
-
+      
       // リセット後もスタンプ帳へ
       scrollToStampBook();
 
@@ -1481,11 +1475,10 @@ function handleStampBookRadio(type) {
 
       if (foxMsg) {
         foxMsg.innerHTML =
-          "🦊 ほっ……スタンプはちゃんと残っているよ！";
+          "🦊 スタンプはちゃんと残っているよ！";
       }
     }
   }
-
   // --------------------------------
   // パネルを閉じる
   // --------------------------------
@@ -1496,8 +1489,6 @@ function handleStampBookRadio(type) {
     panel.classList.add('collapsed');
   });
 }
-
-
 // ====================================================
 // 📖 スタンプ帳まで自動スクロール
 // ====================================================
@@ -1519,6 +1510,10 @@ function scrollToStampBook() {
   }, 100);
 }
   
+
+
+
+
   
 /////////
 // === 🆕 ⑥ 【新システム】名前がぶつからない足跡記録変数 ===
@@ -1666,10 +1661,6 @@ function startNewTracking() {
         });
         localStorage.setItem("saved_breadcrumbs", JSON.stringify(rawCoords));
       }
-
-
-
-      
     },
     (err) => {
       console.error("位置の追跡に失敗しました:", err.message);
@@ -1691,6 +1682,19 @@ function pauseNewTracking() {
   navigator.geolocation.clearWatch(myNewWatchId);
   myNewWatchId = null;
 }  
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   
@@ -3092,26 +3096,24 @@ restoreBreadcrumbs();
 
   
   
-// === 🆕 ⑩ 地図をクリックしたときに正確な座標（緯度経度）を取得してお狐様がつぶやく機能 ===
-// === 🆕 ⑩ 地図をクリックしたときに座標を取得し、目印の点を打つ機能（改良版） ===
-/**/
-
-let debugClickMarker = null; // 開発用の目印ピンを入れておく変数（箱）
+// ====================================================
+// 開発用、座標表示
+// ====================================================
+let debugClickMarker = null; 
 map.on('click', function(e) {
   const foxMsg = document.getElementById('fox-message');  
-  // A. クリックした場所の緯度経度を取得して綺麗に丸める
+  // クリックした場所の緯度経度を取得して丸める
   const clickedLat = e.latlng.lat;
   const clickedLng = e.latlng.lng;
   const formattedLat = clickedLat.toFixed(6);
   const formattedLng = clickedLng.toFixed(6);  
   // 開発ツール（コンソール）にもコピー用に出力
   console.log(`取得した座標 -> lat: ${formattedLat}, lng: ${formattedLng}`);
-  // B. 【新機能】クリックした場所に目印の「てんてん」を打つ
   // もし、すでに前に打った古い目印があれば、地図から一度消去する
   if (debugClickMarker) {
     map.removeLayer(debugClickMarker);
   }
-  // 新しい位置に、小さな黒い点を打つ（手書きイラストピンより小さく目立たない色に）
+  // 新しい位置に、小さな黒い点を打つ
   debugClickMarker = L.circleMarker([clickedLat, clickedLng], {
     radius: 5,           // 点の大きさ
     color: "#000000",    // 枠線の色（黒）
@@ -3126,38 +3128,35 @@ map.on('click', function(e) {
 });
 
 
-
-// === 🆕 ⑬ ライブラリ不使用・スマホの生センサー直結の方位磁石システム（2枚重ね版） ===
+// ====================================================
+// 方位磁石
+// ====================================================
 const compassContainer = document.getElementById('map');
 if (compassContainer) {
-  // 1. まずは「回転しない土台（背景）」の丸い部屋を作ります
+  // 回転しない背景
   const compassWrapper = document.createElement('div');
   compassWrapper.id = 'my-compass-wrapper';
   compassContainer.appendChild(compassWrapper);
-
-  // 2. その土台の「真上（内側）」に、クルクル回転する針の部屋を合体させます
+  // 真上クルクル回転する針
   const compassDiv = document.createElement('div');
   compassDiv.id = 'my-live-compass';
   compassWrapper.appendChild(compassDiv); // 土台の中に入れ子にする
-
-  // スマホの「向き（方位）センサー」のリアルタイム監視（許可の連動処理はそのまま生きます）
+  // スマホの「向き（方位）センサー」のリアルタイム監視
   window.addEventListener('deviceorientation', function(e) {
     let heading = e.webkitCompassHeading || (360 - e.alpha);
     if (heading !== undefined && heading !== null) {
-      // 中の針の部屋（compassDiv）だけを、センサーに合わせてクルクル逆回転させます！
       compassDiv.style.transform = 'rotate(' + (-heading) + 'deg)';
     }
   }, true);
 }
-// === ⑭ iPhoneや最新スマホの「方位センサーの鍵」を解禁するシステム ===
+
 // 門番画面の「同意して始める」ボタン（agreeSafety）が押された瞬間に、センサーの許可をスマホに申請します
 const originalAgreeSafety = agreeSafety; // 以前作った関数を一旦バックアップ
 
 agreeSafety = function() {
-  // まずは以前作った「注意書き画面を消す処理」を実行
+  // 注意書き画面を消す処理
   originalAgreeSafety();
-
-  // スマホ（特にiPhone）に「方位センサーを使ってよいか」確認の許可を求めます
+  // スマホに「方位センサーを使ってよいか」確認
   if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
     DeviceOrientationEvent.requestPermission()
       .then(permissionState => {
@@ -3173,25 +3172,24 @@ agreeSafety = function() {
 
 
 
-  
-// === 🆕 ⑪ 注意書き画面で「同意する」が押されたときに画面を消す関数 ===
+// ====================================================
+// 安全確認
+// ====================================================
+// 同意する」が押されたときに画面を消す
 function agreeSafety() {
   const modal = document.getElementById('safety-modal');
   if (modal) {
-    modal.style.display = 'none'; // 門番画面を非表示にして、地図を解禁します！
+    modal.style.display = 'none';
   }
 }
-
-// === 🆕 ⑫ 注意書きを最後までスクロールしたか監視するシステム ===
+// 注意書きを最後までスクロールしたかチェック
 document.addEventListener("DOMContentLoaded", function() {
   const scrollBox = document.getElementById("safety-scroll");
   const agreeBtn = document.getElementById("agree-button");
-
   if (scrollBox && agreeBtn) {
     scrollBox.addEventListener("scroll", function() {
       // 箱全体の高さから、見えている高さを引いた「最大のスクロール位置」を計算
-      const maxScroll = scrollBox.scrollHeight - scrollBox.clientHeight;
-      
+      const maxScroll = scrollBox.scrollHeight - scrollBox.clientHeight;      
       // 現在のスクロール位置が、一番下（誤差1ピクセル以内）まで到達したか判定
       if (scrollBox.scrollTop >= maxScroll - 1) {
         agreeBtn.disabled = false; // ボタンのロックを解除！
