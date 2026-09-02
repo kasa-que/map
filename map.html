@@ -1923,14 +1923,36 @@ function updateMapMarkers() {
 
 
       
-     // 🆕 dfc（防御施設）は、公式の途切れ線を使って100%確実に「バツ」の形を描きます！
+      // dfcの処理
       if (isDfc) {
-        fillOpt = 0.0;          // 中身は透明
-        strokeOpt = true;       // 輪郭線を出す
-        borderWeight = 4;       // バツを見やすくするために線を少し太く
-        dashArrayOpt = "4, 4";  // 💡【解決策】4ピクセル描いて4ピクセルあける。これで丸が綺麗な4本線のバツ（十字）に変身します！
+        let myXIconUrl = "dfc_blue.png"; // ① デフォルト（未訪）
+        if (got) {
+          myXIconUrl = "dfc_red.png";    // ② スタンプ済（エンジ）
+        } else if (wish) {
+          myXIconUrl = "dfc_yellow.png"; // ③ 行ってみたい（お狐みかん色）
+        }
+      
+        // バツ印専用のカスタム画像ピンを作ります（サイズ固定の安全設定）
+        var myXIcon = L.icon({
+          iconUrl: myXIconUrl,                     
+          iconSize: L.point(40, 40),              
+          iconAnchor: L.point(20, 40),            
+          popupAnchor: L.point(0, -42)            
+        });
       }
-
+      if (isDfc) {
+        if (markers[s.id]) {
+          if (typeof markers[s.id].setIcon === "function") {
+            markers[s.id].setIcon(myXIcon).setPopupContent(popupContent);
+          } else {
+            map.removeLayer(markers[s.id]);
+            markers[s.id] = L.marker(L.latLng(s.lat, s.lng), { icon: myXIcon }).addTo(map).bindPopup(popupContent);
+          }
+        } else {
+          markers[s.id] = L.marker(L.latLng(s.lat, s.lng), { icon: myXIcon }).addTo(map).bindPopup(popupContent);
+        }
+        return; // 💡 これでdfcの処理は完了！この下のドット用のプログラム（dotOptionsなど）はスルーして次のスポットへ進みます
+      }
 
 
       
