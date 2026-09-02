@@ -767,7 +767,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
   {
     id: "twn05",
     name: "大町",
-    lat: 36.384988, lng: 140.256491,    radius: 30,
+    lat: 36.384941, lng: 140.256529,    radius: 30,
     info: "1595年に玉生氏は三所神社からの山裾に沿って幅八間半（約12m）の道を整備して石井の人たちを移して町人町を作りました。"
   },
   {
@@ -1904,17 +1904,17 @@ function updateMapMarkers() {
     // ====================================================
     const isTwn = s.id && s.id.startsWith("twn");
     const isNow = s.id && s.id.startsWith("now");
-    const isRec = s.id && s.id.startsWith("rec");
-    //if (isTwn || isNow || isRec) {
+    const isRcm = s.id && s.id.startsWith("rcm");
+    //if (isTwn || isNow || isRcm) {
 
-    if (isTwn || isNow || isRec) {
+    if (isTwn || isNow || isRcm) {
 
       // ------------------------------
       // 基本となる線の色
       // ------------------------------
       let dotColor = "#7f756b";
 
-      if (isNow|| isRec) {
+      if (isNow|| isRcm) {
         dotColor = "#33302e";
       }
 
@@ -1933,7 +1933,7 @@ function updateMapMarkers() {
       let borderWeight = 3;
       let strokeOpacityOpt = 1.0;
 
-      if (isNow|| isRec) {
+      if (isNow|| isRcm) {
         fillOpt = 0.0;
         strokeOpt = true;
         strokeOpacityOpt = 0.6;
