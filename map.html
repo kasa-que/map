@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>スタンプラリ</title>
+  <title>笠間城クエスト</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -527,14 +527,14 @@
     lat: 36.3858092, lng: 140.2623968,    radius: 30,
     info: "弁財天では坂本九の石碑の近くに石段がありそこを登るとたどり着くことができます。近くに坂本九が疎開した家があります。"
   }
-/*,{
+ ,{
     id: "bld10",
     name: "佐志能神社",
     lat: 36.382576, lng: 140.267491,
     radius: 30,
     info: ""
   }
-  */
+  
 // ====================================================
 // 🏯 建物　bld　🏯　やぐら
 // ====================================================
@@ -543,8 +543,12 @@
     name: "八幡台櫓",
     lat: 36.382503, lng: 140.266092,
     radius: 30,
-    info: "5m盛り上がったところに２階建ての櫓があり、普段は武器の倉庫に、戦いのときは物見櫓として使われていました。また八幡台櫓と思われる櫓が真浄時に移設されています。"
+    info: "5m盛り上がったところに２階建ての櫓があり、普段は武器の倉庫に、戦いのときは物見櫓として使われていました。また八幡台櫓と思われる櫓が<a href='javascript:void(0)' onclick='jumpToMapMarker(\"now02\")' style='color:#e64a19; font-weight:bold; text-decoration:underline;'>真浄時</a>に移設されています。"
   }
+
+ 
+
+    
 ,{
     id: "bld12",
     name: "宍々崎櫓",
@@ -3136,7 +3140,27 @@ agreeSafety = function() {
   }
 };
 
+// ====================================================
+// ピンへワープ
+// ====================================================
+function jumpToMapMarker(spotId) {
+  // spotsデータから、指定されたIDの座標を特定
+  const s = spots.find(spot => spot.id === spotId);
+  const marker = markers[spotId];
 
+  if (s && marker) {
+    // 画面をスタンプ帳から「地図の場所」へ
+    const mapEl = document.getElementById('map');
+    if (mapEl) mapEl.scrollIntoView({ behavior: 'smooth' });
+
+    // 0.3秒だけ画面のスクロールを待ってから、地図をそのピンの緯度経度へ自動移動（ワープ）
+    setTimeout(() => {
+      map.panTo([s.lat, s.lng]);
+      // 3. 移動が完了したら、そのピンの吹き出しを全自動でパカッと開き直します！
+      marker.openPopup();
+    }, 300);
+  }
+}
 
 // ====================================================
 // 安全確認
