@@ -1127,12 +1127,36 @@ function handleLayerRadio(type) {
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
       foxMsg.innerHTML =
-      "🦊 クエストマップに切り替えたよ！";
+      "🦊 クエストマップに切り替えたよ！⚠️";
     }
   }
-  if (type === 'base') baseMap.addTo(map);
-  if (type === 'satellite') satelliteMap.addTo(map);
-  if (type === 'elevation') elevationMap.addTo(map);  
+  if (type === 'base') {
+    baseMap.addTo(map);
+    const foxMsg = document.getElementById("fox-message");
+    if (foxMsg) {
+      foxMsg.innerHTML =
+      "🦊 現代の地図に切り替えたよ！⚠️";
+    }
+  }
+  if (type === 'satellite') {
+    satelliteMap.addTo(map);
+    const foxMsg = document.getElementById("fox-message");
+    if (foxMsg) {
+      foxMsg.innerHTML =
+      "🦊 航空写真に切り替えたよ！⚠️";
+    }
+  }
+  if (type === 'elevation') {
+    elevationMap.addTo(map); 
+    const foxMsg = document.getElementById("fox-message");
+    if (foxMsg) {
+      foxMsg.innerHTML =
+      "🦊 陰影起伏図に切り替えたよ！⚠️";
+    }
+  }
+  //if (type === 'base') baseMap.addTo(map);
+  //if (type === 'satellite') satelliteMap.addTo(map);
+  //if (type === 'elevation') elevationMap.addTo(map);  
 }
 
 // ====================================================
@@ -2333,8 +2357,20 @@ function toggleWish(id) {
   const wish = localStorage.getItem("wish_" + id);
   if (wish) {
     localStorage.removeItem("wish_" + id); // すでに登録されていれば解除（赤に戻す）
+    const foxMsg = document.getElementById("fox-message");
+    if (foxMsg) {
+      foxMsg.innerHTML =
+      "🦊 「行ってみたい」を解除したよ！⚠️";
+    }
+
   } else {
     localStorage.setItem("wish_" + id, "true"); // なければ登録（黄色にする）
+    const foxMsg = document.getElementById("fox-message");
+    if (foxMsg) {
+      foxMsg.innerHTML =
+      "🦊 「行ってみたい」を覚えたよ！⚠️";
+    }
+
   }
   updateMapMarkers(); // 地図のピンの色と、吹き出し内のボタン表示を即座に更新
 }
