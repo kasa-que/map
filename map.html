@@ -24,6 +24,8 @@
     button { font-size: 16px; padding: 8px 12px; cursor: pointer; }
     .stamp { font-size: 20px; margin-bottom: 10px; }
 
+    .jump-pin{color:#e6b422; font-weight:bold; text-decoration:underline;}
+
        /* =================================
           📌 ピン
          ================================= */
@@ -543,7 +545,7 @@
     name: "八幡台櫓",
     lat: 36.382503, lng: 140.266092,
     radius: 30,
-    info: "5m盛り上がったところに２階建ての櫓があり、普段は武器の倉庫に、戦いのときは物見櫓として使われていました。また八幡台櫓と思われる櫓が<a href='javascript:void(0)' onclick='jumpToMapMarker(\"now02\")' style='color:#e64a19; font-weight:bold; text-decoration:underline;'>真浄時</a>に移設されています。"
+    info: "5m盛り上がったところに２階建ての櫓があり、普段は武器の倉庫に、戦いのときは物見櫓として使われていました。また八幡台櫓と思われる櫓が<a class='jump-pin' href='javascript:void(0)' onclick='jumpToMapMarker(\"now02\")' >真浄時</a>に移設されています。"
   }
 
  
@@ -690,7 +692,7 @@
   }
   ,{
     id: "now02",
-    name: "現存の櫓（真浄寺内）",
+    name: "現存の櫓（真浄寺のなか）",
     lat: 36.390546, lng: 140.258482,    radius: 30,
     info: "明治時代の「廃城令」によって悲しんだ侍が、笠間城の状態のいい櫓をここ真浄寺に許可をもらって移して、これは八幡台櫓だと言われていますが本当かどうかはわかっていません。"
   }
