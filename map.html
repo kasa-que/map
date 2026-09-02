@@ -457,7 +457,7 @@
   gap: 12px;
   ">
     
-    <img src="fox.png" alt="いなち" style="width: 70px; height: 70px; object-fit: contain; flex-shrink: 0;">
+    <img src="fox.png" alt="いな" style="width: 70px; height: 70px; object-fit: contain; flex-shrink: 0;">
     
     <p id="fox-message">
       <span class="m-h-l">地図の中の目印</span>をタッチして行きたいところを探してね！<br/>
@@ -1346,7 +1346,7 @@ const CustomBottomLeftControl = L.Control.extend({
 
 
     // ====================================================
-    // ◽️ ボタン：現在地 📕
+    // ◽️ ボタン：スタンプ 📕
     // ====================================================
     const bookContainer = L.DomUtil.create('div', '', mainWrapper);
 
@@ -1399,7 +1399,6 @@ const CustomBottomLeftControl = L.Control.extend({
         </div>
       </div>
     `;
-
     setupControlToggle(bookContainer);
 
     return mainWrapper;
@@ -1412,18 +1411,14 @@ map.addControl(new CustomBottomLeftControl());
 // 📖 スタンプ帳メニューの処理
 // ====================================================
 function handleStampBookRadio(type) {
-
   // --------------------------------
   // 獲得したスタンプだけ表示
   // --------------------------------
   if (type === 'got') {
-
     showStamps('got');
-
     // スタンプ帳までスクロール
     scrollToStampBook();
   }
-
   // --------------------------------
   // 全てのスタンプを表示
   // --------------------------------
@@ -1434,12 +1429,10 @@ function handleStampBookRadio(type) {
     // スタンプ帳までスクロール
     scrollToStampBook();
   }
-
   // --------------------------------
   // スタンプ帳リセット
   // --------------------------------
   else if (type === 'reset') {
-
     const answer = confirm(
       "🦊 本当にいいの？\n\n" +
       "これまでに集めたスタンプが\n" +
@@ -1501,12 +1494,10 @@ function scrollToStampBook() {
   // 少し待ってからスクロール
   // → showStamps() で内容を書き換えたあとに確実に移動するため
   setTimeout(() => {
-
     stampBook.scrollIntoView({
       behavior: "smooth",
       block: "start"
     });
-
   }, 100);
 }
   
@@ -1514,26 +1505,21 @@ function scrollToStampBook() {
 
 
 
-  
-/////////
-// === 🆕 ⑥ 【新システム】名前がぶつからない足跡記録変数 ===
-let myNewWatchId = null;       // 重複を避けるため名前を変えました
-let myNewTrackDots = [];       // 重複を避けるため名前を変えました
-let myNewLastDotTime = 0;      // 重複を避けるため名前を変えました
+// ====================================================
+// 🐾 足跡の処理
+// ====================================================￥
+let myNewWatchId = null;
+let myNewTrackDots = [];
+let myNewLastDotTime = 0;
 
-
-  // === ⑥ 四角ボタンの画像がモードに合わせて変身する足跡コントロール関数 ===
-function handleTrackRadio(mode) {
+  function handleTrackRadio(mode) {
   const iconStatus = document.getElementById('track-icon-status');
   const foxMsg = document.getElementById('fox-message');
 
-  // お狐様のメッセージ要素を取得（もし無ければエラー防止）
   const getFoxMsgEl = () => document.getElementById('fox-message');
 
   if (mode === 'start') {
-    startNewTracking(); // 🟢 GPS追跡スタート
-    
-    // 【新設定】四角ボタンの画像の中身を「🟢用のスタート画像」に差し替えます
+    startNewTracking(); 
     if (iconStatus) {
       iconStatus.innerHTML = `<img src="icon_track_start.png" alt="足跡(記録中)" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
     }
@@ -1541,9 +1527,7 @@ function handleTrackRadio(mode) {
   } 
   
   else if (mode === 'pause') {
-    pauseNewTracking(); // 🟡 GPS追跡を一時停止
-    
-    // 【新設定】四角ボタンの画像の中身を「🟡用のひとやすみ画像」に差し替えます
+    pauseNewTracking();
     if (iconStatus) {
       iconStatus.innerHTML = `<img src="icon_track.png" alt="足跡(ひとやすみ)" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
     }
@@ -1551,7 +1535,6 @@ function handleTrackRadio(mode) {
   } 
   
   else if (mode === 'stop') {
-    // ⚪ リセット
     if (myNewTrackDots.length > 0) {
       if (confirm("これまでに記録した歩いた足跡（てんてん）をすべて消去しますか？")) {
         myNewTrackDots.forEach(dot => map.removeLayer(dot));
@@ -1563,12 +1546,11 @@ function handleTrackRadio(mode) {
           myNewWatchId = null;
         }
         
-        // 【新設定】リセットされたら、大元の「通常の足跡画像」に戻します
         if (iconStatus) {
           iconStatus.innerHTML = `<img src="icon_track.png" alt="足跡" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
         }
         if (foxMsg) foxMsg.innerHTML = `足跡を消したよ！もう一回探検してみてね！`;
-        alert("⚪ 足跡をリセットしました。");
+        alert("足跡をリセットしました");
       } else {
         // キャンセルされたらボタンのチェックを戻す
         if (myNewWatchId !== null) {
@@ -1588,7 +1570,7 @@ function handleTrackRadio(mode) {
         navigator.geolocation.clearWatch(myNewWatchId);
         myNewWatchId = null;
       }
-      // 最初からデータが無い時も大元の「通常の足跡画像」にする
+      // 最初からデータが無い時
       if (iconStatus) {
         iconStatus.innerHTML = `<img src="icon_track.png" alt="足跡" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
       }
@@ -1597,7 +1579,7 @@ function handleTrackRadio(mode) {
   }
 }
   
-// === 🟢 【新システム】足跡スタート（30秒おき） ===
+// 足跡スタート（30秒おき）
 function startNewTracking() {
   if (!navigator.geolocation) {
     alert("お使いのブラウザは位置情報の追跡に対応していません");
@@ -1638,11 +1620,9 @@ function startNewTracking() {
       }
 
       // 【30秒おきのドット記録システム】（ドットを打つと同時に、ブラウザに保存します）
-
-
       const now = Date.now();
       if (myNewLastDotTime === 0 || (now - myNewLastDotTime) >= 30000) {
-        // 色を先ほどの茶色（#a07855）にし、直径を2/3（半径4pxから約2.6px）に小さくしました
+        // 色：茶色（#a07855）、2.6px
         const dot = L.circleMarker([uLat, uLng], {
           radius: 2.6,        
           color: "#a07855",   
@@ -1654,7 +1634,7 @@ function startNewTracking() {
         myNewLastDotTime = now;
 
         
-        // 【追加】これまでの足跡データをLocalStorageにテキストとして保存
+        // 足跡データをLocalStorageにテキストとして保存
         const rawCoords = myNewTrackDots.map(d => {
           const ll = d.getLatLng();
           return [ll.lat, ll.lng];
@@ -1676,7 +1656,7 @@ function startNewTracking() {
   );
 }
 
-// === 🟡 【新システム】足跡ひとやすみ ===
+// 足跡ひとやすみ 
 function pauseNewTracking() {
   if (myNewWatchId === null) return;
   navigator.geolocation.clearWatch(myNewWatchId);
@@ -1689,31 +1669,17 @@ function pauseNewTracking() {
 
 
 
-
-
-
-
-
-
-
-
-  
-  
-// マーカーの見た目を更新・初期配置する関数（吹き出し内に「行きたいボタン」を追加）
-// マーカーの見た目を更新・初期配置する関数（3種類の手書きイラスト切り替え版）
-// マーカーの見た目を更新・初期配置する関数（twn専用：透過ドット切り替え版）
-// マーカーの見た目を更新・初期配置する関数（オリジナルスタンプ画像切り替え版）
-// マーカーの見た目を更新・初期配置する関数（スポット別スタンプ画像 ＆ 緑文字消去版）
-// マーカーの見た目を更新・初期配置する関数（dfcは常に輪郭線キープ版）
-// マーカーの見た目を更新・初期配置する関数（茶系透過＆8割スモールドット版）
-/////PPPPP
+// ====================================================
+// 📖 目印の処理
+// ====================================================
+ 
 function updateMapMarkers() {
   spots.forEach(s => {
     const got = localStorage.getItem("stamp_" + s.id);      // 獲得済
     const wish = localStorage.getItem("wish_" + s.id);      // 行きたい
 
     // ====================================================
-    // 🆕 選択されたグループに、このピンが該当するか判定
+    //選択されたグループに、このピンが該当するか判定
     // ====================================================
     let isMatched = false;
 
@@ -1727,7 +1693,7 @@ function updateMapMarkers() {
     }
 
     // ====================================================
-    // 🆕 選ばれたグループ以外のピンを地図から一時的に隠す
+    // 選ばれたグループ以外のピンを地図から一時的に隠す
     // ====================================================
     if (!isMatched) {
       if (markers[s.id]) {
@@ -1737,14 +1703,14 @@ function updateMapMarkers() {
     }
 
     // ====================================================
-    // 🆕 選択されたグループのピンを地図に戻す
+    // 選択されたグループのピンを地図に戻す
     // ====================================================
     if (markers[s.id] && !map.hasLayer(markers[s.id])) {
       markers[s.id].addTo(map);
     }
 
     // ====================================================
-    // ① 手書き画像グループの画像ファイル名決定
+    // 手書き画像グループの画像ファイル名決定
     // ====================================================
     let myIconUrl = "pin_blue.png";
 
@@ -1773,7 +1739,7 @@ function updateMapMarkers() {
     });
 
     // ====================================================
-    // ② 吹き出し（ポップアップ）の中身を作成
+    // 吹き出し（ポップアップ）の中身を作成
     // ====================================================
     let stampImageUrl = "stmpof.png";
 
@@ -1787,7 +1753,6 @@ function updateMapMarkers() {
       `<div style="text-align: center; font-family: sans-serif; min-width: 140px;">`;
 
     if (got) {
-
       // ------------------------------
       // 獲得済み
       // ------------------------------
@@ -1909,7 +1874,7 @@ function updateMapMarkers() {
     popupContent += `</div>`;
 
     // ====================================================
-    // ③ ドット表示グループ
+    // ドット表示グループ
     // ====================================================
     const isTwn = s.id && s.id.startsWith("twn");
     const isNow = s.id && s.id.startsWith("now");
@@ -1996,7 +1961,7 @@ function updateMapMarkers() {
     } else {
 
       // ====================================================
-      // ④ 通常・rcmスポット（画像ピン）
+      // 通常・rcmスポット（画像ピン）
       // ====================================================
       if (markers[s.id]) {
 
@@ -2031,7 +1996,7 @@ function updateMapMarkers() {
     }
   });
 }  
-//PPPPP
+
 
 // ====================================================
 // 🦊 クエストマーカーを表示
@@ -2124,7 +2089,7 @@ function updateQuestMarkers() {
   `;
 
     
-    // ★開始地点にクエストピンを立てる
+    // 開始地点にクエストピンを立てる
     questMarkers[q.id] = L.marker(
       [q.startLat, q.startLng],
       { icon: questIcon }
@@ -2267,8 +2232,13 @@ function updateQuestPinImage(q) {
   }
 }
   
-  
-// === 🆕 「行きたい」ボタンが押された時のオンオフ処理 ===
+
+
+
+// ====================================================
+// 📌 「行きたい」ボタンの処理
+// ====================================================
+// が押された時のオンオフ処理 ===
 function toggleWish(id) {
   const wish = localStorage.getItem("wish_" + id);
   if (wish) {
@@ -2281,8 +2251,9 @@ function toggleWish(id) {
 
 
   
-
-// === 距離計算 ===
+// ====================================================
+// 🚶 距離計算の処理
+// ====================================================
 function isNear(lat1, lng1, lat2, lng2, radius) {
   const R = 6371000;
   const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -2343,12 +2314,12 @@ function checkQuestClear() {
     now.toISOString()
   );
   
-  // お狐様メッセージ
+  // フォックスメッセージ
   const foxMsg = document.getElementById('fox-message');
 
   if (foxMsg) {
     foxMsg.innerHTML =
-      `🎉🦊「${currentQuest.name}」クリア！`;
+      `🦊「${currentQuest.name}」クリア！🎉`;
   }
 
   alert(
@@ -2359,22 +2330,19 @@ function checkQuestClear() {
  
   // 地図のクエストピンを更新
   updateQuestMarkers();  
-  // 🆕 クリア直後にスタンプ帳を更新
+  // クリア直後にスタンプ帳を更新
   showStamps(); 
 
   updateQuestPopup(currentQuest);
   updateQuestPinImage(currentQuest);
   
-  // 🆕 更新されたピンのポップアップを開く
+  // 更新されたピンのポップアップを開く
   setTimeout(() => {
     if (questMarkers[currentQuest.id]) {
       questMarkers[currentQuest.id].openPopup();
     }
   }, 100);
-  return true;
-
-
-  
+  return true;  
 }
 
 
@@ -2404,7 +2372,6 @@ function checkQuestClearData() {
 
 
 
-  
   
 // === 📍 現在地をチェック（位置表示のみに変更） ===
 function checkLocation() {
@@ -2478,18 +2445,19 @@ function checkLocation() {
   );
 }
 
-// === 個別のスタンプ判定機能（追加） ===
-// === ⭕️ メッセージ修正 ＆ 自動現在地チェック付きのスタンプ判定機能 ===
+// ====================================================
+// 🚶 スタンプ判定の処理
+// ====================================================
 function tryGetStamp(id) {
-  const foxMsg = document.getElementById('fox-message'); // お狐様メッセージの部屋
+  const foxMsg = document.getElementById('fox-message');
 
   // 対象のスポットデータを特定
   const s = spots.find(spot => spot.id === id);
 
-  // 【新ロジック】もし足跡機能（myNewWatchId）がオフで、現在地データがまだ無い場合、
-  // あるいは足跡はオフだけど「いきなり押された」場合は、その場で自動的に現在地をチェックする
+  // もし足跡機能（myNewWatchId）がオフで、現在地データがまだ無い場合、
+  // あるいは足跡はオフだけどいきなり押された場合は、その場で自動的に現在地をチェックする
   if (myNewWatchId === null) {
-    if (foxMsg) foxMsg.innerHTML = `きつね`;
+    if (foxMsg) foxMsg.innerHTML = `きつね`;//あとでやる
 
     navigator.geolocation.getCurrentPosition(
       pos => {
@@ -2517,7 +2485,7 @@ function tryGetStamp(id) {
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
   } else {
-    // 足跡機能がすでにオン（🟢）なら、常に最新位置が手元にあるので、そのまま即座に判定
+    // 足跡機能がすでにオンなら、常に最新位置が手元にあるので、そのまま即座に判定
     processStampVerification(s);
   }
 }
@@ -2734,11 +2702,6 @@ function showStamps(mode = 'all') {
 
 
 
-
-
-  // ====================================================
-  // 🦊 クエスト
-  // ====================================================
 
 // ====================================================
 // 🦊 クエスト
