@@ -2936,8 +2936,9 @@ function jumpToQuest(id) {
 }
 
 
-  
-//🍎リセット機能
+// ====================================================
+// リセット機能
+// ====================================================
 function resetStamps() {
   if (confirm("スタンプと歩いた足跡、行きたい場所をすべて消去しますか？")) {
     spots.forEach(s => {
@@ -2953,10 +2954,11 @@ function resetStamps() {
   }
 }
 
-////////////軌跡ここから
-// === 軌跡（ドット記録）機能の変数 ===
+// ====================================================
+// 足跡
+// ====================================================
 let watchId = null;          // GPSの継続監視を管理するID
-let trackDots = [];          // 地図上に打った「てんてん」のマークを保存する箱
+let trackDots = [];          // 地図上に打った足跡を保存する箱
 let lastDotTime = 0;         // 最後にドットを打った時刻（ミリ秒）
 
 // === 🏁 スタンプラリー開始 ===
@@ -3036,7 +3038,7 @@ function stopTracking() {
 }
 
 
-// ※【注意】以前のリセット機能（resetStamps）に、打った点（てんてん）も一緒に消す処理を追加しておきます
+// 最後に消す？
 function resetStamps() {
   if (confirm("スタンプと歩いた足跡をすべて消しますか？")) {
     spots.forEach(s => {
@@ -3057,7 +3059,7 @@ updateMapMarkers();
 showStamps();
 updateQuestMarkers();
 
-// === 🆕 ⑦ 画面読み込み時にLocalStorageから足跡（てんてん）を復活させる ===
+// 画面読み込み時にLocalStorageから足跡を復活させる ===
 function restoreBreadcrumbs() {
   const savedData = localStorage.getItem("saved_breadcrumbs");
   if (savedData) {
@@ -3070,7 +3072,6 @@ function restoreBreadcrumbs() {
         const dot = L.circleMarker(coord, {
           radius: 2.6, color: "#a07855", fillColor: "#a07855", fillOpacity: 0.6, stroke: false
         }).addTo(map);
-        
         // 配列（箱）にも戻しておく
         myNewTrackDots.push(dot);
       });
@@ -3079,19 +3080,8 @@ function restoreBreadcrumbs() {
     }
   }
 }
-
 // 起動時に足跡を復元する
 restoreBreadcrumbs();
-
-
-
-
-
-
-
-
-
-
 
 
   
@@ -3150,7 +3140,7 @@ if (compassContainer) {
   }, true);
 }
 
-// 門番画面の「同意して始める」ボタン（agreeSafety）が押された瞬間に、センサーの許可をスマホに申請します
+// 門番画面の「同意して始める」ボタン（agreeSafety）が押された瞬間に、センサーの許可をスマホに申請
 const originalAgreeSafety = agreeSafety; // 以前作った関数を一旦バックアップ
 
 agreeSafety = function() {
@@ -3161,9 +3151,8 @@ agreeSafety = function() {
     DeviceOrientationEvent.requestPermission()
       .then(permissionState => {
         if (permissionState === 'granted') {
-          // ユーザーが許可してくれたら、お狐様がメッセージをくれます
           const foxMsg = document.getElementById('fox-message');
-          //if (foxMsg) foxMsg.innerHTML = `お狐様「ほう！スマホの羅針盤（コンパス）の封印が解かれたぞよ。これで方角もバッチリじゃな！」`;
+          if (foxMsg) foxMsg.innerHTML = `左上の方位磁石が使えるよ！針の赤い方を北に合わせてね！`;
         }
       })
       .catch(console.error);
