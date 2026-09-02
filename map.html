@@ -1728,10 +1728,10 @@ function updateMapMarkers() {
       } else if (wish) {
         myIconUrl = "str_yellow.png";
       }
-    
-
-      
-    } else {                                //def
+    }  else if (s.id && s.id.startsWith("dfc")) {
+        // 🆕 dfc用の3色のバツ画像をここに指定します
+        myIconUrl = got ? "dfc_red.png" : (wish ? "dfc_yellow.png" : "dfc_blue.png");
+    }  else {                                //def
       if (got) {
         myIconUrl = "pin_red.png";
       } else if (wish) {
