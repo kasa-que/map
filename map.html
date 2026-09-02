@@ -26,22 +26,10 @@
 
     .jump-pin{color:#e6b422; font-weight:bold; text-decoration:underline;}
 
-       /* =================================
-          📌 ピン
+      /* =================================
+          フォント：
          ================================= */
-      /* ピン：
-      .pin-red svg {
-        color: #ff4d4d;
-        filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.3)); /* ピンに立体的な影をつけます */
-      }
-     .pin-green svg {
-        color: #2ecc71;
-        filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.3));
-      }
-      .pin-yellow svg {
-        color: #f1c40f;
-        filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.3));
-      } */    
+
       /* フォント： */
       .yuji-syuku-regular {
         font-family: "Yuji Syuku", serif;
@@ -1747,7 +1735,7 @@ function updateMapMarkers() {
     // ====================================================
     let myIconUrl = "pin_blue.png";
 
-    if (s.id && s.id.startsWith("rcm")) {  //rcm
+    if (s.id && s.id.startsWith("okn")) {  //rcm
       myIconUrl = "str_blue.png";
 
       if (got) {
@@ -1755,10 +1743,10 @@ function updateMapMarkers() {
       } else if (wish) {
         myIconUrl = "str_yellow.png";
       }
-    }  else if (s.id && s.id.startsWith("dfc")) {
+    }  else if (s.id && s.id.startsWith("dfc")) {    //def
         // 🆕 dfc用の3色のバツ画像をここに指定します
         myIconUrl = got ? "dfc_red.png" : (wish ? "dfc_yellow.png" : "dfc_blue.png");
-    }  else {                                //def
+    }  else {                                
       if (got) {
         myIconUrl = "pin_red.png";
       } else if (wish) {
@@ -1916,17 +1904,17 @@ function updateMapMarkers() {
     // ====================================================
     const isTwn = s.id && s.id.startsWith("twn");
     const isNow = s.id && s.id.startsWith("now");
-    //const isDfc = s.id && s.id.startsWith("dfc");
-    //if (isTwn || isNow || isDfc) {
+    const isRec = s.id && s.id.startsWith("rec");
+    //if (isTwn || isNow || isRec) {
 
-    if (isTwn || isNow ) {
+    if (isTwn || isNow || isRec) {
 
       // ------------------------------
       // 基本となる線の色
       // ------------------------------
       let dotColor = "#7f756b";
 
-      if (isNow) {
+      if (isNow|| isRec) {
         dotColor = "#33302e";
       }
 
@@ -1945,7 +1933,7 @@ function updateMapMarkers() {
       let borderWeight = 3;
       let strokeOpacityOpt = 1.0;
 
-      if (isNow) {
+      if (isNow|| isRec) {
         fillOpt = 0.0;
         strokeOpt = true;
         strokeOpacityOpt = 0.6;
