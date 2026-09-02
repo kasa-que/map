@@ -1669,6 +1669,12 @@ function pauseNewTracking() {
 
 
 
+
+
+
+  
+
+
 // ====================================================
 // 📖 目印の処理
 // ====================================================
@@ -1722,7 +1728,6 @@ function updateMapMarkers() {
       } else if (wish) {
         myIconUrl = "str_yellow.png";
       }
-
     } else {
       if (got) {
         myIconUrl = "pin_red.png";
@@ -1873,6 +1878,9 @@ function updateMapMarkers() {
 
     popupContent += `</div>`;
 
+
+
+    
     // ====================================================
     // ドット表示グループ
     // ====================================================
@@ -1906,13 +1914,27 @@ function updateMapMarkers() {
       let borderWeight = 3;
       let strokeOpacityOpt = 1.0;
 
-      if (isDfc) {
+      if (isNow) {
         fillOpt = 0.0;
         strokeOpt = true;
         strokeOpacityOpt = 0.6;
         borderWeight = 4;
       }
 
+      let dashArrayOpt = null;
+      if (isDfc) {
+        fillOpt = 0.0;          // ★dfcも中身は透明
+        strokeOpt = true;       // 輪郭線を出す
+        strokeOpacityOpt = 0.5; // 線を50%透過
+        // 点線（ダッシュ）の間隔を絶妙に調整して、綺麗な「×」を表現します
+        dashArrayOpt = "1, 15"; 
+        borderWeight = 5;       // バツをハッキリ見せるために線を少し太く
+      }
+
+
+
+
+      
       const dotOptions = {
         radius: 10,
         color: dotColor,
@@ -1921,6 +1943,8 @@ function updateMapMarkers() {
         fillColor: dotColor,
         fillOpacity: fillOpt,
         stroke: strokeOpt
+dashArray: dashArrayOpt // ★dfc用のバツ印変形設定
+ 
       };
 
       // ------------------------------
