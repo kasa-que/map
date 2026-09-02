@@ -485,30 +485,21 @@
 
 
 
-const ENCRYPTED_PASSWORD_CODE = "%E3%81%8A%E3%81%AE%E3%81%A8%E3%82%82%E3%81%94%E3%82%8D%E3%81%86";
+const CORRECT_PASSWORD = "おのともごろう";
 
-// 1. ページが開いた瞬間に、合言葉を入力させます
-let userInput = prompt("お狐様「これより先は秘密の巻物じゃ。閲覧するための『合言葉』を入力してくりゃれ」");
+let userInput = prompt("パスワード");
 
-// 2. 💡【新ロジック】入力されたひらがなを、世界標準の安全なコード（URLエンコード）に変換します
-// これならスマホの機種による文字コードの違いやズレが100%絶対に発生しません！
-let userInputCode = encodeURIComponent(userInput);
-
-// 3. 【鉄壁ガード】暗号化した結果同士を裏側でガチッと照合します
-if (userInputCode !== ENCRYPTED_PASSWORD_CODE) {
-  alert("お狐様「ふぉっふぉっふぉ、合言葉が違うぞよ！立ち去りゃれ！」");
+if (userInput !== CORRECT_PASSWORD) {
+  alert("違います");
   
-  // 間違っていた場合は、画面の中身を一瞬で根こそぎ破壊して消去（真っ白に）します
   document.body.innerHTML = "<div style='padding:20px; font-family:sans-serif; text-align:center;'><h3>お狐様「合言葉が違うぞよ！立ち去りゃれ！」</h3></div>";
   
-  // その状態で、即座に前のページへ強制送還します
   if (document.referrer) {
     window.location.href = document.referrer;
   } else {
     window.history.back();
   }
 }
-
 
 
 
