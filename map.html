@@ -1830,7 +1830,7 @@ function updateMapMarkers() {
         myIconUrl = "str_yellow.png";
       }
     }  else if (s.id && s.id.startsWith("dfc")) {    //def
-        // 🆕 dfc用の3色のバツ画像をここに指定します
+        //  dfc用の3色のバツ画像をここに指定
         myIconUrl = got ? "dfc_red.png" : (wish ? "dfc_yellow.png" : "dfc_blue.png");
     }  else {                                
       if (got) {
@@ -2583,7 +2583,7 @@ function tryGetStamp(id) {
   // もし足跡機能（myNewWatchId）がオフで、現在地データがまだ無い場合、
   // あるいは足跡はオフだけどいきなり押された場合は、その場で自動的に現在地をチェックする
   if (myNewWatchId === null) {
-    if (foxMsg) foxMsg.innerHTML = `きつね`;//あとでやる
+    if (foxMsg) foxMsg.innerHTML = ``;//あとでやる
 
     navigator.geolocation.getCurrentPosition(
       pos => {
