@@ -485,7 +485,30 @@
 
 
 
+const SECRET_LENGTH = 7; 
 
+let userInput = prompt("パスワード");
+
+function verifySecretWord(str) {
+  if (!str || str.length !== SECRET_LENGTH) return false;
+  
+  let charSum = 0;
+  for (let i = 0; i < str.length; i++) {
+    charSum += str.charCodeAt(i);
+  }
+  
+  return charSum === 86616;
+}
+
+if (!verifySecretWord(userInput)) {
+  alert("違います");
+  
+  if (document.referrer) {
+    window.location.href = document.referrer;
+  } else {
+    window.history.back();
+  }  
+}
 
 
 
