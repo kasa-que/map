@@ -1720,7 +1720,7 @@ function updateMapMarkers() {
     // ====================================================
     let myIconUrl = "pin_blue.png";
 
-    if (s.id && s.id.startsWith("rcm")) {
+    if (s.id && s.id.startsWith("rcm")) {  //rcm
       myIconUrl = "str_blue.png";
 
       if (got) {
@@ -1728,7 +1728,10 @@ function updateMapMarkers() {
       } else if (wish) {
         myIconUrl = "str_yellow.png";
       }
-    } else {
+    
+
+      
+    } else {                                //def
       if (got) {
         myIconUrl = "pin_red.png";
       } else if (wish) {
@@ -1886,9 +1889,10 @@ function updateMapMarkers() {
     // ====================================================
     const isTwn = s.id && s.id.startsWith("twn");
     const isNow = s.id && s.id.startsWith("now");
-    const isDfc = s.id && s.id.startsWith("dfc");
+    //const isDfc = s.id && s.id.startsWith("dfc");
+    //if (isTwn || isNow || isDfc) {
 
-    if (isTwn || isNow || isDfc) {
+    if (isTwn || isNow ) {
 
       // ------------------------------
       // 基本となる線の色
@@ -1920,42 +1924,7 @@ function updateMapMarkers() {
         strokeOpacityOpt = 0.6;
         borderWeight = 4;
       }
-
-
-      
-      // dfcの処理
-      if (isDfc) {
-        let myXIconUrl = "dfc_blue.png"; // ① デフォルト（未訪）
-        if (got) {
-          myXIconUrl = "dfc_red.png";    // ② スタンプ済（エンジ）
-        } else if (wish) {
-          myXIconUrl = "dfc_yellow.png"; // ③ 行ってみたい（お狐みかん色）
-        }
-      
-        // バツ印専用のカスタム画像ピンを作ります（サイズ固定の安全設定）
-        var myXIcon = L.icon({
-          iconUrl: myXIconUrl,                     
-          iconSize: L.point(40, 40),              
-          iconAnchor: L.point(20, 40),            
-          popupAnchor: L.point(0, -42)            
-        });
-      }
-      if (isDfc) {
-        if (markers[s.id]) {
-          if (typeof markers[s.id].setIcon === "function") {
-            markers[s.id].setIcon(myXIcon).setPopupContent(popupContent);
-          } else {
-            map.removeLayer(markers[s.id]);
-            markers[s.id] = L.marker(L.latLng(s.lat, s.lng), { icon: myXIcon }).addTo(map).bindPopup(popupContent);
-          }
-        } else {
-          markers[s.id] = L.marker(L.latLng(s.lat, s.lng), { icon: myXIcon }).addTo(map).bindPopup(popupContent);
-        }
-        return; // 💡 これでdfcの処理は完了！この下のドット用のプログラム（dotOptionsなど）はスルーして次のスポットへ進みます
-      }
-
-
-      
+    
       const dotOptions = {
         radius: 10,
         color: dotColor,
@@ -1964,7 +1933,7 @@ function updateMapMarkers() {
         fillColor: dotColor,
         fillOpacity: fillOpt,
         stroke: strokeOpt,
-        dashArray: dashArrayOpt // ★dfc用のバツ印変形設定
+        //dashArray: dashArrayOpt // ★dfc用のバツ印変形設定
  
       };
 
