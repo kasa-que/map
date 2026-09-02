@@ -1921,16 +1921,15 @@ function updateMapMarkers() {
         borderWeight = 4;
       }
 
-      let dashArrayOpt = null;
-      if (isDfc) {
-        fillOpt = 0.0;          // ★dfcも中身は透明
-        strokeOpt = true;       // 輪郭線を出す
-        strokeOpacityOpt = 0.5; // 線を50%透過
-        // 点線（ダッシュ）の間隔を絶妙に調整して、綺麗な「×」を表現します
-        dashArrayOpt = "1, 15"; 
-        borderWeight = 5;       // バツをハッキリ見せるために線を少し太く
-      }
 
+      
+     // 🆕 dfc（防御施設）は、公式の途切れ線を使って100%確実に「バツ」の形を描きます！
+      if (isDfc) {
+        fillOpt = 0.0;          // 中身は透明
+        strokeOpt = true;       // 輪郭線を出す
+        borderWeight = 4;       // バツを見やすくするために線を少し太く
+        dashArrayOpt = "4, 4";  // 💡【解決策】4ピクセル描いて4ピクセルあける。これで丸が綺麗な4本線のバツ（十字）に変身します！
+      }
 
 
 
