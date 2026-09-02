@@ -1122,7 +1122,14 @@ function handleLayerRadio(type) {
   map.removeLayer(satelliteMap);
   map.removeLayer(elevationMap);
 
-  if (type === 'original') originalMapGroup.addTo(map);
+  if (type === 'original') {
+    originalMapGroup.addTo(map);
+    const foxMsg = document.getElementById("fox-message");
+    if (foxMsg) {
+      foxMsg.innerHTML =
+      "🦊 クエストマップに切り替えたよ！";
+    }
+  }
   if (type === 'base') baseMap.addTo(map);
   if (type === 'satellite') satelliteMap.addTo(map);
   if (type === 'elevation') elevationMap.addTo(map);  
