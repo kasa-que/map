@@ -29,21 +29,19 @@
        /* =================================
           📌 ピン
          ================================= */
-      /* ピン： */    
+      /* ピン：
       .pin-red svg {
         color: #ff4d4d;
         filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.3)); /* ピンに立体的な影をつけます */
       }
-      /* 訪問済 */
-      .pin-green svg {
+     .pin-green svg {
         color: #2ecc71;
         filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.3));
       }
-      /* 行きたい場所（📍ボタン：黄） */
       .pin-yellow svg {
         color: #f1c40f;
         filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.3));
-      }
+      } */    
       /* フォント： */
       .yuji-syuku-regular {
         font-family: "Yuji Syuku", serif;
@@ -546,15 +544,22 @@
     lat: 36.382503, lng: 140.266092,
     radius: 30,
     info: "5m盛り上がったところに２階建ての櫓があり、普段は武器の倉庫に、戦いのときは物見櫓として使われていました。また八幡台櫓と思われる櫓が<a class='jump-pin' href='javascript:void(0)' onclick='jumpToMapMarker(\"now02\")' >真浄時</a>に移設されています。"
-  }
-    
+  }    
 ,{
     id: "bld12",
     name: "宍々崎櫓",
     lat: 36.383066, lng: 140.265013,
     radius: 30,
-    info: "礎石見られる？"
+    info: "笠間城にあるいちばん西にある櫓で、城下町がひと目で見渡せるような場所に建っています。地面に今でも礎石が見られます。"
   }
+,{
+    id: "bld13",
+    name: "東櫓門",
+    lat: 36.382472, lng: 140.266619,
+    radius: 30,
+    info: "地面に今でも礎石が見られます。"
+  }
+
 // ====================================================
 // 🏯 建物　bld　🏯　時習館
 // ====================================================
@@ -572,8 +577,27 @@
     radius: 30,
     info: "博采館は長谷川宗仙の家の一部で本草学を研究するための場所で、ここには 薬草園も設けられていたそうです。"
   }
-
-
+,{
+    id: "bld23",
+    name: "五騎町時習館",
+    lat: 36, lng: 140,
+    radius: 30,
+    info: ""
+  }
+,{
+    id: "bld24",
+    name: "桜町時習館",
+    lat: 36, lng: 140,
+    radius: 30,
+    info: ""
+  }
+,{
+    id: "bld25",
+    name: "大和田時習館",
+    lat: 36, lng: 140,
+    radius: 30,
+    info: ""
+  }
   
 // ====================================================
 // 🏯 空間　spc　🏯　曲輪
@@ -588,7 +612,7 @@
     id: "spc02",
     name: "二曲輪",
     lat: 36.383681, lng: 140.265828,    radius: 30,
-    info: "二の曲輪はぐるりと塀で囲んであって出入り口は１つしかなく南には本丸があります。"
+    info: "二の曲輪はぐるりと塀で囲んであって出入り口は１つしかなく南には本丸があります。⚠️危ないから"
   }
   ,{
     id: "spc03",
@@ -600,7 +624,7 @@
     id: "spc04",
     name: "天守曲輪",
     lat: 36.382671, lng: 140.267301,    radius: 30,
-    info: "本丸は城の中心となる最も重要な曲輪です。本丸には八幡台櫓、東櫓門、宍々崎櫓などいっぱいの櫓や門がそびえ立っていて周りを塀で囲んであります。"
+    info: "⚠️"
   }
 
 
@@ -696,7 +720,7 @@
 
 
 // ====================================================
-// ⭐️ おすすめ　rcm　⭐️
+// ⭐️ 言い伝え　rcm　⭐️
 // ====================================================
   ,{
     id: "rcm01",
@@ -1081,7 +1105,7 @@ const CustomFilterControl = L.Control.extend({
         <label><input type="radio" name="filter_opt" onclick="handleFilterRadio('dfc')">防御施設</label>
         <label><input type="radio" name="filter_opt" onclick="handleFilterRadio('twn')">町名標示</label>
         <label><input type="radio" name="filter_opt" onclick="handleFilterRadio('now')">現存</label>
-        <label><input type="radio" name="filter_opt" onclick="handleFilterRadio('rcm')">おすすめ⭐︎</label>
+        <label><input type="radio" name="filter_opt" onclick="handleFilterRadio('rcm')">言い伝え</label>
       </div>
     `;
     setupControlToggle(container);
