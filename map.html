@@ -547,9 +547,6 @@
     radius: 30,
     info: "5m盛り上がったところに２階建ての櫓があり、普段は武器の倉庫に、戦いのときは物見櫓として使われていました。また八幡台櫓と思われる櫓が<a class='jump-pin' href='javascript:void(0)' onclick='jumpToMapMarker(\"now02\")' >真浄時</a>に移設されています。"
   }
-
- 
-
     
 ,{
     id: "bld12",
@@ -3158,11 +3155,28 @@ function jumpToMapMarker(spotId) {
     // 0.3秒だけ画面のスクロールを待ってから、地図をそのピンの緯度経度へ自動移動（ワープ）
     setTimeout(() => {
       map.panTo([s.lat, s.lng]);
-      // 3. 移動が完了したら、そのピンの吹き出しを全自動でパカッと開き直します！
+      // 3. 移動が完了したら、そのピンの吹き出しを開く
       marker.openPopup();
     }, 300);
   }
 }
+const originalAgreeSafetyForLink = agreeSafety;
+
+agreeSafety = function() {
+  originalAgreeSafetyForLink(); // 門番画面を消す・センサー許可の元の処理を実行
+
+  //URLの末尾に「?spot=11」の調べ
+  const urlParams = new URLSearchParams(window.location.search);
+  const targetSpotId = urlParams.get('spot'); // 'spot' の後ろのIDを取得
+
+  if (targetSpotId) {
+    // 0.5秒だけ地図の読み込みを待ってから、そのピンへ自動ジャンプ
+    setTimeout(() => {
+      jumpToMapMarker(targetSpotId);
+    }, 500);
+  }
+};
+
 
 // ====================================================
 // 安全確認
