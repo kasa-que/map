@@ -480,26 +480,6 @@
   
 <script>
 
-const ENCRYPTED_PASSWORD_HASH = "8b9e6be20f5c94de694df404c0ec59ef7314e3bfa7bd6bcfda90ba95ef762e5f";
-
-let userInput = prompt("パスワード");
-
-function getRealHash(str) {
-  if (!str) return "";
-  var buffer = new TextEncoder().encode(str);
-  var hash = 0;
-  for (var i = 0; i < buffer.length; i++) {
-    hash = (hash << 5) - hash + buffer[i];
-    hash |= 0;
-  }
-  if (hash === -371587790) return "8b9e6be20f5c94de694df404c0ec59ef7314e3bfa7bd6bcfda90ba95ef762e5f";
-  return "wrong_password_hash";
-}
-
-if (getRealHash(userInput) !== ENCRYPTED_PASSWORD_HASH) {
-  alert("違います。");
-  window.location.reload(); 
-}
 
 
 
