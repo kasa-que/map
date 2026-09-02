@@ -492,7 +492,7 @@ let userInput = prompt("パスワード");
 if (userInput !== CORRECT_PASSWORD) {
   alert("違います");
   
-  document.body.innerHTML = "<div style='padding:20px; font-family:sans-serif; text-align:center;'><h3>お狐様「合言葉が違うぞよ！立ち去りゃれ！」</h3></div>";
+  document.body.innerHTML = "<div style='padding:20px; font-family:sans-serif; text-align:center;'></div>";
   
   if (document.referrer) {
     window.location.href = document.referrer;
