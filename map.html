@@ -1384,6 +1384,17 @@ function resetQuestData() {
 // ラジオボタンが押されたときに、表示をパッと切り替える処理
 function handleFilterRadio(groupType) {
   currentDisplayGroup = groupType; // 選ばれたグループ（all, dfc, twnなど）を記憶
+
+
+  const foxMsg = document.getElementById("fox-message");
+  if(groupType=="all"){
+    if (foxMsg) {
+      foxMsg.innerHTML =
+        "🦊 全ての目印を表示しているよ！";
+    }
+  }
+
+  
   updateMapMarkers(); // 💡 記憶したルールに基づいて、地図のピンを一斉に描き直します！
 }
 
