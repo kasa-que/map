@@ -1313,6 +1313,14 @@ function handleQuestRadio(id) {
     questMarkers[q.id].openPopup();
   }
 
+  // まだクエスト開始前なので、ラジオは「未選択」に戻す
+  const defaultRadio = document.querySelector(
+    'input[name="quest_opt"][value=""]'
+  );
+  if (defaultRadio) {
+    defaultRadio.checked = true;
+  }
+
   // クエストパネルを閉じる
   const panels = document.querySelectorAll('.custom-map-control');
   panels.forEach(panel => {
