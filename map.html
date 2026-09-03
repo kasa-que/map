@@ -1307,7 +1307,7 @@ function handleQuestRadio(id) {
   const foxMsg = document.getElementById('fox-message');
   if (foxMsg) {
     foxMsg.innerHTML =
-      `クエスト「${q.name}」に挑戦中だよ！`;
+      `クエスト<span class='m-h-l'>「${q.name}」</span>に挑戦中だよ！`;
   }
   // クエストをすでにクリアしているか確認
   const questClearTime = localStorage.getItem(
