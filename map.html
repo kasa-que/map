@@ -1601,7 +1601,7 @@ function handleStampBookRadio(type) {
 
       if (foxMsg) {
         foxMsg.innerHTML =
-          "🦊 スタンプ帳をまっさらにしたよ！また集めに行こう！";
+          "🦊 御集印帳をまっさらにしたよ！また集めに行こう！";
       }
       alert("御集印帳をリセットしました。");
       
@@ -2560,28 +2560,24 @@ function checkLocation() {
       // 取得した緯度経度を記憶する
       currentLat = pos.coords.latitude;
       currentLng = pos.coords.longitude;
+
       
-      // 🆕 現在地チェックでもクエストクリア判定
-      if (checkQuestClear()) {
-      
+      // 現在地チェックでもクエストクリア判定
+      if (checkQuestClear()) {   
         // すでにクリア済みか確認
         const alreadyCleared = localStorage.getItem(
           "quest_clear_time_" + currentQuest.id
         );
-      
         // すでにクリアしていたら何もしない
         if (alreadyCleared) {
           return;
         }
-      
         // クリアした日時を記録
-        const clearTime = new Date().toISOString();
-      
+        const clearTime = new Date().toISOString();      
         localStorage.setItem(
           "quest_clear_time_" + currentQuest.id,
           clearTime
-        );
-      
+        );   
         alert("🎉 クエストクリア！");
       }
 
@@ -2591,7 +2587,6 @@ function checkLocation() {
       if (currentLocationMarker) {
         map.removeLayer(currentLocationMarker);
       }
-      
       currentLocationMarker = L.circleMarker(
         [currentLat, currentLng],
         {
@@ -2600,12 +2595,25 @@ function checkLocation() {
           fillColor: "blue",
           fillOpacity: 0.8
         }
-      ).addTo(map);
-      
+      ).addTo(map); 
       map.setView([currentLat, currentLng], 16);
+
+      
+      currentDisplayGroup = "all"; 
+      updateMapMarkers();          
+      
+      const allRadio = document.querySelector('input[name="filter_opt"][onclick="handleFilterRadio(\'all\')"]');
+      if (allRadio) allRadio.checked = true;
+
       
       // 案内メッセージを変更（自動スタンプは無し）
-      document.getElementById("message").textContent = "📍 現在地を更新しました！下のスタンプ帳からボタンを押してね。";
+      //document.getElementById("message").textContent = "📍 現在地を更新しました！下のスタンプ帳からボタンを押してね。";
+      const foxMsg = document.getElementById('fox-message');
+      if (foxMsg) {
+        foxMsg.innerHTML =
+          `🦊　青い丸が現在地だよ！`;
+      }
+
     },
     err => {
       alert("位置情報が取得できませんでした。\n理由: " + err.message);
