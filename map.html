@@ -1163,7 +1163,7 @@ function handleLayerRadio(type) {
 // ◽️ ボタン：目印 切り替え 📌
 // ====================================================
 let currentDisplayGroup = "all";
-
+  
 const CustomFilterControl = L.Control.extend({
   options: { position: 'topright' }, 
   onAdd: function () {
@@ -1218,6 +1218,7 @@ map.addControl(new CustomTrackControl());
 // ====================================================
 // ◽️ ボタン：クエスト 切り替え🦊
 // ====================================================
+  
 const CustomQuestControl = L.Control.extend({
   options: { position: 'topright' },
   onAdd: function () {
@@ -1280,48 +1281,31 @@ function handleQuestRadio(id) {
   if (!id) {
     currentQuest = null;
     updateQuestMenuIcon();
+
     const foxMsg = document.getElementById('fox-message');
     if (foxMsg) {
       foxMsg.innerHTML =
         "🦊 クエストを選んで、冒険を始めよう！";
     }
+
     return;
   }
+
   // 選ばれたクエストを探す
   const q = quests.find(quest => quest.id === id);
   if (!q) return;
-  // 🆕 現在選択中のクエストを記憶
-  currentQuest = q;
-  updateQuestMarkers();
-  updateQuestMenuIcon();
-  // クエストの開始地点へ移動
+
+  // クエストを「開始」せず、スタート地点へ移動するだけ
   map.setView(
     [q.startLat, q.startLng],
     17
   );
+
   // クエストのピンを開く
   if (questMarkers[q.id]) {
     questMarkers[q.id].openPopup();
   }
-  // フォックスメッセージ
-  const foxMsg = document.getElementById('fox-message');
-  if (foxMsg) {
-    foxMsg.innerHTML =
-      `クエスト<span class='m-h-l'>「${q.name}」</span>に挑戦中だよ！<br/>達成したら「現在地」を確認してね。`;
-  }
-  // クエストをすでにクリアしているか確認
-  const questClearTime = localStorage.getItem(
-    "quest_clear_time_" + q.id
-  );  
-  // 未クリアなら「クエスト開始！」を表示
-  if (!questClearTime) {
-    alert(
-      "🦊 クエスト開始！\n\n" +
-      "「" + q.name + "」\n\n" +
-      "さあ、冒険の始まりだよ！\n\n" +
-      "達成したら「現在地」を確認してね。"
-    );
-  }  
+
   // クエストパネルを閉じる
   const panels = document.querySelectorAll('.custom-map-control');
   panels.forEach(panel => {
@@ -1329,7 +1313,6 @@ function handleQuestRadio(id) {
     panel.classList.add('collapsed');
   });
 }
-
 // ====================================================
 // 🦊 クエストのクリア記録だけリセット
 // ====================================================
