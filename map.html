@@ -1307,7 +1307,7 @@ function handleQuestRadio(id) {
   const foxMsg = document.getElementById('fox-message');
   if (foxMsg) {
     foxMsg.innerHTML =
-      `クエスト<span class='m-h-l'>「${q.name}」</span>に挑戦中だよ！`;
+      `クエスト<span class='m-h-l'>「${q.name}」</span>に挑戦中だよ！<br/>達成したら「現在地」を確認してね。`;
   }
   // クエストをすでにクリアしているか確認
   const questClearTime = localStorage.getItem(
@@ -1319,7 +1319,6 @@ function handleQuestRadio(id) {
       "🦊 クエスト開始！\n\n" +
       "「" + q.name + "」\n\n" +
       "さあ、冒険の始まりだよ！\n\n" +
-      "足跡をつけながら進むか、\n" +
       "達成したら「現在地」を確認してね。"
     );
   }  
