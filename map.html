@@ -1737,16 +1737,16 @@ function startNewTracking() {
       // ====================================================
       // 🦊 クエストのクリア地点チェック
       // ====================================================
-      quests.forEach(q => {
+      //quests.forEach(q => {
         // すでにクリアしているクエストはチェックしない
-        if (getQuestClearTime(q.id)) {
-          return;
-        }
+      //  if (getQuestClearTime(q.id)) {
+      //    return;
+      //  }
         // クリア地点に到着しているか確認
-        if (checkQuestClear(q)) {
-          console.log("🦊 クエストクリア地点に到着！", q.name);
-        }    
-      });
+     //   if (checkQuestClear(q)) {
+     //     console.log("🦊 クエストクリア地点に到着！", q.name);
+     //   }    
+     // });
       
       // 現在地マーク（青丸）を自動移動
       if (currentLocationMarker) {
