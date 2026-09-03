@@ -1788,9 +1788,7 @@ function startNewTracking() {
         myNewWatchId = null;
       }
       document.getElementById('opt_stop').checked = true;
-      //document.getElementById('track-icon-status').innerText = "🐾";
-      iconStatus.innerHTML = `<img src="icon_track.png" alt="足跡" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
-      
+      document.getElementById('track-icon-status').innerText = "🐾";
     },
     { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
   );
