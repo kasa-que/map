@@ -1551,6 +1551,11 @@ function handleStampBookRadio(type) {
   // 獲得したスタンプだけ表示
   // --------------------------------
   if (type === 'got') {
+    const foxMsg = document.getElementById("fox-message");
+    if (foxMsg) {
+      foxMsg.innerHTML =
+      "🦊 <span class='m-h-l'>ゲットした印</span>を見られるよ！⚠️";
+    }
     showStamps('got');
     // スタンプ帳までスクロール
     scrollToStampBook();
@@ -1559,6 +1564,11 @@ function handleStampBookRadio(type) {
   // 全てのスタンプを表示
   // --------------------------------
   else if (type === 'all') {
+    const foxMsg = document.getElementById("fox-message");
+    if (foxMsg) {
+      foxMsg.innerHTML =
+      "🦊 <span class='m-h-l'>全ての印</span>を見られるよ！⚠️";
+    }
 
     showStamps('all');
 
