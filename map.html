@@ -2246,7 +2246,7 @@ function updateQuestMarkers() {
       { icon: questIcon }
     )
     .addTo(map)
-    updateQuestPopup(q);
+    .bindPopup(popupContent);
   });
   
   
