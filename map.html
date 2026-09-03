@@ -2396,6 +2396,15 @@ function startQuestFromPopup(id) {
   // 現在挑戦するクエストを設定
   currentQuest = q;
 
+  // 右側のクエスト選択も、挑戦中のクエストに合わせる
+  const questRadio = document.querySelector(
+    `input[name="quest_opt"][onclick="handleQuestRadio('${q.id}')"]`
+  );
+  if (questRadio) {
+    questRadio.checked = true;
+  }
+  
+
   // 右上のクエストアイコンを「挑戦中」に変更
   updateQuestMenuIcon();
 
