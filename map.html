@@ -2313,6 +2313,29 @@ function updateQuestPopup(q) {
       </div>
     `;
 
+  // クエスト未クリアならスタートボタンを表示
+  const startButton = !questClearTime
+    ? `
+      <button
+        onclick="startQuestFromPopup('${q.id}')"
+        style="
+          width:100%;
+          margin-top:10px;
+          padding:9px 10px;
+          border:none;
+          border-radius:5px;
+          background:#bd1928;
+          color:white;
+          font-size:14px;
+          font-weight:bold;
+          cursor:pointer;
+        "
+      >
+        🦊 クエストスタート
+      </button>
+    `
+    : "";
+
   const popupContent = `
     <div style="
       text-align: center;
@@ -2339,12 +2362,56 @@ function updateQuestPopup(q) {
         ${q.info}
       </div>
 
+      ${startButton}
+
     </div>
   `;
 
   // ポップアップの中身だけ更新
   questMarkers[q.id].setPopupContent(popupContent);
 }
+// ====================================================
+// 🦊 ポップアップからクエストをスタート
+// ====================================================
+function startQuestFromPopup(id) {
+  const q = quests.find(quest => quest.id === id);
+  if (!q) return;
+
+  // すでにクリア済みなら開始しない
+  const questClearTime = localStorage.getItem(
+    "quest_clear_time_" + q.id
+  );
+  if (questClearTime) {
+    alert("このクエストはすでにクリアしています！");
+    return;
+  }
+  // 現在挑戦するクエストを設定
+  currentQuest = q;
+
+  // 右上のクエストアイコンを「挑戦中」に変更
+  updateQuestMenuIcon();
+
+  // フォックスメッセージ
+  const foxMsg = document.getElementById('fox-message');
+
+  if (foxMsg) {
+    foxMsg.innerHTML =
+      `クエスト<span class='m-h-l'>「${q.name}」</span>に挑戦中だよ！<br/>達成したら「現在地」を確認してね。`;
+  }
+
+  // クエスト開始のお知らせ
+  alert(
+    "🦊 クエスト開始！\n\n" +
+    "「" + q.name + "」\n\n" +
+    "さあ、冒険の始まりだよ！\n\n" +
+    "達成したら「現在地」を確認してね。"
+  );
+
+  // ポップアップを最新状態に更新
+  updateQuestPopup(q);
+}
+
+  
 function updateQuestPinImage(q) {
 
   // クエストピンが存在しなければ何もしない
