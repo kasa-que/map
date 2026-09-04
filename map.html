@@ -2620,6 +2620,19 @@ function checkQuestClear() {
   // クリアしたクエストのIDを保存
   const clearedQuestId = currentQuest.id;
 
+
+  // 右メニューを「クエストが選択されていません」に戻す
+  const defaultRadio = document.querySelector(
+    'input[name="quest_opt"][value=""]'
+  );
+  
+  if (defaultRadio) {
+    defaultRadio.checked = true;
+  }
+
+
+  
+
   // クエストクリア後は挑戦中状態を解除
   currentQuest = null;
   updateQuestMenuIcon();
