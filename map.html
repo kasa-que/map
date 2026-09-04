@@ -461,39 +461,14 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   
 <script>
 
-
-
-
-
-
 const CORRECT_PASSWORD = "ともごろう";
-
 let userInput = prompt("パスワード");
-
 if (userInput !== CORRECT_PASSWORD) {
   alert("違います");
-  
   document.body.innerHTML = "<div style='padding:20px; font-family:sans-serif; text-align:center;'></div>";
-  
   if (document.referrer) {
     window.location.href = document.referrer;
   } else {
@@ -989,9 +964,9 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
 
 
 
-// ====================================================
+// ========================================================================================================
 // 🗺️　地図の登録　🗺️
-// ====================================================
+// ========================================================================================================
 
 // === 地図表示 ===
 // 航空写真が表示される「16」
@@ -1048,9 +1023,9 @@ L.imageOverlay("shiro5.webp", boundsShiro, {
 originalMapGroup.addTo(map);
 
 
-// ====================================================
+// ========================================================================================================
 // ◽️ ボタン：
-// ====================================================
+// ========================================================================================================
 function setupControlToggle(container) {
   // 最初からexpandedが付いている（左下）場合はcollapsedをつけない
   if (!container.classList.contains('expanded')) {
@@ -1097,9 +1072,9 @@ function setupControlToggle(container) {
 }
 
   
-// ====================================================
+// ========================================================================================================
 // ◽️ ボタン：地図 切り替え 🗺️
-// ====================================================
+// ========================================================================================================
 const CustomLayersControl = L.Control.extend({
   options: { position: 'topright' },
   onAdd: function () {
@@ -1166,9 +1141,9 @@ function handleLayerRadio(type) {
   //if (type === 'elevation') elevationMap.addTo(map);  
 }
 
-// ====================================================
+// ========================================================================================================
 // ◽️ ボタン：目印 切り替え 📌
-// ====================================================
+// ========================================================================================================
 let currentDisplayGroup = "all";
   
 const CustomFilterControl = L.Control.extend({
@@ -1196,9 +1171,50 @@ const CustomFilterControl = L.Control.extend({
 map.addControl(new CustomFilterControl());
 
 
-// ====================================================
+// =====================================================================================================
+//ラジオボタンが押されたときに、表示をパッと切り替える処理
+function handleFilterRadio(groupType) {
+  currentDisplayGroup = groupType; // 選ばれたグループ（all, dfc, twnなど）を記憶
+
+  const foxMsg = document.getElementById("fox-message");
+  if(groupType=="all"){
+    if (foxMsg) {
+      foxMsg.innerHTML =
+        "🦊 <span class='m-h-l'>全ての目印</span>を表示しているよ！";
+    }
+  }else if(groupType=="bld"){
+    if (foxMsg) {
+      foxMsg.innerHTML =
+        "🦊 神社・寺・櫓・学校など<span class='m-h-l'>建造物の目印</span>を表示しているよ！";
+    }
+  }else if(groupType=="dfc"){
+    if (foxMsg) {
+      foxMsg.innerHTML =
+        "🦊 門や虎口など<span class='m-h-l'>防御施設の目印</span>を表示しているよ！";
+    }
+  }else if(groupType=="twn"){
+    if (foxMsg) {
+      foxMsg.innerHTML =
+        "🦊 <span class='m-h-l'>町名標示の目印</span>を表示しているよ！";
+    }
+  }else if(groupType=="now"){
+    if (foxMsg) {
+      foxMsg.innerHTML =
+        "🦊 昔と場所は違うけど<span class='m-h-l'>現存しているものの目印</span>を表示しているよ！";
+    }
+  }else if(groupType=="rcm"){
+    if (foxMsg) {
+      foxMsg.innerHTML =
+        "🦊 <span class='m-h-l'>言い伝えのある場所の目印</span>を表示しているよ！";
+    }
+  } 
+  updateMapMarkers(); // 💡 記憶したルールに基づいて、地図のピンを一斉に描き直します！
+}
+
+
+// ========================================================================================================
 // ◽️ ボタン：足跡 切り替え🐾
-// ====================================================
+// ========================================================================================================
 const CustomTrackControl = L.Control.extend({
   options: { position: 'topright' },
   onAdd: function () {
@@ -1222,9 +1238,9 @@ const CustomTrackControl = L.Control.extend({
 map.addControl(new CustomTrackControl());
 
   
-// ====================================================
+// ========================================================================================================
 // ◽️ ボタン：クエスト 切り替え🦊
-// ====================================================
+// ========================================================================================================
   
 const CustomQuestControl = L.Control.extend({
   options: { position: 'topright' },
@@ -1268,8 +1284,8 @@ const CustomQuestControl = L.Control.extend({
 });
 map.addControl(new CustomQuestControl());
 
-
-// 🦊 クエストメニューのアイコンを切り替える
+// =====================================================================================================
+// 🦊 クエストメニューのアイコンを切り替える====================================================
 function updateQuestMenuIcon() {
   const icon = document.getElementById("quest-menu-icon");
   if (!icon) return;
@@ -1280,9 +1296,8 @@ function updateQuestMenuIcon() {
   }
 }
   
-// ====================================================
-// 🦊 クエスト選択時の処理
-// ====================================================
+// =====================================================================================================
+// 🦊 クエスト選択時の処理========================================================================================================
 function handleQuestRadio(id) {
   // 「クエストが選択されていません」を選んだ場合
   if (!id) {
@@ -1294,7 +1309,6 @@ function handleQuestRadio(id) {
       foxMsg.innerHTML =
         "🦊 クエストを選んで、冒険を始めよう！";
     }
-
     return;
   }
 
@@ -1328,9 +1342,9 @@ function handleQuestRadio(id) {
     panel.classList.add('collapsed');
   });
 }
-// ====================================================
-// 🦊 クエストのクリア記録だけリセット
-// ====================================================
+
+// =====================================================================================================
+// 🦊 クエストのクリア記録だけリセット========================================================================================================
 function resetQuestData() {
   const ok = confirm(
     "これまでにクリアしたクエストの記録をすべて消去しますか？"
@@ -1339,85 +1353,29 @@ function resetQuestData() {
   if (!ok) {
     return;
   }
-  // --------------------------------
   // ① クエストのクリア記録だけ削除
-  // --------------------------------
   quests.forEach(q => {
     localStorage.removeItem(
       "quest_clear_time_" + q.id
     );
   });
-  // --------------------------------
-  // ② 現在選択中のクエストを解除
-  // --------------------------------
-  currentQuest = null;
-  // --------------------------------
+  currentQuest = null;   // ② 現在選択中のクエストを解除
   // ③ クエストピンを通常状態に戻す
-  // --------------------------------
   quests.forEach(q => {
     updateQuestPinImage(q);
   });
   
   // クエストの吹き出しも最新状態に更新
   updateQuestMarkers();
-  // --------------------------------
   // ④ スタンプ帳を更新
-  // --------------------------------
   showStamps();
-  // --------------------------------
-  // ⑤ フォックスメッセージを更新
-  // --------------------------------
+
   const foxMsg = document.getElementById("fox-message");
   if (foxMsg) {
     foxMsg.innerHTML =
       "🦊 クエストの記録をリセットしたよ！また冒険に出かけよう！";
   }
-  // --------------------------------
-  // ⑥ 完了メッセージ
-  // --------------------------------
   alert("🦊 クエストのクリア記録をリセットしました！");
-}
-
-// ラジオボタンが押されたときに、表示をパッと切り替える処理
-function handleFilterRadio(groupType) {
-  currentDisplayGroup = groupType; // 選ばれたグループ（all, dfc, twnなど）を記憶
-
-
-  const foxMsg = document.getElementById("fox-message");
-  if(groupType=="all"){
-    if (foxMsg) {
-      foxMsg.innerHTML =
-        "🦊 <span class='m-h-l'>全ての目印</span>を表示しているよ！";
-    }
-  }else if(groupType=="bld"){
-    if (foxMsg) {
-      foxMsg.innerHTML =
-        "🦊 神社・寺・櫓・学校など<span class='m-h-l'>建造物の目印</span>を表示しているよ！";
-    }
-  }else if(groupType=="dfc"){
-    if (foxMsg) {
-      foxMsg.innerHTML =
-        "🦊 門や虎口など<span class='m-h-l'>防御施設の目印</span>を表示しているよ！";
-    }
-  }else if(groupType=="twn"){
-    if (foxMsg) {
-      foxMsg.innerHTML =
-        "🦊 <span class='m-h-l'>町名標示の目印</span>を表示しているよ！";
-    }
-  }else if(groupType=="now"){
-    if (foxMsg) {
-      foxMsg.innerHTML =
-        "🦊 昔と場所は違うけど<span class='m-h-l'>現存しているものの目印</span>を表示しているよ！";
-    }
-  }else if(groupType=="rcm"){
-    if (foxMsg) {
-      foxMsg.innerHTML =
-        "🦊 <span class='m-h-l'>言い伝えのある場所の目印</span>を表示しているよ！";
-    }
-  }
-
-  
-  updateMapMarkers(); // 💡 記憶したルールに基づいて、地図のピンを一斉に描き直します！
 }
 
 
@@ -1442,9 +1400,9 @@ const CustomBottomLeftControl = L.Control.extend({
     mainWrapper.style.gap = '10px';
     mainWrapper.style.alignItems = 'flex-start';
 
-    // ====================================================
+    // ========================================================================================================
     // ◽️ ボタン：現在地 🧭
-    // ====================================================
+    // ========================================================================================================
     const locContainer = L.DomUtil.create('div', '', mainWrapper);
 
     locContainer.innerHTML = `
@@ -3396,7 +3354,7 @@ map.on('click', function(e) {
   }).addTo(map);
   
   if (foxMsg) {
-    foxMsg.innerHTML = `「<span style="color:#d35400; font-size:14px; font-family:sans-serif;">lat: ${formattedLat}, lng: ${formattedLng}</span> 」`;
+    //foxMsg.innerHTML = `「<span style="color:#d35400; font-size:14px; font-family:sans-serif;">lat: ${formattedLat}, lng: ${formattedLng}</span> 」`;
   }
 });
 
