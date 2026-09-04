@@ -2616,6 +2616,14 @@ function checkQuestClear() {
 
   updateQuestPopup(currentQuest);
   updateQuestPinImage(currentQuest);
+
+  // クリアしたクエストのIDを保存
+  const clearedQuestId = currentQuest.id;
+
+  // クエストクリア後は挑戦中状態を解除
+  currentQuest = null;
+  updateQuestMenuIcon();
+  
   
   // 更新されたピンのポップアップを開く
   setTimeout(() => {
