@@ -2299,7 +2299,9 @@ function updateQuestPopup(q) {
     `;
 
   // クエスト未クリアならスタートボタンを表示
-  const startButton = !questClearTime
+const startButton =
+  !questClearTime &&
+  (!currentQuest || currentQuest.id !== q.id)
     ? `
       <button
         onclick="startQuestFromPopup('${q.id}')"
@@ -2316,10 +2318,14 @@ function updateQuestPopup(q) {
           cursor:pointer;
         "
       >
-        クエストスタート
+        🦊 クエストスタート
       </button>
     `
     : "";
+  
+
+
+  
     // 挑戦中のクエストなら「クエストをやめる」を表示
     const stopButton =
       !questClearTime && currentQuest && currentQuest.id === q.id
@@ -2625,7 +2631,6 @@ function checkQuestClear() {
   const defaultRadio = document.querySelector(
     'input[name="quest_opt"][value=""]'
   );
-  
   if (defaultRadio) {
     defaultRadio.checked = true;
   }
