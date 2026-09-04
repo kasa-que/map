@@ -493,6 +493,7 @@ if (userInput !== CORRECT_PASSWORD) {
   // 🦊 クエスト用マーカーを入れておく箱
   // ====================================================
   const questMarkers = {};
+  const questClearMarkers = {};
   // ====================================================
   // 🦊 クエストクリア情報
   // ====================================================
@@ -939,9 +940,16 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
       startLat: 36.390311,
       startLng: 140.251384 ,
       // クエストクリア地点
-      clearLat: 36.382674,
-      clearLng: 140.267445,
-      clearRadius: 50000
+     
+      clearPoints: [
+        {
+          lat: 36.382674,
+          lng: 140.251384,
+          radius: 30,
+          required: true
+        }
+      ],
+      //stampImage: "qst02_cl.png",    
     }
 
     ,{
@@ -952,9 +960,15 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
       startLat: 36.393237,
       startLng: 140.262333,
       // クエストクリア地点
-      clearLat: 36.378247,
-      clearLng: 140.253383,
-      clearRadius: 30
+
+      clearPoints: [
+        {
+          lat: 36.378247,
+          lng: 140.253383,
+          radius: 30,
+          required: true
+        }
+      ],
       //stampImage: "qst02_cl.png",
     }
 
@@ -966,13 +980,26 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
       startLat: 36.384625,
       startLng: 140.261341,
       // クエストクリア地点
-      clearLat: 36.383025,
-      clearLng: 140.264989,
-      clearRadius: 30,
+
+      clearPoints: [
+        {
+          lat: 36.383025,
+          lng: 140.264989,
+          radius: 30,
+          required: true
+        }
+      ],
+      
       //stampImage: "qst02_cl.png",
       clearInfo: "お疲れさま！空堀の深さを体感できたかな？<br/>尾根を分断するような堀切は、昔の人が掘ったんだよ。すごいよね！"
     }
 
+
+
+
+
+
+    
   ];
 
 
@@ -2589,34 +2616,221 @@ function checkQuestClear() {
     return true;
   }
 
-  // 現在地と、現在選択中のクエストのクリア地点をチェック
-  const near = isNear(
-    currentLat,
-    currentLng,
-    currentQuest.clearLat,
-    currentQuest.clearLng,
-    currentQuest.clearRadius
-  );
+  // ==========================================
+  // 🦊 各クリア地点をチェック
+  // ==========================================
 
-  // クリア地点に到着していなければ終了
-  if (!near) {
+  let foundNewPoint = false;
+
+  currentQuest.clearPoints.forEach((point, index) => {
+
+    // この地点をすでに発見しているか確認
+    const foundKey =
+      "quest_point_found_" +
+      currentQuest.id +
+      "_" +
+      index;
+
+    if (localStorage.getItem(foundKey)) {
+      return;
+    }
+
+    // 現在地とクリア地点の距離をチェック
+    const near = isNear(
+      currentLat,
+      currentLng,
+      point.lat,
+      point.lng,
+      point.radius
+    );
+
+    // まだ近づいていなければ何もしない
+    if (!near) {
+      return;
+    }
+
+    // ==========================================
+    // 🎉 新しい地点を発見！
+    // ==========================================
+
+    const now = new Date();
+
+    localStorage.setItem(
+      foundKey,
+      now.toISOString()
+    );
+
+    foundNewPoint = true;
+
+    // ------------------------------------------
+    // クリア地点ポップアップ
+    // ------------------------------------------
+
+    const stampImageUrl =
+      currentQuest.stampImage
+        ? currentQuest.stampImage
+        : "stmpon.png";
+
+    const pointInfo =
+      point.info
+        ? point.info
+        : currentQuest.clearInfo;
+
+    const clearPopupContent = `
+      <div style="
+        text-align:center;
+        font-family:sans-serif;
+        min-width:180px;
+      ">
+
+        <div style="
+          font-size:16px;
+          font-weight:bold;
+          margin-bottom:8px;
+        ">
+          🦊 ポイント発見！
+        </div>
+
+        <img
+          src="${stampImageUrl}"
+          alt="クエストスタンプ"
+          style="
+            width:70px;
+            height:70px;
+            object-fit:contain;
+            margin-bottom:5px;
+          "
+        >
+
+        <div style="
+          font-size:15px;
+          font-weight:bold;
+          margin-bottom:5px;
+        ">
+          ${currentQuest.name}
+        </div>
+
+        <div style="
+          font-size:11px;
+          color:#7f756b;
+          margin-bottom:10px;
+        ">
+          ${formatJapaneseDateTime(now)}
+        </div>
+
+        <div style="
+          border-top:1px solid #ddd;
+          padding-top:10px;
+          text-align:left;
+          font-size:13px;
+          line-height:1.6;
+          color:#555;
+        ">
+          <strong>🦊 ここで答え合わせ！</strong>
+          <br/>
+          ${pointInfo || ""}
+        </div>
+
+      </div>
+    `;
+
+    // まだクリア地点マーカーがなければ作る
+    if (!questClearMarkers[`${currentQuest.id}_${index}`]) {
+
+      const clearMarker = L.marker(
+        [point.lat, point.lng]
+      ).addTo(map);
+
+      clearMarker.bindPopup(clearPopupContent);
+
+      questClearMarkers[
+        `${currentQuest.id}_${index}`
+      ] = clearMarker;
+
+    } else {
+
+      // すでにあれば内容だけ更新
+      questClearMarkers[
+        `${currentQuest.id}_${index}`
+      ].setPopupContent(clearPopupContent);
+    }
+
+    // 発見した地点のポップアップを開く
+    questClearMarkers[
+      `${currentQuest.id}_${index}`
+    ].openPopup();
+
+  });
+
+  // 新しい地点を発見していなければ終了
+  if (!foundNewPoint) {
     return false;
   }
 
   // ==========================================
-  // 🎉 クエストクリア！
+  // 🦊 必須地点を全部発見したか確認
+  // ==========================================
+
+  const allRequiredFound =
+    currentQuest.clearPoints
+      .filter(point => point.required)
+      .every((point, index) => {
+
+        const pointIndex =
+          currentQuest.clearPoints.indexOf(point);
+
+        return localStorage.getItem(
+          "quest_point_found_" +
+          currentQuest.id +
+          "_" +
+          pointIndex
+        );
+      });
+
+  // 必須地点がまだ残っていれば、
+  // クエストはまだコンプリートしない
+  if (!allRequiredFound) {
+
+    const foundCount =
+      currentQuest.clearPoints.filter((point, index) =>
+        localStorage.getItem(
+          "quest_point_found_" +
+          currentQuest.id +
+          "_" +
+          index
+        )
+      ).length;
+
+    const totalCount =
+      currentQuest.clearPoints.length;
+
+    const foxMsg =
+      document.getElementById('fox-message');
+
+    if (foxMsg) {
+      foxMsg.innerHTML =
+        `🦊 ポイント発見！<br/>` +
+        `${foundCount} / ${totalCount} のポイントを見つけたよ！`;
+    }
+
+    return false;
+  }
+
+  // ==========================================
+  // 🎉 クエストコンプリート！
   // ==========================================
 
   const now = new Date();
-  
-  // クリア日時はISO形式で保存
+
+  // クエストクリア日時を保存
   localStorage.setItem(
     "quest_clear_time_" + currentQuest.id,
     now.toISOString()
   );
-  
+
   // フォックスメッセージ
-  const foxMsg = document.getElementById('fox-message');
+  const foxMsg =
+    document.getElementById('fox-message');
 
   if (foxMsg) {
     foxMsg.innerHTML =
@@ -2628,11 +2842,11 @@ function checkQuestClear() {
     currentQuest.name
   );
 
- 
   // 地図のクエストピンを更新
-  updateQuestMarkers();  
-  // クリア直後にスタンプ帳を更新
-  showStamps(); 
+  updateQuestMarkers();
+
+  // スタンプ帳を更新
+  showStamps();
 
   updateQuestPopup(currentQuest);
   updateQuestPinImage(currentQuest);
@@ -2640,31 +2854,32 @@ function checkQuestClear() {
   // クリアしたクエストのIDを保存
   const clearedQuestId = currentQuest.id;
 
-
   // 右メニューを「クエストが選択されていません」に戻す
   const defaultRadio = document.querySelector(
     'input[name="quest_opt"][value=""]'
   );
+
   if (defaultRadio) {
     defaultRadio.checked = true;
   }
 
-
-  
-
   // クエストクリア後は挑戦中状態を解除
   currentQuest = null;
   updateQuestMenuIcon();
-  
-  
-  // 更新されたピンのポップアップを開く
+
+  // クリアしたクエストのポップアップを開く
   setTimeout(() => {
-    if (questMarkers[currentQuest.id]) {
-      questMarkers[currentQuest.id].openPopup();
+    if (questMarkers[clearedQuestId]) {
+      questMarkers[clearedQuestId].openPopup();
     }
   }, 100);
-  return true;  
+
+  return true;
 }
+
+
+
+  
 
 
 function resetQuestClearData() {
