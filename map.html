@@ -2416,6 +2416,9 @@ function startQuestFromPopup(id) {
   // 右上のクエストアイコンを「挑戦中」に変更
   updateQuestMenuIcon();
 
+  // クエストピンを「挑戦中」に変更
+updateQuestPinImage(q);
+
   // フォックスメッセージ
   const foxMsg = document.getElementById('fox-message');
 
@@ -2488,11 +2491,17 @@ function updateQuestPinImage(q) {
     "quest_clear_time_" + q.id
   );
 
-  // クリア済みならクリアピン
-  // 未クリアなら通常ピン
-  const iconUrl = clearTime
-    ? "quest_clear_pin.png"
-    : "quest_pin.png";
+  // クエストの状態によってピン画像を変更
+  let iconUrl = "quest_pin.png";
+
+  if (clearTime) {
+    // クリア済み
+    iconUrl = "quest_clear_pin.png";
+
+  } else if (currentQuest && currentQuest.id === q.id) {
+    // 現在挑戦中
+    iconUrl = "quest_active_pin.png";
+  }
 
   const questIcon = L.icon({
     iconUrl: iconUrl,
@@ -2505,8 +2514,7 @@ function updateQuestPinImage(q) {
   if (typeof questMarkers[q.id].setIcon === "function") {
     questMarkers[q.id].setIcon(questIcon);
   }
-}
-  
+}  
 
 
 
