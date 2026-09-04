@@ -2467,6 +2467,10 @@ function stopQuestFromPopup(id) {
   // クエストメニューアイコンを通常状態に戻す
   updateQuestMenuIcon();
 
+
+  // クエストピンを通常状態に戻す
+  updateQuestPinImage(q);
+
   // フォックスメッセージ
   const foxMsg = document.getElementById('fox-message');
   if (foxMsg) {
