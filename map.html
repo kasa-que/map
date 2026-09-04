@@ -2347,11 +2347,36 @@ function updateQuestPopup(q) {
           cursor:pointer;
         "
       >
-        🦊 クエストスタート
+        クエストスタート
       </button>
     `
     : "";
+    // 挑戦中のクエストなら「クエストをやめる」を表示
+    const stopButton =
+      !questClearTime && currentQuest && currentQuest.id === q.id
+        ? `
+          <button
+            onclick="stopQuestFromPopup('${q.id}')"
+            style="
+              width:100%;
+              margin-top:6px;
+              padding:8px 10px;
+              border:1px solid #999;
+              border-radius:5px;
+              background:#fff;
+              color:#666;
+              font-size:13px;
+              cursor:pointer;
+            "
+          >
+            クエストをやめる
+          </button>
+        `
+        : "";
 
+
+
+  
   const popupContent = `
     <div style="
       text-align: center;
@@ -2379,7 +2404,7 @@ function updateQuestPopup(q) {
       </div>
 
       ${startButton}
-
+      ${stopButton}
     </div>
   `;
 
@@ -2431,6 +2456,45 @@ function startQuestFromPopup(id) {
     "さあ、冒険の始まりだよ！\n\n" +
     "達成したら「現在地」を確認してね。"
   );
+
+  // ポップアップを最新状態に更新
+  updateQuestPopup(q);
+}
+
+function stopQuestFromPopup(id) {
+
+  const q = quests.find(quest => quest.id === id);
+  if (!q) return;
+
+  // 本当にやめるか確認
+  const ok = confirm(
+    "「" + q.name + "」への挑戦をやめますか？"
+  );
+
+  if (!ok) {
+    return;
+  }
+
+  // クエストを終了
+  currentQuest = null;
+
+  // 右メニューを「クエストが選択されていません」に戻す
+  const defaultRadio = document.querySelector(
+    'input[name="quest_opt"][value=""]'
+  );
+  if (defaultRadio) {
+    defaultRadio.checked = true;
+  }
+
+  // クエストメニューアイコンを通常状態に戻す
+  updateQuestMenuIcon();
+
+  // フォックスメッセージ
+  const foxMsg = document.getElementById('fox-message');
+  if (foxMsg) {
+    foxMsg.innerHTML =
+      "🦊 クエストを選んで、冒険を始めよう！";
+  }
 
   // ポップアップを最新状態に更新
   updateQuestPopup(q);
