@@ -947,7 +947,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
           radius: 5000000,
           required: true
         }
-      ],
+      ]
       //stampImage: "qst02_cl.png",    
     }
 
@@ -967,7 +967,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
           radius: 3000000,
           required: true
         }
-      ],
+      ]
       //stampImage: "qst02_cl.png",
     }
 
@@ -1400,6 +1400,18 @@ function resetQuestData() {
       "quest_clear_time_" + q.id
     );
   });
+
+  // ①-2 各クリアポイントの発見記録も削除
+  quests.forEach(q => {
+    q.clearPoints.forEach((point, index) => {
+      localStorage.removeItem(
+        "quest_point_found_" + q.id + "_" + index
+      );
+    });
+  });
+
+
+  
   currentQuest = null;   // ② 現在選択中のクエストを解除
   // ③ クエストピンを通常状態に戻す
   quests.forEach(q => {
