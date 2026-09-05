@@ -1305,7 +1305,7 @@ const CustomQuestControl = L.Control.extend({
     // 🗑️ クエストのクリア記録をリセット
     questListHTML += `
       <label>
-        <input type="radio" name="quest_opt" onclick="resetQuestData()">
+        <input type="radio" name="quest_opt" onclick=")">
         クエストをリセット
       </label>
     `;
@@ -1386,39 +1386,28 @@ function handleQuestRadio(id) {
 
 // =====================================================================================================
 // 🦊 クエストのクリア記録だけリセット========================================================================================================
-function resetQuestData() {
-  const ok = confirm(
-    "これまでにクリアしたクエストの記録をすべて消去しますか？"
-  );
-  // キャンセルなら何もしない
-  if (!ok) {
-    return;
-  }
-  // ① クエストのクリア記録だけ削除
-  quests.forEach(q => {
-    localStorage.removeItem(
-      "quest_clear_time_" + q.id
-    );
+function resetQuestData(){
+  const ok=confirm("これまでにクリアしたクエストの記録をすべて消去しますか？");
+  if(!ok)return;
+
+  quests.forEach(q=>{
+    localStorage.removeItem("quest_clear_time_"+q.id);
+
+    q.clearPoints.forEach((point,index)=>{
+      localStorage.removeItem("quest_point_found_"+q.id+"_"+index);
+    });
   });
-  currentQuest = null;   // ② 現在選択中のクエストを解除
-  // ③ クエストピンを通常状態に戻す
-  quests.forEach(q => {
-    updateQuestPinImage(q);
-  });
-  
-  // クエストの吹き出しも最新状態に更新
+
+  currentQuest=null;
+  quests.forEach(q=>{updateQuestPinImage(q);});
   updateQuestMarkers();
-  // ④ スタンプ帳を更新
   showStamps();
 
-  const foxMsg = document.getElementById("fox-message");
-  if (foxMsg) {
-    foxMsg.innerHTML =
-      "🦊 クエストの記録をリセットしたよ！また冒険に出かけよう！";
-  }
+  const foxMsg=document.getElementById("fox-message");
+  if(foxMsg) foxMsg.innerHTML="🦊 クエストの記録をリセットしたよ！また冒険に出かけよう！";
+
   alert("🦊 クエストのクリア記録をリセットしました！");
 }
-
 
 
 
