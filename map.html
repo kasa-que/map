@@ -2642,7 +2642,13 @@ function checkQuestClear() {
       point.lng,
       point.radius
     );
-
+alert(
+  "currentQuest：" + currentQuest.id +
+  "\n現在地：" + currentLat + ", " + currentLng +
+  "\nポイント：" + point.lat + ", " + point.lng +
+  "\nradius：" + point.radius +
+  "\nnear：" + near
+);
     // まだ近づいていなければ何もしない
     if (!near) {
       return;
