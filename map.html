@@ -2871,6 +2871,24 @@ function checkQuestClear() {
           <strong>🦊 ここで答え合わせ！</strong>
           <br/>
           ${pointInfo || ""}
+          
+          <button
+            onclick="questMarkers['${currentQuest.id}'].openPopup();"
+            style="
+              width:100%;
+              margin-top:10px;
+              padding:8px 10px;
+              border:none;
+              border-radius:5px;
+              background:#bd1928;
+              color:white;
+              font-size:13px;
+              font-weight:bold;
+              cursor:pointer;
+            "
+          >
+            📖 このクエストを見る
+          </button>
         </div>
 
       </div>
