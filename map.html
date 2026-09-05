@@ -2623,7 +2623,7 @@ function checkQuestClear() {
 
   currentQuest.clearPoints.forEach((point, index) => {
 
-     alert("clearPointsの中に入りました");
+     //alert("clearPointsの中に入りました");
 
     // この地点をすでに発見しているか確認
     const foundKey =
@@ -2632,7 +2632,7 @@ function checkQuestClear() {
       "_" +
       index;
     
-alert("foundKey：" + foundKey + "\n保存値：" + localStorage.getItem(foundKey));
+//alert("foundKey：" + foundKey + "\n保存値：" + localStorage.getItem(foundKey));
 //localStorage.removeItem(foundKey);
     
     if (localStorage.getItem(foundKey)) {
@@ -2648,13 +2648,13 @@ alert("foundKey：" + foundKey + "\n保存値：" + localStorage.getItem(foundKe
       point.radius
     );
     
-alert(
-  "currentQuest：" + currentQuest.id +
-  "\n現在地：" + currentLat + ", " + currentLng +
-  "\nポイント：" + point.lat + ", " + point.lng +
-  "\nradius：" + point.radius +
-  "\nnear：" + near
-);
+//alert(
+//  "currentQuest：" + currentQuest.id +
+//  "\n現在地：" + currentLat + ", " + currentLng +
+//  "\nポイント：" + point.lat + ", " + point.lng +
+//  "\nradius：" + point.radius +
+//  "\nnear：" + near
+//);
     // まだ近づいていなければ何もしない
     if (!near) {
       return;
@@ -2774,10 +2774,10 @@ alert(
   });
 
   // 新しい地点を発見していなければ終了
-  if (!foundNewPoint) {
-  alert("foundNewPoint は FALSE");
-  return false;
-  }
+  //if (!foundNewPoint) {
+  //alert("foundNewPoint は FALSE");
+  //return false;
+  //}
 
   // ==========================================
   // 🦊 必須地点を全部発見したか確認
@@ -2939,13 +2939,12 @@ function checkLocation() {
       
       //checkQuestClear();
 
-alert("現在のcurrentQuest：" + (currentQuest ? currentQuest.id : "null"));
-
-alert("checkQuestClear開始");
+//alert("現在のcurrentQuest：" + (currentQuest ? currentQuest.id : "null"));
+//alert("checkQuestClear開始");
 
 const result = checkQuestClear();
 
-alert("checkQuestClear終了：" + result);
+//alert("checkQuestClear終了：" + result);
       
       alert("位置取得成功！"); 
 
