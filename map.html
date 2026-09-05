@@ -2642,6 +2642,7 @@ function checkQuestClear() {
       point.lng,
       point.radius
     );
+    
 alert(
   "currentQuest：" + currentQuest.id +
   "\n現在地：" + currentLat + ", " + currentLng +
@@ -2932,9 +2933,12 @@ function checkLocation() {
       
       //checkQuestClear();
 
-      const result = checkQuestClear();
+alert("現在のcurrentQuest：" + (currentQuest ? currentQuest.id : "null"));
+
+const result = checkQuestClear();
 alert("checkQuestClearの結果：" + result);
 
+      
       alert("位置取得成功！"); 
 
       if (currentLocationMarker) {
