@@ -2631,7 +2631,9 @@ function checkQuestClear() {
       currentQuest.id +
       "_" +
       index;
-
+    
+alert("foundKey：" + foundKey + "\n保存値：" + localStorage.getItem(foundKey));
+    
     if (localStorage.getItem(foundKey)) {
       return;
     }
