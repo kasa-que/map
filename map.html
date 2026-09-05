@@ -1413,6 +1413,13 @@ function resetQuestData() {
 
   
   currentQuest = null;   // ② 現在選択中のクエストを解除
+
+  // ②-2 表示中のクリア地点ピンをすべて削除
+  Object.keys(questClearMarkers).forEach(key => {
+    map.removeLayer(questClearMarkers[key]);
+    delete questClearMarkers[key];
+  });
+
   // ③ クエストピンを通常状態に戻す
   quests.forEach(q => {
     updateQuestPinImage(q);
