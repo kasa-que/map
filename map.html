@@ -2924,8 +2924,11 @@ function checkLocation() {
       currentLng = pos.coords.longitude;
 
       
-      checkQuestClear();
-      
+      //checkQuestClear();
+
+      const result = checkQuestClear();
+alert("checkQuestClearの結果：" + result);
+
       alert("位置取得成功！"); 
 
       if (currentLocationMarker) {
