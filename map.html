@@ -2574,12 +2574,26 @@ if (currentQuest && currentQuest.id !== q.id) {
   if (!ok) {
     return;
   }
+
+  // 今まで挑戦していたクエストを保存
+  const oldQuest = currentQuest;
+
+  // 新しいクエストに切り替える
+  currentQuest = q;
+
+  // 前のクエストを通常表示に戻す
+  updateQuestPinImage(oldQuest);
+  updateQuestPopup(oldQuest);
+
+} else {
+
+  // 何も挑戦していない場合
+  currentQuest = q;
 }
 
 
-  
-  // 現在挑戦するクエストを設定
-  currentQuest = q;
+
+
 
   
 
