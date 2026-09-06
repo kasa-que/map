@@ -1408,6 +1408,19 @@ function updateQuestMenuIcon() {
 // =====================================================================================================
 // 🦊 クエスト選択時の処理========================================================================================================
 function handleQuestRadio(id) {
+
+
+  // クリックしたクエストのラジオを外す
+  document.querySelector(
+    `input[name="quest_opt"][onclick="handleQuestRadio('${id}')"]`
+  ).checked = false;
+
+  // 選ばれたクエストを探す
+  const q = quests.find(quest => quest.id === id);
+  if (!q) return;
+
+
+  
   // 「クエストが選択されていません」を選んだ場合
   if (!id) {
     currentQuest = null;
