@@ -2560,8 +2560,28 @@ function startQuestFromPopup(id) {
     alert("このクエストはすでにクリアしています！");
     return;
   }
+
+// すでに別のクエストに挑戦中なら、切り替えるか確認
+if (currentQuest && currentQuest.id !== q.id) {
+
+  const ok = confirm(
+    `現在「${currentQuest.name}」に挑戦中だよ。\n\n` +
+    `「${q.name}」に切り替える？\n\n` +
+    `OK → 切り替える\n` +
+    `キャンセル → 今のクエストを続ける`
+  );
+
+  if (!ok) {
+    return;
+  }
+}
+
+
+  
   // 現在挑戦するクエストを設定
   currentQuest = q;
+
+  
 
   // 右側のクエスト選択も、挑戦中のクエストに合わせる
   const questRadio = document.querySelector(
