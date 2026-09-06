@@ -1409,31 +1409,6 @@ function updateQuestMenuIcon() {
 // 🦊 クエスト選択時の処理========================================================================================================
 function handleQuestRadio(id) {
 
-
-  // クリックしたクエストのラジオを外す
-  document.querySelector(
-    `input[name="quest_opt"][onclick="handleQuestRadio('${id}')"]`
-  ).checked = false;
-
-  // 選ばれたクエストを探す
-  const q = quests.find(quest => quest.id === id);
-  if (!q) return;
-
-
-  
-  // 「クエストが選択されていません」を選んだ場合
-  if (!id) {
-    currentQuest = null;
-    updateQuestMenuIcon();
-
-    const foxMsg = document.getElementById('fox-message');
-    if (foxMsg) {
-      foxMsg.innerHTML =
-        "🦊 クエストを選んで、冒険を始めよう！";
-    }
-    return;
-  }
-
   // 選ばれたクエストを探す
   const q = quests.find(quest => quest.id === id);
   if (!q) return;
@@ -1448,7 +1423,7 @@ function handleQuestRadio(id) {
   if (questMarkers[q.id]) {
     questMarkers[q.id].openPopup();
   }
-  
+
   // 今クリックしたクエストのラジオだけ外す
   const clickedRadio = document.querySelector(
     `input[name="quest_opt"][onclick="handleQuestRadio('${id}')"]`
@@ -1457,8 +1432,6 @@ function handleQuestRadio(id) {
   if (clickedRadio) {
     clickedRadio.checked = false;
   }
-
-  
 
   // クエストパネルを閉じる
   const panels = document.querySelectorAll('.custom-map-control');
