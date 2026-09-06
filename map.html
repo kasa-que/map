@@ -1477,6 +1477,7 @@ function resetQuestData() {
 
   
   currentQuest = null;   // ② 現在選択中のクエストを解除
+  updateQuestMenuIcon();
 
   // ②-2 表示中のクリア地点ピンをすべて削除
   Object.keys(questClearMarkers).forEach(key => {
