@@ -1435,10 +1435,25 @@ function handleQuestRadio(id) {
   if (questMarkers[q.id]) {
     questMarkers[q.id].openPopup();
   }
-  // ラジオの選択を外す
+  
+  // 挑戦中のクエスト以外はラジオの選択を外す
   document.querySelectorAll('input[name="quest_opt"]').forEach(radio => {
-    radio.checked = false;
+  
+    const onclickText = radio.getAttribute("onclick");
+  
+    if (
+      !currentQuest ||
+      !onclickText ||
+      !onclickText.includes(`'${currentQuest.id}'`)
+    ) {
+      radio.checked = false;
+    }
+  
   });
+
+
+
+  
 
   // クエストパネルを閉じる
   const panels = document.querySelectorAll('.custom-map-control');
