@@ -2065,6 +2065,11 @@ function updateMapMarkers() {
     if (currentDisplayGroup === "all") {
       // 「全て表示」なら全部表示
       isMatched = true;
+    
+    } else if (currentDisplayGroup === "quest") {
+      // 「クエストのみ」なら通常の目印は全部非表示
+      isMatched = false;
+    
     } else {
       // 「dfc」「twn」「now」「rcm」「bld」など、
       // IDの先頭が選択グループと一致するか確認
