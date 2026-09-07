@@ -1613,8 +1613,10 @@ function resetQuestData() {
 
 
   
-  currentQuest = null;   // ② 現在選択中のクエストを解除
+  currentQuest = null;
+  localStorage.removeItem("current_quest_id");
   updateQuestMenuIcon();
+  updateQuestMenu();
 
   // ②-2 表示中のクリア地点ピンをすべて削除
   Object.keys(questClearMarkers).forEach(key => {
