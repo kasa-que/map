@@ -2820,6 +2820,7 @@ if (currentQuest && currentQuest.id !== q.id) {
 
   // 🦊 挑戦中のクエストを保存
   localStorage.setItem("current_quest_id", q.id);
+  updateQuestMenu();
   
 
   // 右側のクエスト選択も、挑戦中のクエストに合わせる
