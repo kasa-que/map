@@ -1557,6 +1557,10 @@ function resetQuestData() {
   
   // クエストの吹き出しも最新状態に更新
   updateQuestMarkers();
+if (currentQuest) {
+  updateQuestPinImage(currentQuest);
+  updateQuestPopup(currentQuest);
+}
   // ④ スタンプ帳を更新
   showStamps();
 
