@@ -1429,12 +1429,25 @@ function handleQuestRadio(id) {
 
   // 挑戦中のクエストがあれば、そのラジオをONに戻す
   if (activeQuestId) {
+  
     const activeRadio = document.querySelector(
       `input[name="quest_opt"][onclick="handleQuestRadio('${activeQuestId}')"]`
     );
-
+  
     if (activeRadio) {
       activeRadio.checked = true;
+    }
+  
+  } else {
+  
+    // まだクエストに挑戦していないなら、
+    // 今クリックしたラジオもOFFに戻す
+    const clickedRadio = document.querySelector(
+      `input[name="quest_opt"][onclick="handleQuestRadio('${id}')"]`
+    );
+  
+    if (clickedRadio) {
+      clickedRadio.checked = false;
     }
   }
 
