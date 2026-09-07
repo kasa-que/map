@@ -2874,6 +2874,9 @@ function stopQuestFromPopup(id) {
 
   // クエストを終了
   currentQuest = null;
+  localStorage.removeItem("current_quest_id");
+  updateQuestMenuIcon();
+  updateQuestMenu();
 
   // 右メニューを「クエストが選択されていません」に戻す
   const defaultRadio = document.querySelector(
