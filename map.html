@@ -1329,7 +1329,12 @@ function handleFilterRadio(groupType) {
       foxMsg.innerHTML =
         "🦊 <span class='m-h-l'>言い伝えのある場所の目印</span>を表示しているよ！";
     }
-  } 
+  }else if(groupType=="quest"){
+    if (foxMsg) {
+      foxMsg.innerHTML =
+        "🦊 <span class='m-h-l'>クエストの目印</span>だけを表示しているよ！";
+    }
+  }
   updateMapMarkers(); // 💡 記憶したルールに基づいて、地図のピンを一斉に描き直します！
 }
 
@@ -2289,7 +2294,7 @@ function updateMapMarkers() {
       // ------------------------------
       // 透過率と枠線
       // ------------------------------
-      let fillOpt = 0.5;
+      let fillOpt = 0.7;
       let strokeOpt = false;
       let borderWeight = 3;
       let strokeOpacityOpt = 1.0;
