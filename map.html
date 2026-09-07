@@ -1508,7 +1508,9 @@ quests.forEach(q => {
 
       <div class="control-content">
         <h4>🦊 クエスト</h4>
-        ${questListHTML}
+        <div id="quest-list">
+          ${questListHTML}
+        </div>
       </div>
     `;
     setupControlToggle(container);
