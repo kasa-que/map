@@ -3300,53 +3300,54 @@ function checkQuestClear() {
   // ==========================================
 
   const now = new Date();
-
-  // クエストクリア日時を保存
+  
   localStorage.setItem(
     "quest_clear_time_" + currentQuest.id,
     now.toISOString()
   );
-
-  // フォックスメッセージ
+  
+  const clearedQuest = currentQuest;
+  
+  // 🦊 クリアしたことを保存・画面にも反映
   const foxMsg =
     document.getElementById('fox-message');
-
+  
   if (foxMsg) {
     foxMsg.innerHTML =
-      `🦊「${currentQuest.name}」クリア！🎉`;
+      `🦊「${clearedQuest.name}」クリア！🎉`;
   }
-
-  alert(
-    "🎉 クエストクリア！\n\n" +
-    currentQuest.name
-  );
-
-  // 地図のクエストピンを更新
+  
   updateQuestMarkers();
-
-  // スタンプ帳を更新
   showStamps();
-
-  updateQuestPopup(currentQuest);
-  updateQuestPinImage(currentQuest);
-
-  // クリアしたクエストのIDを保存
-  const clearedQuestId = currentQuest.id;
-
-
-  // クエストクリア後は挑戦中状態を解除
+  
+  updateQuestPopup(clearedQuest);
+  updateQuestPinImage(clearedQuest);
+  
+  // 🦊 挑戦中クエストを終了
   currentQuest = null;
   localStorage.removeItem("current_quest_id");
   updateQuestMenuIcon();
   updateQuestMenu();
-
-  // クリアしたクエストのポップアップを開く
-  //setTimeout(() => {
-  //  if (questMarkers[clearedQuestId]) {
-  //    questMarkers[clearedQuestId].openPopup();
-  //  }
-  //}, 100);
-
+  
+  // 🦊 最終ポイントのポップアップを閉じたあとにクリア表示
+  const lastPointMarker =
+    questClearMarkers[
+      `${clearedQuest.id}_${clearedQuest.clearPoints.length - 1}`
+    ];
+  
+  if (lastPointMarker) {
+  
+    lastPointMarker.once("popupclose", function () {
+  
+      alert(
+        "🎉 クエストクリア！\n\n" +
+        clearedQuest.name
+      );
+  
+    });
+  
+  }
+  
   return true;
 }
 
