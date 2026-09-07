@@ -2838,6 +2838,18 @@ function checkQuestClear() {
     return false;
   }
 
+  
+  const questPointIcon = L.icon({
+    iconUrl: "quest_point_pin.png",
+    iconSize: L.point(40, 40),
+    iconAnchor: L.point(20, 40),
+    popupAnchor: L.point(0, -42)
+  });
+
+
+
+
+  
   // すでにクリア済みなら何もしない
   if (localStorage.getItem("quest_clear_time_" + currentQuest.id)) {
     return true;
@@ -2976,10 +2988,14 @@ function checkQuestClear() {
     // まだクリア地点マーカーがなければ作る
     if (!questClearMarkers[`${currentQuest.id}_${index}`]) {
 
-      const clearMarker = L.marker(
-        [point.lat, point.lng]
+     const clearMarker = L.marker(
+        [point.lat, point.lng],
+        {
+          icon: questPointIcon
+        }
       ).addTo(map);
 
+      
       clearMarker.bindPopup(clearPopupContent);
 
       questClearMarkers[
