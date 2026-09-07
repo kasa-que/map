@@ -2732,22 +2732,7 @@ const popupStamp = questClearTime
         ${formatJapaneseDateTime(new Date(questClearTime))}
       </span>
     </div>
-
-    <div style="
-      border-top: 1px solid #ddd;
-      padding-top: 10px;
-      margin-top: 5px;
-      margin-bottom: 10px;
-      text-align: left;
-      font-size: 13px;
-      line-height: 1.6;
-      color: #555;
-    ">
-      <strong>🦊 クエストクリア後の答え合わせ！</strong>
-      <br/>
-      ${q.clearInfo || ""}
-    </div>
-  `    : `
+  ` : `
       <div style="
         font-size: 12px;
         color: #999;
@@ -2828,6 +2813,8 @@ const startButton =
         ${q.name}
       </div>
 
+
+
       <div style="
         font-size: 13px;
         color: #666;
@@ -2836,7 +2823,23 @@ const startButton =
       ">
         ${q.info}
       </div>
-
+      
+      ${questClearTime ? `
+        <div style="
+          border-top: 1px solid #ddd;
+          padding-top: 10px;
+          margin-top: 12px;
+          text-align: left;
+          font-size: 13px;
+          line-height: 1.6;
+          color: #555;
+        ">
+          <strong>🦊 クエストクリア後の答え合わせ！</strong>
+          <br/>
+          ${q.clearInfo || ""}
+        </div>
+      ` : ""}
+      
       ${startButton}
       ${stopButton}
     </div>
