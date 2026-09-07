@@ -1955,7 +1955,7 @@ function updateMapMarkers() {
       }
     }  else if (s.id && s.id.startsWith("dfc")) {    //def
         //  dfc用の3色のバツ画像をここに指定
-        myIconUrl = got ? "dfc_red.png" : (wish ? "dfc_yellow.png" : "dfc_blue.png");
+        myIconUrl = got ? "pin_dfc_red.png" : (wish ? "pin_dfc_yellow.png" : "pin_dfc_blue.png");
     }  else {                                
       if (got) {
         myIconUrl = "pin_red.png";
@@ -2241,6 +2241,12 @@ function updateMapMarkers() {
 // 🦊 クエストマーカーを表示
 // ====================================================
 function updateQuestMarkers() {
+  const questPointIcon = L.icon({
+    iconUrl: "quest_point_pin.png",
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+    popupAnchor: [0, -42]
+  });
 
   quests.forEach(q => {
 
@@ -2447,10 +2453,13 @@ function updateQuestMarkers() {
       // まだマーカーがなければ復元
       if (!questClearMarkers[markerKey]) {
 
-        const clearMarker = L.marker(
-          [point.lat, point.lng]
-        ).addTo(map);
-
+      const clearMarker = L.marker(
+        [point.lat, point.lng],
+        {
+          icon: questPointIcon
+        }
+      ).addTo(map);
+        
         clearMarker.bindPopup(clearPopupContent);
 
         questClearMarkers[markerKey] = clearMarker;
