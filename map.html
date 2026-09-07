@@ -2428,13 +2428,13 @@ function updateQuestMarkers() {
    // ==========================================
   // 🦊 クリア済みクエストだけピンを変更
   // ==========================================
-  quests.forEach(q => {
+   quests.forEach(q => {
 
     const clearTime = localStorage.getItem(
       "quest_clear_time_" + q.id
     );
 
-    if (clearTime) {
+    if (clearTime || (currentQuest && currentQuest.id === q.id)) {
       updateQuestPinImage(q);
     }
 
