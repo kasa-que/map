@@ -1362,6 +1362,76 @@ map.addControl(new CustomTrackControl());
 // ========================================================================================================
 // ◽️ ボタン：クエスト 切り替え🦊
 // ========================================================================================================
+function updateQuestMenu() {
+  const content = document.querySelector('.control-content');
+
+  if (!content) return;
+
+  let questListHTML = '';
+
+  quests.forEach(q => {
+
+    const isActive =
+      currentQuest && currentQuest.id === q.id;
+
+    const foundCount =
+      q.clearPoints.filter((point, index) =>
+        localStorage.getItem(
+          "quest_point_found_" + q.id + "_" + index
+        )
+      ).length;
+
+    const questClearTime =
+      localStorage.getItem(
+        "quest_clear_time_" + q.id
+      );
+
+    let questName = q.name;
+
+    if (questClearTime) {
+      questName = `<s>${questName}</s>`;
+    }
+
+    const clearMarks =
+      foundCount > 0
+        ? "🎉".repeat(foundCount)
+        : "";
+
+    if (isActive) {
+      questName = `<strong>${questName}</strong>`;
+    }
+
+    questListHTML += `
+      <label>
+        <input
+          type="radio"
+          name="quest_opt"
+          onclick="handleQuestRadio('${q.id}')"
+          ${isActive ? "checked" : ""}
+        >
+        ${questName}${clearMarks}
+      </label>
+    `;
+  });
+
+  questListHTML += `
+    <label>
+      <input
+        type="radio"
+        name="quest_opt"
+        onclick="resetQuestData()"
+      >
+      クエストをリセット
+    </label>
+  `;
+
+  content.innerHTML = `
+    <h4>🦊 クエスト</h4>
+    ${questListHTML}
+  `;
+}
+
+
   
 const CustomQuestControl = L.Control.extend({
   options: { position: 'topright' },
