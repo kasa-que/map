@@ -1073,7 +1073,14 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
 
     
   ];
-
+  // 🦊 再読み込み時に挑戦中クエストを復元
+  const savedQuestId =
+    localStorage.getItem("current_quest_id");
+  
+  if (savedQuestId) {
+    currentQuest =
+      quests.find(q => q.id === savedQuestId) || null;
+  }
 
 
 
@@ -2735,7 +2742,8 @@ if (currentQuest && currentQuest.id !== q.id) {
 
 
 
-
+  // 🦊 挑戦中のクエストを保存
+  localStorage.setItem("current_quest_id", q.id);
   
 
   // 右側のクエスト選択も、挑戦中のクエストに合わせる
