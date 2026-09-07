@@ -1077,6 +1077,9 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
       //stampImage: "qst02_cl.png",
       clearInfo: "お疲れさま！空堀の深さを体感できたかな？<br/>尾根を分断するような堀切は、昔の人が掘ったんだよ。すごいよね！"
     }
+
+
+    
     ,{
       id: "quest04",
       name: "三つのポイントを探せ！",
@@ -3360,9 +3363,22 @@ function checkQuestClear() {
         clearedQuest.name
       );
   
+      // 🦊 アラートを閉じたらスタート地点へ移動
+      map.setView(
+        [clearedQuest.startLat, clearedQuest.startLng],
+        17
+      );
+  
+      // 🦊 スタート地点のクリア済みポップアップを開く
+      if (questMarkers[clearedQuest.id]) {
+        questMarkers[clearedQuest.id].openPopup();
+      }
+  
     });
   
   }
+
+
   
   return true;
 }
