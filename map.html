@@ -1361,15 +1361,62 @@ const CustomQuestControl = L.Control.extend({
   onAdd: function () {
     const container = L.DomUtil.create('div');
     // クエスト一覧を自動生成
-    let questListHTML = ``;
-    quests.forEach(q => {
-      questListHTML += `
-        <label>
-          <input type="radio" name="quest_opt" onclick="handleQuestRadio('${q.id}')">
-          ${q.name}
-        </label>
-      `;
-    });
+
+    
+let questListHTML = ``;
+
+quests.forEach(q => {
+
+  // 現在挑戦中か
+  const isActive =
+    currentQuest && currentQuest.id === q.id;
+
+  // クリアしたポイント数
+  const foundCount =
+    q.clearPoints.filter((point, index) =>
+      localStorage.getItem(
+        "quest_point_found_" + q.id + "_" + index
+      )
+    ).length;
+
+  // クエスト全体をクリア済みか
+  const questClearTime =
+    localStorage.getItem(
+      "quest_clear_time_" + q.id
+    );
+
+  // クエスト名の表示
+  let questName = q.name;
+
+  // 全クリアなら取り消し線
+  if (questClearTime) {
+    questName = `<s>${questName}</s>`;
+  }
+
+  // クリアしたポイント数だけ🎉
+  const clearMarks =
+    foundCount > 0
+      ? "🎉".repeat(foundCount) + " "
+      : "";
+
+  // 挑戦中なら太字
+  if (isActive) {
+    questName = `<strong>${questName}</strong>`;
+  }
+
+  questListHTML += `
+    <label>
+      <input
+        type="radio"
+        name="quest_opt"
+        onclick="handleQuestRadio('${q.id}')"
+      >
+      ${questName}${clearMarks}
+  </label>
+  `;
+});
+    
+    
     // 🗑️ クエストのクリア記録をリセット
     questListHTML += `
       <label>
