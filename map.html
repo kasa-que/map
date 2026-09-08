@@ -1014,6 +1014,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
       // クエストクリア地点
       clearPoints: [
         {
+          name: "",
           lat: 36.376105,
           lng: 140.278931,
           radius: 15,
@@ -1021,6 +1022,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
           info: "近！"
         },
         {
+          name: "",
           lat: 36.376411,
           lng: 140.278845,
           radius: 15,
@@ -1028,6 +1030,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
           info: "中！"
         },
         {
+          name: "",
           lat: 36.376861,
           lng: 140.278727,
           radius: 15,
@@ -1051,16 +1054,18 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
 
       clearPoints: [
         {
+          name: "「時習館記」の石碑",
           lat: 36.383267, lng: 140.264291,
           radius: 20,
           required: true,
           info: "実際に空堀を見て深さの迫力が目に焼き付いたでしょ。そんな深い堀を人の手で掘っていたんだよ。驚愕するでしょ？"
         }
         ,{
-          lat: 36.383025,lng: 140.264989,
+          name: "加藤桜老先生の銅像",
+          lat: 36.382452, lng: 140.255895,
           radius: 2000000,
           required: true,
-          info: "ここが宍ヶ崎櫓でここでもうクエストは終わりだよ！"
+          info: "加藤桜老先生の「十三山書楼」があった"
         }
      ],
       
@@ -2582,7 +2587,8 @@ function updateQuestMarkers() {
             font-weight:bold;
             margin-bottom:5px;
           ">
-            ${q.name}
+            ${q.name}${point.name}
+
           </div>
 
           <div style="
@@ -3152,7 +3158,7 @@ function checkQuestClear() {
           font-weight:bold;
           margin-bottom:5px;
         ">
-          ${currentQuest.name}
+          ${currentQuest.name}${point.name}
         </div>
 
         <div style="
