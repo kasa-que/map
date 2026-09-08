@@ -1061,6 +1061,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
           lat: 36.384596, lng: 140.256542,
           radius: 2000000,
           required: true,
+          image: "q01-1.png",
           info: "小野友五郎はこんな人だよ！"
         }
            ],
@@ -1085,6 +1086,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
           lat: 36.381527, lng:  140.255410,
           radius: 20,
           required: true,
+          image: "q02-1.png",
           info: "「時習館」の由来は孔子の論語の「学ビテ<b>時</b>ニ之ヲ<b>習</b>フ、マタ説バシカラズヤ」→<span class='m-h-l'>「どんな状態にあっても学ぶことを続け、いつでもそのことを活用できるように常に復習して知識を身につけるということは喜ばしいことである」</span>です。"
         }
         ,{
@@ -1092,6 +1094,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
           lat: 36.382452, lng: 140.255895,
           radius: 2000000,
           required: true,
+          image: "q02-2.png",
           info: "加藤桜老先生は18歳で時習館（桜町）の先生になったよ！高杉晋作が会いに来たすごい先生だよ！"
         }
      ],
@@ -1634,6 +1637,15 @@ function resetQuestData() {
     localStorage.removeItem(
       "quest_clear_time_" + q.id
     );
+  });
+
+  // 🔑 クエスト報酬の鍵もリセット
+  quests.forEach(q => {
+    if (q.rewardKey) {
+      localStorage.removeItem(
+        "key_" + q.rewardKey
+      );
+    }
   });
 
   // ①-2 各クリアポイントの発見記録も削除
@@ -3145,10 +3157,12 @@ function checkQuestClear() {
     // ------------------------------------------
 
     const stampImageUrl =
-      currentQuest.stampImage
-        ? currentQuest.stampImage
-        : "stmpon.png";
-
+      point.image
+        ? point.image
+        : currentQuest.stampImage
+          ? currentQuest.stampImage
+          : "stmpon.png";
+    
     const pointInfo =
       point.info
         ? point.info
