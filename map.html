@@ -1982,7 +1982,7 @@ function startNewTracking() {
       //    return;
       //  }
         // クリア地点に到着しているか確認
-     //   if (checkQuestClear(q)) {
+     //   if (q)) {
      //     console.log("🦊 クエストクリア地点に到着！", q.name);
      //   }    
      // });
@@ -3269,6 +3269,8 @@ function checkQuestClear() {
         `${foundCount} / ${totalCount} のポイントを見つけたよ！`;
     }
 
+    // 🦊 ポイント発見数をクエストメニューに反映
+    updateQuestMenu();
     return false;
   }
 
