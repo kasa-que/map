@@ -2564,7 +2564,7 @@ function updateQuestMarkers() {
         ">
 
           <div style="
-            font-size:16px;
+            font-size:14px;
             /*font-weight:bold;*/
             margin-bottom:8px;
           ">
@@ -2608,7 +2608,7 @@ function updateQuestMarkers() {
             color:#555;
           ">
             
-            <br/>
+            
             ${pointInfo || ""}
           </div>
 
@@ -3114,7 +3114,7 @@ function checkQuestClear() {
     foundNewPoint = true;
 
     // ------------------------------------------
-    // クリア地点ポップアップ
+    // クリア地点ポップアップ🦊 ポイント発見！
     // ------------------------------------------
 
     const stampImageUrl =
@@ -3135,11 +3135,11 @@ function checkQuestClear() {
       ">
 
         <div style="
-          font-size:16px;
-          font-weight:bold;
+          font-size:14px;
+          /*font-weight:bold;*/
           margin-bottom:8px;
         ">
-          🦊 ポイント発見！
+          ${currentQuest.name}
         </div>
 
         <img
@@ -3158,7 +3158,7 @@ function checkQuestClear() {
           font-weight:bold;
           margin-bottom:5px;
         ">
-          ${currentQuest.name}${point.name}
+          ${point.name}
         </div>
 
         <div style="
@@ -3177,8 +3177,7 @@ function checkQuestClear() {
           line-height:1.6;
           color:#555;
         ">
-          <strong>🦊 ここで答え合わせ！</strong>
-          <br/>
+          
           ${pointInfo || ""}
         </div>
 
