@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ja">
-  
 <head>
   <meta charset="UTF-8">
   <title>笠間城クエスト</title>
@@ -1046,38 +1045,8 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
     
     ,{
       id: "quest01",
-      name: "井筒屋で小野友五郎に会おう！",
-      info: "井筒屋には笠間城についての情報がたくさんあるよ！クエストの練習に井筒屋に行って、小野友五郎の<br/>・<span class='m-h-l'>「時習館記」の石碑</span><br/>・<span class='m-h-l'>加藤桜老先生の銅像</span><br/>を見つけたら地図左下で<b>「🧭現在地をチェック」</b>してクエストをクリアしてね！",
-      // クエスト開始地点
-      startLat: 36.382111, 
-      startLng: 140.256400,
-      // クエストクリア地点
-
-      clearPoints: [
-        {
-          name: "「時習館記」の石碑",
-          lat: 36.381527, lng:  140.255410,
-          radius: 2000000,
-          required: true,
-          info: "「時習館」の由来は孔子の論語の「学ビテ<b>時</b>ニ之ヲ<b>習</b>フ、マタ説バシカラズヤ」→<span class='m-h-l'>「どんな状態にあっても学ぶことを続け、いつでもそのことを活用できるように常に復習して知識を身につけるということは喜ばしいことである」</span>です。"
-        }
-        ,{
-          name: "加藤桜老先生の銅像",
-          lat: 36.382452, lng: 140.255895,
-          radius: 20,
-          required: true,
-          info: "加藤桜老先生は18歳で時習館（桜町）の先生になったよ！高杉晋作が加藤先生に会いにきた<a class='jump-pin' href='javascript:void(0)' onclick='jumpToMapMarker(\"twn19\")' >「十三山書楼」の跡</a>にもいってみてね！"
-        }
-     ],
-      
-      //stampImage: "qst02_cl.png",
-      clearInfo: "<br/>小野友五郎が学んだり加藤桜老先生が教えたり吉田松陰がきた桜町時習館をはじめ、他の時習館あとにもぜひ行ってみてね！"
-    }
-
-    ,{
-      id: "quest02",
       name: "大和田時習館を歩いてみよう！",
-      info: "ここ笠間小学校は江戸時代に「時習館」という笠間藩の藩校があった場所です。<br/>・<span class='m-h-l'>「時習館記」の石碑</span><br/>・<span class='m-h-l'>加藤桜老先生の銅像</span>",
+      info: "ここ笠間小学校は江戸時代に「時習館」という笠間藩の藩校があった場所です。<br/>・<span class='m-h-l'>「時習館記」の石碑</span><br/>・<span class='m-h-l'>加藤桜老先生の銅像</span><br/>を見つけたら地図左下で<b>「🧭現在地をチェック」</b>してクエストをクリアしてね！",
       // クエスト開始地点
       startLat: 36.382111, 
       startLng: 140.256400,
@@ -1087,14 +1056,14 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
         {
           name: "「時習館記」の石碑",
           lat: 36.381527, lng:  140.255410,
-          radius: 20000000,
+          radius: 20,
           required: true,
           info: "「時習館」の由来は孔子の論語の「学ビテ<b>時</b>ニ之ヲ<b>習</b>フ、マタ説バシカラズヤ」→<span class='m-h-l'>「どんな状態にあっても学ぶことを続け、いつでもそのことを活用できるように常に復習して知識を身につけるということは喜ばしいことである」</span>です。"
         }
         ,{
           name: "加藤桜老先生の銅像",
           lat: 36.382452, lng: 140.255895,
-          radius: 20,
+          radius: 2000000,
           required: true,
           info: "加藤桜老先生は18歳で時習館（桜町）の先生になったよ！高杉晋作が加藤先生に会いにきた<a class='jump-pin' href='javascript:void(0)' onclick='jumpToMapMarker(\"twn19\")' >「十三山書楼」の跡</a>にもいってみてね！"
         }
@@ -2524,7 +2493,7 @@ function updateQuestMarkers() {
         text-align: left;
         line-height: 1.5;
       ">
-        ${q.info}まめっち
+        ${q.info}
       </div>
   
     </div>
@@ -2807,7 +2776,7 @@ const startButton =
         text-align: left;
         line-height: 1.5;
       ">
-        ${q.info}<br/>見つけたら地図左下で<b>「🧭現在地をチェック」</b>してクエストをクリアしてね！
+        ${q.info}
       </div>
       
       ${questClearTime ? `
