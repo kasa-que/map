@@ -1005,7 +1005,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
     {
       id: "quest00",
       name: "三つのポイントを探せ！",
-      rewardItem: "item00",
+      rewardIKey: "key00",
     
       info: "三つのポイントを順番に見つけて、クエストをクリアしよう！",
     
@@ -1048,7 +1048,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
  ,{
       id: "quest01",
       name: "井筒屋で小野友五郎を探そう！",
-      rewardItem: "item01",
+      rewardKey: "key01",
       info: "<br/>・<span class='m-h-l'>「時習館記」の石碑</span><br/>・<span class='m-h-l'>加藤桜老先生の銅像</span><br/>を見つけてね！",
       // クエスト開始地点
       startLat: 36.382111, 
@@ -1059,7 +1059,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
         {
           name: "「時習館記」の石碑",
           lat: 36.381527, lng:  140.255410,
-          radius: 20,
+          radius: 2000000,
           required: true,
           info: "「時習館」の由来は孔子の論語の「学ビテ<b>時</b>ニ之ヲ<b>習</b>フ、マタ説バシカラズヤ」→<span class='m-h-l'>「どんな状態にあっても学ぶことを続け、いつでもそのことを活用できるように常に復習して知識を身につけるということは喜ばしいことである」</span>です。"
         }
@@ -1072,7 +1072,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
    ,{
       id: "quest02",
       name: "大和田時習館を歩いてみよう！",
-      rewardItem: "item02",
+      rewardKey: "key02",
       info: "ここ笠間小学校は江戸時代に「時習館」という笠間藩の藩校があった場所です。<br/>・<span class='m-h-l'>「時習館記」の石碑</span><br/>・<span class='m-h-l'>加藤桜老先生の銅像</span><br/>を見つけてね！",
       // クエスト開始地点
       startLat: 36.382111, 
@@ -3310,14 +3310,13 @@ function checkQuestClear() {
     "quest_clear_time_" + currentQuest.id,
     now.toISOString()
   );
-  // 🎒 クエスト報酬アイテムを獲得
-  if (currentQuest.rewardItem) {
+  // 🔑 クエスト報酬の鍵を獲得
+  if (currentQuest.rewardKey) {
     localStorage.setItem(
-      "item_" + currentQuest.rewardItem,
+      "key_" + currentQuest.rewardKey,
       "1"
     );
   }
-
   const clearedQuest = currentQuest;
   
   // 🦊 クリアしたことを保存・画面にも反映
