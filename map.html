@@ -1046,7 +1046,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
     ,{
       id: "quest01",
       name: "大和田時習館を歩いてみよう！",
-      info: "笠間小学校は江戸時代に「時習館」という笠間藩の藩校があった場所です。<br/><span class='m-h-l'>・「時習館記」の石碑</span><br/><span class='m-h-l'>・加藤桜老先生の銅像</span><br/>を見つけたら地図左下で<b>「🧭現在地をチェック」</b>してクエストをクリアしてね！",
+      info: "ここ笠間小学校は江戸時代に「時習館」という笠間藩の藩校があった場所です。<br/>・<span class='m-h-l'>「時習館記」の石碑</span><br/>・<span class='m-h-l'>加藤桜老先生の銅像</span><br/>を見つけたら地図左下で<b>「🧭現在地をチェック」</b>してクエストをクリアしてね！",
       // クエスト開始地点
       startLat: 36.382111, 
       startLng: 140.256400,
@@ -1056,14 +1056,14 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
         {
           name: "「時習館記」の石碑",
           lat: 36.383267, lng: 140.264291,
-          radius: 20,
+          radius: 2000000,
           required: true,
-          info: "実際に空堀を見て深さの迫力が目に焼き付いたでしょ。そんな深い堀を人の手で掘っていたんだよ。驚愕するでしょ？"
+          info: "「時習館」の由来は孔子の論語の「学ビテ<b>時</b>ニ之ヲ<b>習</b>フ、マタ説バシカラズヤ」→<span class='m-h-l'>「どんな状態にあっても学ぶことを続け、いつでもそのことを活用できるように常に復習して知識を身につけるということは喜ばしいことである」</span>です。"
         }
         ,{
           name: "加藤桜老先生の銅像",
           lat: 36.382452, lng: 140.255895,
-          radius: 2000000,
+          radius: 20,
           required: true,
           info: "加藤桜老先生は18歳で時習館の先生になったよ！高杉晋作が加藤先生に会いにきた「十三山書楼」の跡にもいってみてね！"
         }
@@ -2555,7 +2555,7 @@ function updateQuestMarkers() {
         point.info
           ? point.info
           : q.clearInfo;
-
+//🦊 ポイント発見！
       const clearPopupContent = `
         <div style="
           text-align:center;
@@ -2565,10 +2565,10 @@ function updateQuestMarkers() {
 
           <div style="
             font-size:16px;
-            font-weight:bold;
+            /*font-weight:bold;*/
             margin-bottom:8px;
           ">
-            🦊 ポイント発見！
+            ${q.name}
           </div>
 
           <img
@@ -2587,7 +2587,7 @@ function updateQuestMarkers() {
             font-weight:bold;
             margin-bottom:5px;
           ">
-            ${q.name}${point.name}
+            ${point.name}
 
           </div>
 
@@ -2607,7 +2607,7 @@ function updateQuestMarkers() {
             line-height:1.6;
             color:#555;
           ">
-            <strong>🦊 ここで答え合わせ！</strong>
+            
             <br/>
             ${pointInfo || ""}
           </div>
