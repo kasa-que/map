@@ -301,20 +301,9 @@
     
     @keyframes smokeBigDoron {
     
-      0% {
-        opacity: 0;
-        transform: scale(0.4);
-      }
-    
-      30% {
-        opacity: 1;
-        transform: scale(1.2);
-      }
-    
-      100% {
-        opacity: 0;
-        transform: scale(1.8) translate(8px, -8px);
-      }
+      0% {opacity: 0;transform: scale(0.4);}
+      30% {opacity: 1;transform: scale(1.2);}
+      100% {opacity: 0;transform: scale(1.8) translate(8px, -8px);}
     }
     #my-compass-wrapper.compass-doron::after {
       content: "💭 💭";
@@ -484,7 +473,7 @@
     /* 📱 スマホ：吹き出しが横に広がりすぎないようにする */
     @media (max-width: 600px) {
       .leaflet-popup-content-wrapper {
-        max-width: 280px;
+        max-width: 300px;
       }
     }
 
@@ -1367,7 +1356,7 @@ function handleLayerRadio(type) {
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
       //foxMsg.innerHTML ="🦊 <span class='m-h-l'>クエストマップ</span>に切り替えたよ！⚠️";
-      typeFoxMessage(`<span class='m-h-l'>クエストマップ</span>に切り替えたよ！⚠️`);
+      typeFoxMessage(`<span class='m-h-l'>クエストマップ</span>に切り替えたよ！<be/>クエストマップは江戸時代の文政の頃の道を今でも歩けるようにしたマップのことだよ！`);
     }
   }
   if (type === 'base') {
@@ -1375,7 +1364,7 @@ function handleLayerRadio(type) {
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
       //foxMsg.innerHTML ="🦊 <span class='m-h-l'>現代の地図</span>に切り替えたよ！⚠️";
-      typeFoxMessage(`<span class='m-h-l'>現代の地図</span>に切り替えたよ！⚠️`);
+      typeFoxMessage(`<span class='m-h-l'>現代の地図</span>に切り替えたよ！`);
     }
   }
   if (type === 'satellite') {
@@ -1383,7 +1372,7 @@ function handleLayerRadio(type) {
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
       //foxMsg.innerHTML ="🦊 <span class='m-h-l'>航空写真</span>に切り替えたよ！⚠️";
-      typeFoxMessage(`<span class='m-h-l'>航空写真</span>に切り替えたよ！⚠️`);
+      typeFoxMessage(`<span class='m-h-l'>航空写真</span>に切り替えたよ！<br/>家や駐車場などの様子が見れるからどこなのか場所が見当をつけやすくなるよ！`);
     }
   }
   if (type === 'elevation') {
@@ -1391,7 +1380,7 @@ function handleLayerRadio(type) {
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
       //foxMsg.innerHTML = "🦊 <span class='m-h-l'>陰影起伏図</span>に切り替えたよ！⚠️";
-      typeFoxMessage(`<span class='m-h-l'>陰影起伏図</span>に切り替えたよ！⚠️`);
+      typeFoxMessage(`<span class='m-h-l'>陰影起伏図</span>に切り替えたよ！<br/>北西から光を当てた時にどう見えるか想定した地図で、堀や土塁などの凸凹を見つけることのできる地図だよ！`);
     }
   }
   //if (type === 'base') baseMap.addTo(map);
