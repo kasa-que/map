@@ -287,6 +287,9 @@
     /* =================================
        📕 スタンプ帳
        ================================= */
+    .quest-locked {
+      color: #aaa;
+    }
     .stamp-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -1443,9 +1446,8 @@ function updateQuestMenu() {
     }
     
     if (isLocked) {
-      questName = `🔒 ${questName}`;
+      questName = `<span class="quest-locked">🔒 ${questName}</span>`;
     }
-
     
     const clearMarks =
       foundCount > 0
@@ -1526,7 +1528,7 @@ const CustomQuestControl = L.Control.extend({
   }
   
   if (isLocked) {
-    questName = `🔒 ${questName}`;
+    questName = `<span class="quest-locked">🔒 ${questName}</span>`;
   }
     
   // クリアしたポイント数だけ🎉
