@@ -3559,6 +3559,9 @@ function checkQuestClear() {
         [clearedQuest.startLat, clearedQuest.startLng],
         17
       );
+      // スタート地点を少し下にずらして表示
+      map.panBy([0, 120]);
+
 
   
       // 🦊 スタート地点のクリア済みポップアップを開く
