@@ -379,6 +379,14 @@
     /* =================================
        📕 スタンプ帳
        ================================= */
+    .inventory-title {
+      margin: 18px 0 6px;
+      padding: 6px 8px;
+      font-family: "DotGothic16", sans-serif;
+      font-size: 18px;
+      font-weight: normal;
+      color: #333333;
+    }
     .quest-locked {
       color: #aaa;
     }
@@ -3810,14 +3818,17 @@ function showStamps(mode = 'all') {
 
   // スタンプ帳のタイトル
   div.innerHTML = `
-    <h3>クエストでゲットしたもの</h3>
+    <h3 class="inventory-title">持ち物</h3>
+  
+    <h4 class="stamp-category-title">
+      クエストでゲットしたもの
+    </h4>
   
     <div id="quest-rewards">
     </div>
   
-    <h3>御集印帳</h3>
+    <h3 class="inventory-title">御集印帳</h3>
   `;
-
   // ====================================================
   // 分類ごとの設定
   // ====================================================
