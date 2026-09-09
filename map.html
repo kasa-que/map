@@ -3795,37 +3795,13 @@ function showStamps(mode = 'all') {
 // ====================================================
 
   // 「獲得したスタンプ」の場合は、クリア済みだけ表示
-  const displayQuests = quests.filter(q => {
-  
-    const clearTime = localStorage.getItem(
-      "quest_clear_time_" + q.id
-    );
-  
-    if (mode === "got") {
-      return clearTime;
-    }
-  
-    return true;
-  });
-  
+  const displayQuests = quests;  
   
   // 表示するクエストがある場合だけ表示
   if (displayQuests.length > 0) {
-  
-    div.innerHTML += `
-      <h4 class="stamp-category-title">
-        クエスト
-      </h4>
-    `;
-  
-    div.innerHTML += `
-      <div class="stamp-grid" id="stamp-grid-quest">
-      </div>
-    `;
-  
+
     const questGrid =
-      document.getElementById("stamp-grid-quest");
-  
+      document.getElementById("quest-rewards");
   
     // 表示対象のクエストを1個ずつ配置
     displayQuests.forEach(q => {
