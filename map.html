@@ -287,8 +287,37 @@
       animation: compassDoron 1s ease-out;
     }
     /* 方位磁石のドロン煙 */
+    /* 方位磁石のドロン煙・大きい煙 */
+    #my-compass-wrapper.compass-doron::before {
+      content: "💭";
+      position: absolute;
+      left: 5px;
+      top: -10px;
+      font-size: 42px;
+      opacity: 0;
+      animation: smokeBigDoron 1s ease-out;
+      pointer-events: none;
+    }
+    
+    @keyframes smokeBigDoron {
+    
+      0% {
+        opacity: 0;
+        transform: scale(0.4);
+      }
+    
+      30% {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+    
+      100% {
+        opacity: 0;
+        transform: scale(1.8) translate(8px, -8px);
+      }
+    }
     #my-compass-wrapper.compass-doron::after {
-      content: "💭 💭 💭";
+      content: "💭 💭";
       position: absolute;
       left: -15px;
       top: 55px;
