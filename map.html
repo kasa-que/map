@@ -1070,7 +1070,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
           info: "小野友五郎はこんな人だよ！！"
         }
            ],
-      
+      keyName: "方位磁石",
       stampImage: "icon_location.png",
       clearInfo: "井筒屋で友五郎や笠間城について学べたかな？<br/>小野友五郎が「方位磁石」をくれたよ！"
     }
@@ -3374,17 +3374,19 @@ function checkQuestClear() {
       "1"
     );
   }
+
+  
   const clearedQuest = currentQuest;
   
   // 🦊 クリアしたことを保存・画面にも反映
   const foxMsg =
     document.getElementById('fox-message');
   
-  if (foxMsg) {
-    foxMsg.innerHTML =
-      `🦊「${clearedQuest.name}」クリア！🎉`;
-  }
-  
+    if (foxMsg) {
+      foxMsg.innerHTML =
+        `🦊「${clearedQuest.name}」クリア！🎉<br>` +
+        `🔑「${clearedQuest.keyName}」を手に入れたよ！`;
+    }  
   updateQuestMarkers();
   showStamps();
   
@@ -3409,9 +3411,10 @@ function checkQuestClear() {
   
       alert(
         "🎉 クエストクリア！\n\n" +
-        clearedQuest.name
-      );
-  
+        clearedQuest.name +
+        "\n\n" +
+        "🔑「" + clearedQuest.keyName + "」を手に入れたよ！"
+      );  
       // 🦊 アラートを閉じたらスタート地点へ移動
       map.setView(
         [clearedQuest.startLat, clearedQuest.startLng],
