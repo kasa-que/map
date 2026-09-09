@@ -1487,13 +1487,17 @@ const CustomQuestControl = L.Control.extend({
     // クエスト一覧を自動生成
 
     
-let questListHTML = ``;
-
-quests.forEach(q => {
+  let questListHTML = ``;
+  
+  quests.forEach(q => {
 
   // 現在挑戦中か
   const isActive =
     currentQuest && currentQuest.id === q.id;
+    
+  const isLocked =
+    q.requiredKey &&
+    !localStorage.getItem("key_" + q.requiredKey);
 
   // クリアしたポイント数
   const foundCount =
@@ -1511,12 +1515,15 @@ quests.forEach(q => {
 
   // クエスト名の表示
   let questName = q.name;
-
-  // 全クリアなら取り消し線
+  
   if (questClearTime) {
     questName = `<s>${questName}</s>`;
   }
-
+  
+  if (isLocked) {
+    questName = `🔒 ${questName}`;
+  }
+    
   // クリアしたポイント数だけ🎉
   const clearMarks =
     foundCount > 0
@@ -1595,7 +1602,7 @@ function handleQuestRadio(id) {
     q.requiredKey &&
     !localStorage.getItem("key_" + q.requiredKey)
   ) {
-    alert("🔒 このクエストはまだ解放されていないよ！");
+    //alert("🔒 このクエストはまだ解放されていないよ！");
     updateQuestMenu();
     return;
   }
