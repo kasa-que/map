@@ -1368,6 +1368,7 @@ function handleLayerRadio(type) {
     if (foxMsg) {
       foxMsg.innerHTML =
       "🦊 <span class='m-h-l'>クエストマップ</span>に切り替えたよ！⚠️";
+      typeFoxMessage(`クエストマップに切り替えたよ！`);
     }
   }
   if (type === 'base') {
@@ -2013,7 +2014,7 @@ function handleStampBookRadio(type) {
 
       if (foxMsg) {
         foxMsg.innerHTML ="🦊 スタンプはちゃんと残っているよ！";
-        typeFoxMessage(`🦊ポイント発見！<br/>2 / 3 のポイントを見つけたよ！`);
+        
       }
     }
   }
