@@ -3794,46 +3794,99 @@ function showStamps(mode = 'all') {
 // 🦊 クエスト
 // ====================================================
 
-  const rewardDiv =
-    document.getElementById("quest-rewards");
+  // 「獲得したスタンプ」の場合は、クリア済みだけ表示
+  const displayQuests = quests.filter(q => {
   
-  if (rewardDiv) {
+    const clearTime = localStorage.getItem(
+      "quest_clear_time_" + q.id
+    );
   
-    let rewardHTML = "";
+    if (mode === "got") {
+      return clearTime;
+    }
   
-    quests.forEach(q => {
+    return true;
+  });
   
-      const clearTime =
-        localStorage.getItem(
-          "quest_clear_time_" + q.id
-        );
   
-      if (!q.rewardKey) {
-        return;
-      }
+  // 表示するクエストがある場合だけ表示
+  if (displayQuests.length > 0) {
   
-      if (clearTime) {
+    div.innerHTML += `
+      <h4 class="stamp-category-title">
+        クエスト
+      </h4>
+    `;
   
-        rewardHTML += `
-          <div class="quest-reward-item">
-            🗝️
-          </div>
-        `;
+    div.innerHTML += `
+      <div class="stamp-grid" id="stamp-grid-quest">
+      </div>
+    `;
   
+    const questGrid =
+      document.getElementById("stamp-grid-quest");
+  
+  
+    // 表示対象のクエストを1個ずつ配置
+    displayQuests.forEach(q => {
+  
+      // クリア日時が保存されているか確認
+      const clearTime = localStorage.getItem(
+        "quest_clear_time_" + q.id
+      );
+  
+  
+      // クリア済みなら専用スタンプ
+      // 未クリアなら「まだ」の画像
+  
+      const isLocked =
+        q.requiredKey &&
+        !localStorage.getItem("key_" + q.requiredKey);
+      
+      let stampImageUrl;
+      
+      if (isLocked) {
+      
+        // まだ解放されていない
+        stampImageUrl = "stmplock.png";
+      
+      } else if (clearTime) {
+      
+        // 解放済みでクリア済み
+        stampImageUrl =
+          q.stampImage ? q.stampImage : "stmpon.png";
+      
       } else {
-  
-        rewardHTML += `
-          <div class="quest-reward-item">
-            🔒
-          </div>
-        `;
-  
+      
+        // 解放済みだけど、まだクリアしていない
+        stampImageUrl = "stmpof.png";
       }
+  
+  
+      
+  
+      questGrid.innerHTML += `
+        <div
+          class="stamp-item"
+          onclick="jumpToQuest('${q.id}')"
+        >
+  
+          <img
+            src="${stampImageUrl}"
+            alt="クエスト"
+            class="stamp-image"
+          >
+  
+          <div class="stamp-name">
+            ${q.name}
+          </div>
+  
+        </div>
+      `;
   
     });
+  }
   
-    rewardDiv.innerHTML = rewardHTML;
-  }  
 
 
 
