@@ -4310,58 +4310,108 @@ function typeFoxMessage(html) {
   // 前の表示を止める
   if (foxTypingTimer) {
     clearInterval(foxTypingTimer);
+    foxTypingTimer = null;
   }
 
-  // 一度、中身を空にする
   foxMsg.innerHTML = "";
 
-  // HTMLタグと文字を分ける
+  // 元のHTMLを一度DOMにする
   const temp = document.createElement("div");
   temp.innerHTML = html;
 
-  const nodes = Array.from(temp.childNodes);
+  // 文字を表示する対象を順番に集める
+  const items = [];
 
-  let nodeIndex = 0;
-  let charIndex = 0;
+  function collectNodes(node) {
+
+    node.childNodes.forEach(child => {
+
+      // 普通の文字
+      if (child.nodeType === Node.TEXT_NODE) {
+
+        for (const char of child.textContent) {
+          items.push({
+            type: "text",
+            char: char
+          });
+        }
+
+      // HTML要素
+      } else if (child.nodeType === Node.ELEMENT_NODE) {
+
+        items.push({
+          type: "open",
+          tag: child.tagName.toLowerCase(),
+          attributes: Array.from(child.attributes)
+        });
+
+        collectNodes(child);
+
+        items.push({
+          type: "close"
+        });
+      }
+
+    });
+  }
+
+  collectNodes(temp);
+
+  let index = 0;
+  const elementStack = [];
 
   foxTypingTimer = setInterval(() => {
 
-    if (nodeIndex >= nodes.length) {
+    if (index >= items.length) {
       clearInterval(foxTypingTimer);
       foxTypingTimer = null;
       return;
     }
 
-    const node = nodes[nodeIndex];
+    const item = items[index];
 
-    // 普通の文字
-    if (node.nodeType === Node.TEXT_NODE) {
+    // HTMLタグ開始
+    if (item.type === "open") {
 
-      foxMsg.appendChild(
-        document.createTextNode(
-          node.textContent.charAt(charIndex)
-        )
-      );
+      const el = document.createElement(item.tag);
 
-      charIndex++;
+      item.attributes.forEach(attr => {
+        el.setAttribute(attr.name, attr.value);
+      });
 
-      if (charIndex >= node.textContent.length) {
-        nodeIndex++;
-        charIndex = 0;
+      if (elementStack.length > 0) {
+        elementStack[elementStack.length - 1]
+          .appendChild(el);
+      } else {
+        foxMsg.appendChild(el);
       }
 
-    // HTMLタグ
+      elementStack.push(el);
+
+    // HTMLタグ終了
+    } else if (item.type === "close") {
+
+      elementStack.pop();
+
+    // 文字
     } else {
 
-      const clone = node.cloneNode(false);
-      foxMsg.appendChild(clone);
+      const textNode =
+        document.createTextNode(item.char);
 
-      nodeIndex++;
-      charIndex = 0;
+      if (elementStack.length > 0) {
+        elementStack[elementStack.length - 1]
+          .appendChild(textNode);
+      } else {
+        foxMsg.appendChild(textNode);
+      }
+
     }
 
+    index++;
+
   }, 50);
-}  
+}
   
 // ====================================================
 // 開発用、座標表示
