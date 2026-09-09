@@ -4429,8 +4429,10 @@ function createCompass() {
   );
   
   compassWrapper.addEventListener("click", function() {
+    e.stopPropagation();
+
     typeFoxMessage(
-      `方位磁石は、いつも針の赤が「北」を指しているから、針の赤を方向を「北」に合わせて地図を正しい向きに向けてね！<br/>（タブレットやスマホの画面は縦に持ってね）`
+      `左上の方位磁石が使えるよ！画面を縦にして使ってね！針の赤い方を北に合わせてね！`
     ); 
   });
 
