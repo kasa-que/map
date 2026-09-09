@@ -300,7 +300,6 @@
     }
     
     @keyframes smokeBigDoron {
-    
       0% {opacity: 0;transform: scale(0.4);}
       30% {opacity: 1;transform: scale(1.2);}
       100% {opacity: 0;transform: scale(1.8) translate(8px, -8px);}
@@ -317,48 +316,16 @@
     }
     
     @keyframes smokeDoron {
-    
-      0% {
-        opacity: 0;
-        transform: scale(0.5);
-      }
-    
-      30% {
-        opacity: 1;
-        transform: scale(1.2);
-      }
-    
-      100% {
-        opacity: 0;
-        transform: scale(1.8) translate(-5px, -10px);
-      }
+      0% {opacity: 0;transform: scale(0.5);}
+      30% {opacity: 1;transform: scale(1.2);}
+      100% {opacity: 0;transform: scale(1.8) translate(-5px, -10px);}
     }
-    
-    
     @keyframes compassDoron {
-    
-      0% {
-        transform: scale(0);
-        opacity: 0;
-      }
-    
-      40% {
-        transform: scale(1.5) rotate(-10deg);
-        opacity: 1;
-      }
-    
-      65% {
-        transform: scale(0.9) rotate(8deg);
-      }
-    
-      80% {
-        transform: scale(1.1) rotate(-4deg);
-      }
-    
-      100% {
-        transform: scale(1) rotate(0deg);
-        opacity: 1;
-      }
+       0% {transform: scale(0);opacity: 0;}
+      40% {transform: scale(1.5) rotate(-10deg);opacity: 1;}
+      65% {transform: scale(0.9) rotate(8deg);}
+      80% {transform: scale(1.1) rotate(-4deg);}
+      100% {transform: scale(1) rotate(0deg);opacity: 1;}
     }
     /* =================================
        方位磁石ここまで
@@ -1159,7 +1126,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
            ],
       keyName: "方位磁石",
       stampImage: "icon_location.png",
-      clearInfo: "小野友五郎が<span class='m-h-l'>「方位磁石」</span>をくれた！地図の左上に置いておくから使ってね！<br/>井筒屋で友五郎や笠間城について学べたかな？<br/>次のクエストにも挑戦してね！"
+      clearInfo: "小野友五郎が<span class='m-h-l'>「方位磁石」</span>をくれたよ！地図の左上に置いておくから使ってね！<br/>井筒屋で友五郎や笠間城について学べたかな？<br/>次のクエストにも挑戦してね！"
     }
 
    ,{
@@ -4460,6 +4427,16 @@ function createCompass() {
   compassContainer.appendChild(
     compassWrapper
   );
+  
+  compassWrapper.addEventListener("click", function() {
+    typeFoxMessage(
+      `方位磁石は、いつも針の赤が「北」を指しているから、針の赤を方向を「北」に合わせて地図を正しい向きに向けてね！<br/>（タブレットやスマホの画面は縦に持ってね）`
+    ); 
+  });
+
+
+
+  
 
   // 真上クルクル回転する針
   const compassDiv =
