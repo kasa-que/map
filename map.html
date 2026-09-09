@@ -4431,9 +4431,9 @@ function createCompass() {
     compassWrapper
   );
   
-  compassWrapper.addEventListener("click", function() {
+  compassWrapper.addEventListener("click", function(e) {
     e.stopPropagation();
-
+  
     typeFoxMessage(
       `左上の方位磁石が使えるよ！画面を縦にして使ってね！針の赤い方を北に合わせてね！`
     ); 
