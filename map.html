@@ -3834,9 +3834,32 @@ if (displayQuests.length > 0) {
 
     // クリア済みなら専用スタンプ
     // 未クリアなら「まだ」の画像
-    const stampImageUrl = clearTime
-      ? (q.stampImage ? q.stampImage : "stmpon.png")
-      : "stmpof.png";
+
+    const isLocked =
+      q.requiredKey &&
+      !localStorage.getItem("key_" + q.requiredKey);
+    
+    let stampImageUrl;
+    
+    if (isLocked) {
+    
+      // まだ解放されていない
+      stampImageUrl = "stmplock.png";
+    
+    } else if (clearTime) {
+    
+      // 解放済みでクリア済み
+      stampImageUrl =
+        q.stampImage ? q.stampImage : "stmpon.png";
+    
+    } else {
+    
+      // 解放済みだけど、まだクリアしていない
+      stampImageUrl = "stmpof.png";
+    }
+
+
+    
 
     questGrid.innerHTML += `
       <div
