@@ -1414,6 +1414,11 @@ function updateQuestMenu() {
     const isActive =
       currentQuest && currentQuest.id === q.id;
 
+    const isLocked =
+      q.requiredKey &&
+      !localStorage.getItem("key_" + q.requiredKey);
+    
+
     const foundCount =
       q.clearPoints.filter((point, index) =>
         localStorage.getItem(
@@ -1427,11 +1432,16 @@ function updateQuestMenu() {
       );
 
     let questName = q.name;
-
+    
     if (questClearTime) {
       questName = `<s>${questName}</s>`;
     }
+    
+    if (isLocked) {
+      questName = `🔒 ${questName}`;
+    }
 
+    
     const clearMarks =
       foundCount > 0
         ? "🎉".repeat(foundCount)
