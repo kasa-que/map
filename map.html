@@ -2978,7 +2978,10 @@ function updateQuestPopup(q) {
         margin-top: 12px;
         padding-top: 10px;
       "></div>
-    
+       
+        <div style="text-align: center;"><strong>＼クエストクリア／</strong></div>
+
+
       ${popupImage}
       ${popupDate}
     
@@ -2988,8 +2991,7 @@ function updateQuestPopup(q) {
         line-height: 1.6;
         color: #555;
       ">
-        <strong>＼クエストクリア／</strong>
-        <br/>
+
         ${q.clearInfo || ""}
       </div>
     ` : ""}
