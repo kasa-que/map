@@ -2585,8 +2585,10 @@ function updateQuestMarkers() {
         return;
       }
 
-      const stampImageUrl =
-        q.stampImage
+    const stampImageUrl =
+      point.image
+        ? point.image
+        : q.stampImage
           ? q.stampImage
           : "stmpon.png";
 
