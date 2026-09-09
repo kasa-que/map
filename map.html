@@ -1366,8 +1366,9 @@ function handleLayerRadio(type) {
     originalMapGroup.addTo(map);
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
-      typeFoxMessage( "🦊 クエストマップに切り替えたよ！⚠️";);
-      //foxMsg.innerHTML ="🦊 <span class='m-h-l'>クエストマップ</span>に切り替えたよ！⚠️";
+      typeFoxMessage(
+  `🦊ポイント発見！<br/>2 / 3 のポイントを見つけたよ！`
+);
     }
   }
   if (type === 'base') {
