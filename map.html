@@ -1366,33 +1366,32 @@ function handleLayerRadio(type) {
     originalMapGroup.addTo(map);
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
-      foxMsg.innerHTML =
-      "🦊 <span class='m-h-l'>クエストマップ</span>に切り替えたよ！⚠️";
-      typeFoxMessage(`<span class='m-h-l'>クエストマップ</span>に切り替えたよ！`);
+      //foxMsg.innerHTML ="🦊 <span class='m-h-l'>クエストマップ</span>に切り替えたよ！⚠️";
+      typeFoxMessage(`<span class='m-h-l'>クエストマップ</span>に切り替えたよ！⚠️`);
     }
   }
   if (type === 'base') {
     baseMap.addTo(map);
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
-      foxMsg.innerHTML =
-      "🦊 <span class='m-h-l'>現代の地図</span>に切り替えたよ！⚠️";
+      //foxMsg.innerHTML ="🦊 <span class='m-h-l'>現代の地図</span>に切り替えたよ！⚠️";
+      typeFoxMessage(`<span class='m-h-l'>現代の地図</span>に切り替えたよ！⚠️`);
     }
   }
   if (type === 'satellite') {
     satelliteMap.addTo(map);
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
-      foxMsg.innerHTML =
-      "🦊 <span class='m-h-l'>航空写真</span>に切り替えたよ！⚠️";
+      //foxMsg.innerHTML ="🦊 <span class='m-h-l'>航空写真</span>に切り替えたよ！⚠️";
+      typeFoxMessage(`<span class='m-h-l'>航空写真</span>に切り替えたよ！⚠️`);
     }
   }
   if (type === 'elevation') {
     elevationMap.addTo(map); 
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
-      foxMsg.innerHTML =
-      "🦊 <span class='m-h-l'>陰影起伏図</span>に切り替えたよ！⚠️";
+      //foxMsg.innerHTML = "🦊 <span class='m-h-l'>陰影起伏図</span>に切り替えたよ！⚠️";
+      typeFoxMessage(`<span class='m-h-l'>陰影起伏図</span>に切り替えたよ！⚠️`);
     }
   }
   //if (type === 'base') baseMap.addTo(map);
