@@ -2476,6 +2476,14 @@ function updateQuestMarkers() {
 
   quests.forEach(q => {
 
+    // 必要なキーを持っていなければ、地図には表示しない
+    if (
+      q.requiredKey &&
+      !localStorage.getItem("key_" + q.requiredKey)
+    ) {
+      return;
+    }
+
    // すでにピンがあれば、内容だけ最新状態に更新
     if (questMarkers[q.id]) {
       updateQuestPopup(q);
