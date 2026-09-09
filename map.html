@@ -398,11 +398,6 @@
       max-width: 520px;
       margin: 0 auto;
     }
-    #quest-rewards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
     .stamp-item {
       text-align: center;
       padding: 10px 4px 8px;
@@ -3819,12 +3814,12 @@ function showStamps(mode = 'all') {
   // スタンプ帳のタイトル
   div.innerHTML = `
     <h3 class="inventory-title">持ち物</h3>
-  <h4 class="stamp-category-title">クエストでゲットしたもの</h4>
+  
     <div class="stamp-category-title">
       クエストでゲットしたもの
     </div>
-      
-    <div id="quest-rewards">
+  
+    <div class="stamp-grid" id="quest-rewards">
     </div>
   
     <h3 class="inventory-title">御集印帳</h3>
