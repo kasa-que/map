@@ -3607,7 +3607,7 @@ function checkQuestClearData() {
   
 // === 📍 現在地をチェック（位置表示のみに変更） ===
 function checkLocation() {
-  alert("📍 現在地チェック開始");
+  //alert("📍 現在地チェック開始");
 
   if (!navigator.geolocation) {
     alert("このブラウザは位置情報に対応していません");
@@ -3628,9 +3628,9 @@ function checkLocation() {
 
 const result = checkQuestClear();
 
-//alert("checkQuestClear終了：" + result);
+      //alert("checkQuestClear終了：" + result);
       
-      alert("位置取得成功！"); 
+      //alert("位置取得成功！"); 
 
       if (currentLocationMarker) {
         map.removeLayer(currentLocationMarker);
