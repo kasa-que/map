@@ -3409,28 +3409,7 @@ function checkQuestClear() {
       "1"
     );
   }
-  // 🧭 方位磁石を手に入れたら、その場で表示
-  if (currentQuest.rewardKey === "key01") {
-  
-    createCompass();
-  
-    const compass =
-      document.getElementById(
-        'my-compass-wrapper'
-      );
-  
-    if (compass) {
-      compass.classList.add(
-        'compass-doron'
-      );
-  
-      setTimeout(() => {
-        compass.classList.remove(
-          'compass-doron'
-        );
-      }, 1000);
-    }
-  }
+
   
   const clearedQuest = currentQuest;
   
@@ -3470,12 +3449,35 @@ function checkQuestClear() {
         clearedQuest.name +
         "\n\n" +
         "🔑「" + clearedQuest.keyName + "」を手に入れたよ！"
-      );  
-      // 🦊 アラートを閉じたらスタート地点へ移動
+      );
+      // 🧭 アラートを閉じたあとに方位磁石をドロン！
+      if (clearedQuest.rewardKey === "key01") {
+      
+        createCompass();
+      
+        const compass =
+          document.getElementById(
+            'my-compass-wrapper'
+          );
+      
+        if (compass) {
+          compass.classList.add(
+            'compass-doron'
+          );
+      
+          setTimeout(() => {
+            compass.classList.remove(
+              'compass-doron'
+            );
+          }, 1000);
+        }
+      }
+      // 🦊 スタート地点へ移動
       map.setView(
         [clearedQuest.startLat, clearedQuest.startLng],
         17
       );
+
   
       // 🦊 スタート地点のクリア済みポップアップを開く
       if (questMarkers[clearedQuest.id]) {
