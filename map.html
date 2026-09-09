@@ -3555,20 +3555,25 @@ function checkQuestClear() {
         }
       }
       // 🦊 スタート地点へ移動
+
       map.setView(
         [clearedQuest.startLat, clearedQuest.startLng],
         17
       );
-      // スタート地点を少し下にずらして表示
-      map.panBy([0, 150]);
-
-
-  
+      
       // 🦊 スタート地点のクリア済みポップアップを開く
       if (questMarkers[clearedQuest.id]) {
         questMarkers[clearedQuest.id].openPopup();
+      
+        // ポップアップを開いたあとに、少し下へ移動
+        setTimeout(() => {
+          map.panBy([0, 150]);
+        }, 100);
       }
-  
+
+
+
+      
     });
   
   }
