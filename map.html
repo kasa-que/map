@@ -4180,8 +4180,13 @@ map.on('click', function(e) {
 // ====================================================
 // 方位磁石
 // ====================================================
+const hasCompassKey =
+  localStorage.getItem("key_key01");
+
 const compassContainer = document.getElementById('map');
-if (compassContainer) {
+
+if (hasCompassKey && compassContainer) {
+
   // 回転しない背景
   const compassWrapper = document.createElement('div');
   compassWrapper.id = 'my-compass-wrapper';
