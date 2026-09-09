@@ -1366,8 +1366,8 @@ function handleLayerRadio(type) {
     originalMapGroup.addTo(map);
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
-      foxMsg.innerHTML =
-      "🦊 <span class='m-h-l'>クエストマップ</span>に切り替えたよ！⚠️";
+      typeFoxMessage( "🦊 <span class='m-h-l'>クエストマップ</span>に切り替えたよ！⚠️";);
+      //foxMsg.innerHTML ="🦊 <span class='m-h-l'>クエストマップ</span>に切り替えたよ！⚠️";
     }
   }
   if (type === 'base') {
@@ -4329,6 +4329,75 @@ map.on('click', function(e) {
 });
 
 
+
+// ====================================================
+// 🦊 フォックスメッセージ：一文字ずつ表示
+// ====================================================
+let foxTypingTimer = null;
+
+function typeFoxMessage(html) {
+
+  const foxMsg = document.getElementById("fox-message");
+
+  if (!foxMsg) return;
+
+  // 前の表示を止める
+  if (foxTypingTimer) {
+    clearInterval(foxTypingTimer);
+  }
+
+  // 一度、中身を空にする
+  foxMsg.innerHTML = "";
+
+  // HTMLタグと文字を分ける
+  const temp = document.createElement("div");
+  temp.innerHTML = html;
+
+  const nodes = Array.from(temp.childNodes);
+
+  let nodeIndex = 0;
+  let charIndex = 0;
+
+  foxTypingTimer = setInterval(() => {
+
+    if (nodeIndex >= nodes.length) {
+      clearInterval(foxTypingTimer);
+      foxTypingTimer = null;
+      return;
+    }
+
+    const node = nodes[nodeIndex];
+
+    // 普通の文字
+    if (node.nodeType === Node.TEXT_NODE) {
+
+      foxMsg.appendChild(
+        document.createTextNode(
+          node.textContent.charAt(charIndex)
+        )
+      );
+
+      charIndex++;
+
+      if (charIndex >= node.textContent.length) {
+        nodeIndex++;
+        charIndex = 0;
+      }
+
+    // HTMLタグ
+    } else {
+
+      const clone = node.cloneNode(false);
+      foxMsg.appendChild(clone);
+
+      nodeIndex++;
+      charIndex = 0;
+    }
+
+  }, 50);
+}
+
+  
 // ====================================================
 // 方位磁石
 // ====================================================
