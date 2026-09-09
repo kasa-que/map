@@ -3525,14 +3525,16 @@ function checkQuestClear() {
     lastPointMarker.once("popupclose", function () {
   
       alert(
-        "🎉 クエストクリア！\n\n" +
+        "🎉 クエスト「" +
         clearedQuest.name +
-        "\n\n" +
-        "🔑「" + clearedQuest.keyName + "」を手に入れたよ！"
+        "」をクリアしたよ！\n\n" +
+        "「" + clearedQuest.keyName + "」を手に入れたよ！"
       );
+      
       // 🧭 アラートを閉じたあとに方位磁石をドロン！
       if (clearedQuest.rewardKey === "key01") {
-      
+            alert("「方位磁石」をゲットしたから画面の左上を見て！");
+
         createCompass();
       
         const compass =
