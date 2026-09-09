@@ -279,6 +279,39 @@
       /* 回る動きを滑らかにする */
       transition: transform 0.1s ease-out; 
     } 
+    /* =========================================
+   方位磁石・ゲット演出
+   ========================================= */
+
+    #my-compass-wrapper.compass-doron {
+      animation: compassDoron 1s ease-out;
+    }
+    
+    @keyframes compassDoron {
+    
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+    
+      40% {
+        transform: scale(1.5) rotate(-10deg);
+        opacity: 1;
+      }
+    
+      65% {
+        transform: scale(0.9) rotate(8deg);
+      }
+    
+      80% {
+        transform: scale(1.1) rotate(-4deg);
+      }
+    
+      100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+      }
+    }
     /* =================================
        方位磁石ここまで
        ================================= */
@@ -3376,7 +3409,28 @@ function checkQuestClear() {
       "1"
     );
   }
-
+  // 🧭 方位磁石を手に入れたら、その場で表示
+  if (currentQuest.rewardKey === "key01") {
+  
+    createCompass();
+  
+    const compass =
+      document.getElementById(
+        'my-compass-wrapper'
+      );
+  
+    if (compass) {
+      compass.classList.add(
+        'compass-doron'
+      );
+  
+      setTimeout(() => {
+        compass.classList.remove(
+          'compass-doron'
+        );
+      }, 1000);
+    }
+  }
   
   const clearedQuest = currentQuest;
   
@@ -4180,30 +4234,73 @@ map.on('click', function(e) {
 // ====================================================
 // 方位磁石
 // ====================================================
-const hasCompassKey =
-  localStorage.getItem("key_key01");
 
-const compassContainer = document.getElementById('map');
+function createCompass() {
 
-if (hasCompassKey && compassContainer) {
+  // すでに表示されていたら何もしない
+  if (document.getElementById('my-compass-wrapper')) {
+    return;
+  }
 
-  // 回転しない背景
-  const compassWrapper = document.createElement('div');
-  compassWrapper.id = 'my-compass-wrapper';
-  compassContainer.appendChild(compassWrapper);
+  const compassContainer =
+    document.getElementById('map');
+
+  if (!compassContainer) return;
+
+  // 方位磁石の土台
+  const compassWrapper =
+    document.createElement('div');
+
+  compassWrapper.id =
+    'my-compass-wrapper';
+
+  compassContainer.appendChild(
+    compassWrapper
+  );
+
   // 真上クルクル回転する針
-  const compassDiv = document.createElement('div');
-  compassDiv.id = 'my-live-compass';
-  compassWrapper.appendChild(compassDiv); // 土台の中に入れ子にする
-  // スマホの「向き（方位）センサー」のリアルタイム監視
-  window.addEventListener('deviceorientation', function(e) {
-    let heading = e.webkitCompassHeading || (360 - e.alpha);
-    if (heading !== undefined && heading !== null) {
-      compassDiv.style.transform = 'rotate(' + (-heading) + 'deg)';
-    }
-  }, true);
+  const compassDiv =
+    document.createElement('div');
+
+  compassDiv.id =
+    'my-live-compass';
+
+  compassWrapper.appendChild(
+    compassDiv
+  );
+
+  // スマホの方位センサー
+  window.addEventListener(
+    'deviceorientation',
+    function(e) {
+
+      let heading =
+        e.webkitCompassHeading ||
+        (360 - e.alpha);
+
+      if (
+        heading !== undefined &&
+        heading !== null
+      ) {
+        compassDiv.style.transform =
+          'rotate(' +
+          (-heading) +
+          'deg)';
+      }
+
+    },
+    true
+  );
 }
 
+
+// ページ読み込み時
+// すでに方位磁石を持っていれば表示
+if (localStorage.getItem("key_key01")) {
+  createCompass();
+}
+
+  
 // 門番画面の「同意して始める」ボタン（agreeSafety）が押された瞬間に、センサーの許可をスマホに申請
 const originalAgreeSafety = agreeSafety; // 以前作った関数を一旦バックアップ
 
