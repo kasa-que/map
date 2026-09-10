@@ -75,6 +75,24 @@
       color: #333;
       box-sizing: border-box;
     }
+    
+    /* クエスト選択中：赤い墨がほんのり滲む */
+    .custom-map-control.quest-active {
+      animation: questGlow 2s ease-in-out infinite;
+    }  
+    @keyframes questGlow {
+      0%, 100% {
+        box-shadow:
+          0 1px 5px rgba(0,0,0,0.3),
+          0 0 3px rgba(190,30,40,0.25);
+      }  
+      50% {
+        box-shadow:
+          0 1px 5px rgba(0,0,0,0.3),
+          0 0 7px rgba(190,30,40,0.55);
+      }
+    }
+    
     /* すべての四角パネルの最小高さを「36px」に固定 */
     .custom-map-control.collapsed,
     .custom-map-control.expanded {
@@ -1126,7 +1144,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
       ],
       keyName: "方位磁石",
       stampImage: "q01-key.png",
-      clearInfo: "小野友五郎が<span class='m-h-l'>「方位磁石」</span>をくれたよ！地図の左上に置いておくから使ってね！<br/>井筒屋で友五郎や笠間城について学べたかな？<br/>次のクエストにも挑戦してね！"
+      clearInfo: "小野友五郎が<span class='m-h-l'>「方位磁石」</span>をくれたよ！<br/>地図の左上に置いておくから使ってね！<br/>井筒屋で友五郎や笠間城について学べたかな？<br/>次のクエストにも挑戦してね！"
     }
 
    ,{
@@ -1637,13 +1655,24 @@ updateQuestMenuIcon();
 function updateQuestMenuIcon() {
   const icon = document.getElementById("quest-menu-icon");
   if (!icon) return;
+
+  const control = icon.closest(".custom-map-control");
+
   if (currentQuest) {
     icon.src = "quest_active.png";
+
+    if (control) {
+      control.classList.add("quest-active");
+    }
+
   } else {
     icon.src = "quest_menu.png";
+
+    if (control) {
+      control.classList.remove("quest-active");
+    }
   }
-}
-  
+}  
 // =====================================================================================================
 // 🦊 クエスト選択時の処理========================================================================================================
 function handleQuestRadio(id) {
