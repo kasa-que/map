@@ -1078,26 +1078,23 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
       // クエストクリア地点
       clearPoints: [
         {
-          name: "",
-          lat: 36.376105,
-          lng: 140.278931,
-          radius: 15,
+          name: "関",
+          lat: 36.376054, lng: 140.279185,
+          radius: 5,
           required: true,
           info: "近！"
         },
         {
-          name: "",
-          lat: 36.376411,
-          lng: 140.278845,
-          radius: 15,
+          name: "P",
+          lat: 36.376030, lng: 140.279057,
+          radius: 5,
           required: true,
           info: "中！"
         },
         {
-          name: "",
-          lat: 36.376861,
-          lng: 140.278727,
-          radius: 15,
+          name: "道",
+          lat: 36.376101, lng: 140.279073 ,
+          radius: 5,
           required: true,
           info: "遠！"
         }
@@ -1146,8 +1143,8 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
       clearPoints: [
         {
           name: "「時習館記」の石碑",
-          lat: 36.381527, lng:  140.255410,
-          radius: 20,
+          lat: 36.382398,  lng:  140.255965,
+          radius: 5,
           required: true,
           image: "q02-1.png",
           info: "「時習館」の由来は孔子の論語の「学ビテ<b>時</b>ニ之ヲ<b>習</b>フ、マタ説バシカラズヤ」→<span class='m-h-l'>「どんな状態にあっても学ぶことを続け、いつでもそのことを活用できるように常に復習して知識を身につけるということは喜ばしいことである」</span>です。"
@@ -1155,7 +1152,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
         ,{
           name: "加藤桜老先生の銅像",
           lat: 36.382452, lng: 140.255895,
-          radius: 2000000,
+          radius: 5,
           required: true,
           image: "q02-2.png",
           info: "加藤桜老先生は18歳で時習館（桜町）の儒学の先生になったよ！高杉晋作が会いに来たすごい先生だよ！"
@@ -3248,13 +3245,13 @@ function checkQuestClear() {
       point.radius
     );
     
-//alert(
-//  "currentQuest：" + currentQuest.id +
-//  "\n現在地：" + currentLat + ", " + currentLng +
-//  "\nポイント：" + point.lat + ", " + point.lng +
-//  "\nradius：" + point.radius +
-//  "\nnear：" + near
-//);
+alert(
+  "currentQuest：" + currentQuest.id +
+  "\n現在地：" + currentLat + ", " + currentLng +
+  "\nポイント：" + point.lat + ", " + point.lng +
+  "\nradius：" + point.radius +
+  "\nnear：" + near
+);
     // まだ近づいていなければ何もしない
     if (!near) {
       return;
@@ -3580,7 +3577,7 @@ function checkQuestClearData() {
   
 // === 📍 現在地をチェック（位置表示のみに変更） ===
 function checkLocation() {
-  //alert("📍 現在地チェック開始");
+  alert("📍 現在地チェック開始");
 
   if (!navigator.geolocation) {
     alert("このブラウザは位置情報に対応していません");
