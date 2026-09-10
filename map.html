@@ -89,7 +89,25 @@
       50% {
         box-shadow:
           0 1px 5px rgba(0,0,0,0.3),
-          0 0 7px rgba(190,30,40,0.55);
+          0 0 7px rgba(190,30,40,0.65);
+      }
+    }
+    /* 足跡記録中：赤い墨がほんのり滲む */
+    .custom-map-control.track-active {
+      animation: trackGlow 2s ease-in-out infinite;
+    }
+    
+    @keyframes trackGlow {
+      0%, 100% {
+        box-shadow:
+          0 1px 5px rgba(0,0,0,0.3),
+          0 0 3px rgba(190,30,40,0.25);
+      }
+    
+      50% {
+        box-shadow:
+          0 1px 5px rgba(0,0,0,0.3),
+          0 0 7px rgba(190,30,40,0.65);
       }
     }
     
@@ -1456,7 +1474,7 @@ function handleFilterRadio(groupType) {
 const CustomTrackControl = L.Control.extend({
   options: { position: 'topright' },
   onAdd: function () {
-    const container = L.DomUtil.create('div');
+    const container = L.DomUtil.create('div', 'custom-map-control');
     container.innerHTML = `
       <!-- 💡 ここにも class="control-icon-toggle" を追加して、開いた時に画像を消します -->
       <div class="control-icon control-icon-toggle" id="track-icon-status">
@@ -2041,18 +2059,25 @@ let myNewWatchId = null;
 let myNewTrackDots = [];
 let myNewLastDotTime = 0;
 
-  function handleTrackRadio(mode) {
+function handleTrackRadio(mode) {
   const iconStatus = document.getElementById('track-icon-status');
+  const trackControl = iconStatus
+    ? iconStatus.closest('.custom-map-control')
+    : null;
   const foxMsg = document.getElementById('fox-message');
 
   const getFoxMsgEl = () => document.getElementById('fox-message');
 
   if (mode === 'start') {
     startNewTracking(); 
-    if (iconStatus) {
-      iconStatus.innerHTML = `<img src="icon_track_start.png" alt="足跡(記録中)" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
-    }
-    if (foxMsg) foxMsg.innerHTML = `歩いたら地図に足跡がつくよ！笠間城や城下町を探検していこう！`;
+  if (iconStatus) {
+    iconStatus.innerHTML = `<img src="icon_track_start.png" alt="足跡(記録中)" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
+  }
+  
+  if (trackControl) {
+    trackControl.classList.add('track-active');
+  }
+  if (foxMsg) foxMsg.innerHTML = `歩いたら地図に足跡がつくよ！笠間城や城下町を探検していこう！`;
     alert("🦊 足跡が記録されはじめました。");
   } 
   
@@ -2060,6 +2085,9 @@ let myNewLastDotTime = 0;
     pauseNewTracking();
     if (iconStatus) {
       iconStatus.innerHTML = `<img src="icon_track.png" alt="足跡(ひとやすみ)" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
+    }
+    if (trackControl) {
+      trackControl.classList.remove('track-active');
     }
     if (foxMsg) foxMsg.innerHTML = `ひとやすみ中は足跡がつかないよ。また足跡をつけたくなったら、足跡をつけるのを忘れないでね！`;
     alert("🦊 足跡をひとやすみしました");
@@ -2080,6 +2108,9 @@ let myNewLastDotTime = 0;
         if (iconStatus) {
           iconStatus.innerHTML = `<img src="icon_track.png" alt="足跡" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
         }
+        if (trackControl) {
+          trackControl.classList.remove('track-active');
+        }
         if (foxMsg) foxMsg.innerHTML = `足跡を消したよ！もう一回探検してみてね！`;
         alert("🦊 足跡をリセットしました");
       } else {
@@ -2089,11 +2120,18 @@ let myNewLastDotTime = 0;
           if (iconStatus) {
             iconStatus.innerHTML = `<img src="icon_track_start.png" alt="足跡(記録中)" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
           }
+            if (trackControl) {
+              trackControl.classList.add('track-active');
+            }
         } else {
           document.getElementById('opt_pause').checked = true;
           if (iconStatus) {
             iconStatus.innerHTML = `<img src="icon_track.png" alt="足跡(ひとやすみ)" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
           }
+            if (trackControl) {
+              trackControl.classList.remove('track-active');
+            }
+
         }
       }
     } else {
