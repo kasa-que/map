@@ -8,7 +8,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.fcom/css2?family=Yuji+Syuku&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
   
   <!-- Leaflet（地図ライブラリ） -->
@@ -4524,9 +4524,10 @@ function createCompass() {
     function(e) {
 
       let heading =
-        e.webkitCompassHeading ||
-        (360 - e.alpha);
-
+        e.webkitCompassHeading !== undefined &&
+        e.webkitCompassHeading !== null
+          ? e.webkitCompassHeading
+          : (360 - e.alpha);
       if (
         heading !== undefined &&
         heading !== null
@@ -4560,10 +4561,24 @@ agreeSafety = function() {
   if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
     DeviceOrientationEvent.requestPermission()
       .then(permissionState => {
+        
         if (permissionState === 'granted') {
-          const foxMsg = document.getElementById('fox-message');
-          if (foxMsg) foxMsg.innerHTML = `左上の方位磁石が使えるよ！画面を縦にして使ってね！針の赤い方を北に合わせてね！`;
+        
+          // 方位磁石を持っている時だけ案内する
+          if (localStorage.getItem("key_key01")) {
+        
+            const foxMsg =
+              document.getElementById('fox-message');
+        
+            if (foxMsg) {
+              foxMsg.innerHTML =
+                `左上の方位磁石が使えるよ！画面を縦にして使ってね！針の赤い方を北に合わせてね！`;
+            }
+        
+          }
         }
+
+        
       })
       .catch(console.error);
   }
