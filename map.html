@@ -547,23 +547,17 @@
   
 <script>
 
-const CORRECT_PASSWORD = "おうろう";
-let userInput = prompt("パスワード");
-if (userInput !== CORRECT_PASSWORD) {
-  alert("違います");
-  document.body.innerHTML = "<div style='padding:20px; font-family:sans-serif; text-align:center;'></div>";
-  if (document.referrer) {
-    window.location.href = document.referrer;
-  } else {
-    window.history.back();
+  const CORRECT_PASSWORD = "おうろう";
+  let userInput = prompt("パスワード");
+  if (userInput !== CORRECT_PASSWORD) {
+    alert("違います");
+    document.body.innerHTML = "<div style='padding:20px; font-family:sans-serif; text-align:center;'></div>";
+    if (document.referrer) {
+      window.location.href = document.referrer;
+    } else {
+      window.history.back();
+    }
   }
-}
-
-
-
-
-
-
 
 
   
@@ -579,9 +573,9 @@ if (userInput !== CORRECT_PASSWORD) {
   // ====================================================
   // 🦊 クエストクリア情報
   // ====================================================
-  function getQuestClearTime(id) {
-    return localStorage.getItem("quest_clear_" + id);
-  }
+  //function getQuestClearTime(id) {
+  //  return localStorage.getItem("quest_clear_" + id);
+  //}
 
   
   // ====================================================
@@ -619,21 +613,16 @@ if (userInput !== CORRECT_PASSWORD) {
   ,{
     id: "bld05",
     name: "三所明神",
-    lat: 36.3881279, lng: 140.2556624,    radius: 30,
+    lat: 36.388444, lng: 140.258514,    radius: 30,
     info: "⚠️"
   }
-  ,{
-    id: "bld06",
-    name: "月宗寺",
-    lat: 36, lng: 140,    radius: 30,
-    info: "⚠️"
-  }
+  //,{id: "bld06", name: "月宗寺",lat: 36, lng: 140, radius: 30, info: "⚠️" }
  ,{
     id: "bld10",
     name: "佐志能神社",
     lat: 36.382576, lng: 140.267491,
     radius: 30,
-    info: "天守櫓があったところに建っていて東日本大震災で危ない状況になっているので入れません。※２０２６年の時点ではまだ入れません。⚠️"
+    info: "⚠️天守櫓があったところに建っていて笠間城の天守の木材を使って建てられたかもしれないそうです。東日本大震災で危ない状況になっているので入れません。※２０２６年の時点ではまだ入れません。"
   }
   
 // ====================================================
@@ -672,27 +661,9 @@ if (userInput !== CORRECT_PASSWORD) {
     radius: 30,
     info: "博采館は長谷川宗仙の家の一部で医学の勉強をするところで、ここには 薬草園も設けられて薬草を育てて研究をしていました。"
   }
-,{
-    id: "bld23",
-    name: "五騎町時習館",
-    lat: 36, lng: 140,
-    radius: 30,
-    info: "⚠️"
-  }
-,{
-    id: "bld24",
-    name: "桜町時習館",
-    lat: 36, lng: 140,
-    radius: 30,
-    info: "⚠️"
-  }
-,{
-    id: "bld25",
-    name: "大和田時習館",
-    lat: 36, lng: 140,
-    radius: 30,
-    info: "⚠️"
-  }
+//,{ id: "bld23",name: "五騎町時習館",lat: 36, lng: 140,radius: 30,info: "⚠️"}
+//,{id: "bld24", name: "桜町時習館",lat: 36, lng: 140,radius: 30,info: "⚠️"}
+//,{id: "bld25",name: "大和田時習館",lat: 36, lng: 140,radius: 30,info: "⚠️"}
 // ====================================================
 // 🏯 建物　bld　🏯　下屋敷
 // ====================================================
@@ -706,22 +677,19 @@ if (userInput !== CORRECT_PASSWORD) {
 ,{
     id: "bld32",
     name: "藩主御殿",
-    lat: 36.384242, lng: 140.259812,
+    lat: 36.384274, lng: 140.259911,
     radius: 30,
     info: "⚠️"
   }
 ,{
     id: "bld33",
     name: "下屋敷",
-    lat: 36.384194, lng: 140.259557,
-    radius: 30,
-    info: "下屋敷は役所で、下屋敷ができる前は笠間城が政治の場所だったのが、役人が毎日登ったり下ったりするから大変だということで、1643年藩主浅野長直の頃に下屋敷がつくられました。"
+    lat: 36.384209, lng: 140.259625,
+    radius: 100,
+    info: "下屋敷は役所で、下屋敷ができる前は笠間城が政治の場所だったのが、役人が毎日登ったり下ったりするから大変だということで、1643年藩主浅野長直の頃に下屋敷がつくられました。広さは総畳数769畳。"
   }
 
     
-// ====================================================
-// 🏯 
-// ====================================================
  
 
 // ====================================================
