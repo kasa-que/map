@@ -4137,123 +4137,6 @@ function jumpToQuest(id) {
 }
 
 
-// ====================================================
-// リセット機能
-// ====================================================
-function resetStamps() {
-  if (confirm("スタンプと歩いた足跡、行きたい場所をすべて消去しますか？")) {
-    spots.forEach(s => {
-      localStorage.removeItem("stamp_" + s.id);
-      localStorage.removeItem("wish_" + s.id); // 👈 黄色のデータも削除
-    });
-    trackDots.forEach(dot => map.removeLayer(dot));
-    trackDots = [];
-    
-    updateMapMarkers(); 
-    showStamps();       
-    document.getElementById("message").textContent = "";
-  }
-}
-
-// ====================================================
-// 足跡
-// ====================================================
-let watchId = null;          // GPSの継続監視を管理するID
-let trackDots = [];          // 地図上に打った足跡を保存する箱
-let lastDotTime = 0;         // 最後にドットを打った時刻（ミリ秒）
-
-// === 🏁 スタンプラリー開始 ===
-function startTracking() {
-  if (!navigator.geolocation) {
-    alert("お使いのブラウザは位置情報の追跡に対応していません");
-    return;
-  }
-  if (watchId !== null) return; 
-
-  alert("🏁 記録を開始しました！30秒ごとに地図に足跡（てんてん）が刻まれます。");
-  
-  document.getElementById("startBtn").disabled = true;
-  document.getElementById("stopBtn").disabled = false;
-
-  // リセット
-  trackDots = [];
-  lastDotTime = 0; 
-
-  watchId = navigator.geolocation.watchPosition(
-    (pos) => {
-      const uLat = pos.coords.latitude;
-      const uLng = pos.coords.longitude;
-
-      currentLat = uLat;
-      currentLng = uLng;
-
-      // 現在地マーク（青丸）を自動移動
-      if (currentLocationMarker) {
-        currentLocationMarker.setLatLng([uLat, uLng]);
-      } else {
-        currentLocationMarker = L.circleMarker([uLat, uLng], {
-          radius: 8, color: "blue", fillColor: "blue", fillOpacity: 0.8
-        }).addTo(map);
-      }
-
-      // 【時間判定】現在の時刻（ミリ秒）を取得
-      const now = Date.now();
-
-      // 初回、または前回のドット作成から30000ミリ秒（30秒）以上経過しているか判定
-      if (lastDotTime === 0 || (now - lastDotTime) >= 30000) {
-        
-        // 小さな赤いドットを地図上に配置（線は引かない）
-        const dot = L.circleMarker([uLat, uLng], {
-          radius: 4,          // 点の大きさ
-          color: "red",       // 点の色
-          fillColor: "red",
-          fillOpacity: 0.6,
-          stroke: false       // 枠線を消して滑らかな丸にする
-        }).addTo(map);
-
-        // あとで一括消去できるように箱に保存
-        trackDots.push(dot);
-
-        // 最後にドットを打った時間を今に更新
-        lastDotTime = now;
-      }
-    },
-    (err) => {
-      console.error("位置の追跡に失敗しました:", err.message);
-    },
-    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-  );
-}
-
-// === 🎯 ゴール（追跡ストップ） ===
-function stopTracking() {
-  if (watchId === null) return;
-
-  navigator.geolocation.clearWatch(watchId);
-  watchId = null;
-
-  alert("🎯 ゴール！お疲れ様でした。歩いた足跡が地図に残ります。");
-
-  document.getElementById("startBtn").disabled = false;
-  document.getElementById("stopBtn").disabled = true;
-}
-
-
-// 最後に消す？
-function resetStamps() {
-  if (confirm("スタンプと歩いた足跡をすべて消しますか？")) {
-    spots.forEach(s => {
-      localStorage.removeItem("stamp_" + s.id);
-    });
-    // 画面上のてんてんをすべて消去
-    trackDots.forEach(dot => map.removeLayer(dot));
-    trackDots = [];
-    
-    updateMapMarkers(); 
-    showStamps();       
-    document.getElementById("message").textContent = "";
-  }
-}
 
 // 初期起動時の実行
 updateMapMarkers();
@@ -4289,35 +4172,25 @@ restoreBreadcrumbs();
 // 🦊 フォックスメッセージ：一文字ずつ表示
 // ====================================================
 let foxTypingTimer = null;
-
 function typeFoxMessage(html) {
-
   const foxMsg = document.getElementById("fox-message");
-
   if (!foxMsg) return;
-
   // 前の表示を止める
   if (foxTypingTimer) {
     clearInterval(foxTypingTimer);
     foxTypingTimer = null;
   }
-
   foxMsg.innerHTML = "";
-
   // 元のHTMLを一度DOMにする
   const temp = document.createElement("div");
   temp.innerHTML = html;
 
   // 文字を表示する対象を順番に集める
   const items = [];
-
   function collectNodes(node) {
-
     node.childNodes.forEach(child => {
-
       // 普通の文字
       if (child.nodeType === Node.TEXT_NODE) {
-
         for (const char of child.textContent) {
           items.push({
             type: "text",
@@ -4327,15 +4200,12 @@ function typeFoxMessage(html) {
 
       // HTML要素
       } else if (child.nodeType === Node.ELEMENT_NODE) {
-
         items.push({
           type: "open",
           tag: child.tagName.toLowerCase(),
           attributes: Array.from(child.attributes)
         });
-
         collectNodes(child);
-
         items.push({
           type: "close"
         });
@@ -4350,20 +4220,15 @@ function typeFoxMessage(html) {
   const elementStack = [];
 
   foxTypingTimer = setInterval(() => {
-
     if (index >= items.length) {
       clearInterval(foxTypingTimer);
       foxTypingTimer = null;
       return;
     }
-
     const item = items[index];
-
     // HTMLタグ開始
     if (item.type === "open") {
-
       const el = document.createElement(item.tag);
-
       item.attributes.forEach(attr => {
         el.setAttribute(attr.name, attr.value);
       });
@@ -4374,31 +4239,21 @@ function typeFoxMessage(html) {
       } else {
         foxMsg.appendChild(el);
       }
-
       elementStack.push(el);
-
     // HTMLタグ終了
     } else if (item.type === "close") {
-
       elementStack.pop();
-
     // 文字
     } else {
-
-      const textNode =
-        document.createTextNode(item.char);
-
+      const textNode =  document.createTextNode(item.char);
       if (elementStack.length > 0) {
         elementStack[elementStack.length - 1]
           .appendChild(textNode);
       } else {
         foxMsg.appendChild(textNode);
       }
-
     }
-
     index++;
-
   }, 50);
 }
   
@@ -4437,49 +4292,32 @@ map.on('click', function(e) {
 // ====================================================
 // 方位磁石
 // ====================================================
-
 function createCompass() {
-
   // すでに表示されていたら何もしない
   if (document.getElementById('my-compass-wrapper')) {
     return;
   }
-
-  const compassContainer =
-    document.getElementById('map');
+  const compassContainer =  document.getElementById('map');
 
   if (!compassContainer) return;
 
   // 方位磁石の土台
   const compassWrapper =
     document.createElement('div');
-
-  compassWrapper.id =
-    'my-compass-wrapper';
-
+  compassWrapper.id = 'my-compass-wrapper';
   compassContainer.appendChild(
     compassWrapper
   );
-  
   compassWrapper.addEventListener("click", function(e) {
     e.stopPropagation();
-  
     typeFoxMessage(
       `左上の方位磁石が使えるよ！画面を縦にして使ってね！針の赤い方を北に合わせてね！`
     ); 
-  });
-
-
-
-  
+  });  
 
   // 真上クルクル回転する針
-  const compassDiv =
-    document.createElement('div');
-
-  compassDiv.id =
-    'my-live-compass';
-
+  const compassDiv = document.createElement('div');
+  compassDiv.id = 'my-live-compass';
   compassWrapper.appendChild(
     compassDiv
   );
@@ -4488,7 +4326,6 @@ function createCompass() {
   window.addEventListener(
     'deviceorientation',
     function(e) {
-
       let heading =
         e.webkitCompassHeading !== undefined &&
         e.webkitCompassHeading !== null
@@ -4503,13 +4340,10 @@ function createCompass() {
           (-heading) +
           'deg)';
       }
-
     },
     true
   );
 }
-
-
 // ページ読み込み時
 // すでに方位磁石を持っていれば表示
 if (localStorage.getItem("key_key01")) {
@@ -4519,7 +4353,6 @@ if (localStorage.getItem("key_key01")) {
   
 // 門番画面の「同意して始める」ボタン（agreeSafety）が押された瞬間に、センサーの許可をスマホに申請
 const originalAgreeSafety = agreeSafety; // 以前作った関数を一旦バックアップ
-
 agreeSafety = function() {
   // 注意書き画面を消す処理
   originalAgreeSafety();
@@ -4527,24 +4360,16 @@ agreeSafety = function() {
   if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
     DeviceOrientationEvent.requestPermission()
       .then(permissionState => {
-        
         if (permissionState === 'granted') {
-        
           // 方位磁石を持っている時だけ案内する
           if (localStorage.getItem("key_key01")) {
-        
-            const foxMsg =
-              document.getElementById('fox-message');
-        
+            const foxMsg = document.getElementById('fox-message');
             if (foxMsg) {
               foxMsg.innerHTML =
                 `左上の方位磁石が使えるよ！画面を縦にして使ってね！針の赤い方を北に合わせてね！`;
             }
-        
           }
-        }
-
-        
+        }       
       })
       .catch(console.error);
   }
@@ -4571,6 +4396,11 @@ function jumpToMapMarker(spotId) {
     }, 300);
   }
 }
+
+
+// ====================================================
+// 安全確認
+// ====================================================
 const originalAgreeSafetyForLink = agreeSafety;
 
 agreeSafety = function() {
@@ -4588,10 +4418,6 @@ agreeSafety = function() {
   }
 };
 
-
-// ====================================================
-// 安全確認
-// ====================================================
 // 同意する」が押されたときに画面を消す
 function agreeSafety() {
   const modal = document.getElementById('safety-modal');
