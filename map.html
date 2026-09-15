@@ -3217,58 +3217,41 @@ function isNear(lat1, lng1, lat2, lng2, radius) {
 // 🦊 クエストのクリア地点に到着したか判定
 // ====================================================
 function checkQuestClear() {
-
   // 現在クエストが選ばれていなければ何もしない
   if (!currentQuest) {
     return false;
   }
-
   // 現在地がまだ取得できていなければ何もしない
   if (currentLat === null || currentLng === null) {
     return false;
   }
-
-  
   const questPointIcon = L.icon({
     iconUrl: "quest_point_pin.png",
     iconSize: L.point(40, 40),
     iconAnchor: L.point(20, 40),
     popupAnchor: L.point(0, -42)
   });
-
-
-
-
-  
   // すでにクリア済みなら何もしない
   if (localStorage.getItem("quest_clear_time_" + currentQuest.id)) {
     return true;
   }
-
   // ==========================================
   // 🦊 各クリア地点をチェック
   // ==========================================
-
   let foundNewPoint = false;
-
   currentQuest.clearPoints.forEach((point, index) => {
-
-     //alert("clearPointsの中に入りました");
-
+    //alert("clearPointsの中に入りました");
     // この地点をすでに発見しているか確認
     const foundKey =
       "quest_point_found_" +
       currentQuest.id +
       "_" +
       index;
-    
-//alert("foundKey：" + foundKey + "\n保存値：" + localStorage.getItem(foundKey));
-//localStorage.removeItem(foundKey);
-    
+    //alert("foundKey：" + foundKey + "\n保存値：" + localStorage.getItem(foundKey));
+    //localStorage.removeItem(foundKey);
     if (localStorage.getItem(foundKey)) {
       return;
     }
-
     // 現在地とクリア地点の距離をチェック
     const near = isNear(
       currentLat,
@@ -3276,15 +3259,14 @@ function checkQuestClear() {
       point.lat,
       point.lng,
       point.radius
+    );    
+    alert(
+      "currentQuest：" + currentQuest.id +
+      "\n現在地：" + currentLat + ", " + currentLng +
+      "\nポイント：" + point.lat + ", " + point.lng +
+      "\nradius：" + point.radius +
+      "\nnear：" + near
     );
-    
-alert(
-  "currentQuest：" + currentQuest.id +
-  "\n現在地：" + currentLat + ", " + currentLng +
-  "\nポイント：" + point.lat + ", " + point.lng +
-  "\nradius：" + point.radius +
-  "\nnear：" + near
-);
     // まだ近づいていなければ何もしない
     if (!near) {
       return;
@@ -3295,37 +3277,30 @@ alert(
     // ==========================================
 
     const now = new Date();
-
     localStorage.setItem(
       foundKey,
       now.toISOString()
     );
-
     foundNewPoint = true;
-
     // ------------------------------------------
     // クリア地点ポップアップ🦊 ポイント発見！
     // ------------------------------------------
-
     const stampImageUrl =
       point.image
         ? point.image
         : currentQuest.stampImage
           ? currentQuest.stampImage
           : "stmpon.png";
-    
     const pointInfo =
       point.info
         ? point.info
         : currentQuest.clearInfo;
-
     const clearPopupContent = `
       <div style="
         text-align:center;
         font-family:sans-serif;
         min-width:180px;
       ">
-
         <div style="
           font-size:14px;
           /*font-weight:bold;*/
@@ -3333,7 +3308,6 @@ alert(
         ">
           ${currentQuest.name}
         </div>
-
         <img
           src="${stampImageUrl}"
           alt="クエストスタンプ"
@@ -3344,7 +3318,6 @@ alert(
             margin-bottom:5px;
           "
         >
-
         <div style="
           font-size:15px;
           font-weight:bold;
@@ -3352,7 +3325,6 @@ alert(
         ">
           ${point.name}
         </div>
-
         <div style="
           font-size:11px;
           color:#7f756b;
@@ -3360,7 +3332,6 @@ alert(
         ">
           ${formatJapaneseDateTime(now)}
         </div>
-
         <div style="
           border-top:1px solid #ddd;
           padding-top:10px;
@@ -3368,44 +3339,34 @@ alert(
           font-size:13px;
           line-height:1.6;
           color:#555;
-        ">
-          
+        "> 
           ${pointInfo || ""}
         </div>
-
       </div>
     `;
 
     // まだクリア地点マーカーがなければ作る
     if (!questClearMarkers[`${currentQuest.id}_${index}`]) {
-
      const clearMarker = L.marker(
         [point.lat, point.lng],
         {
           icon: questPointIcon
         }
       ).addTo(map);
-
-      
       clearMarker.bindPopup(clearPopupContent);
-
       questClearMarkers[
         `${currentQuest.id}_${index}`
       ] = clearMarker;
-
     } else {
-
       // すでにあれば内容だけ更新
       questClearMarkers[
         `${currentQuest.id}_${index}`
       ].setPopupContent(clearPopupContent);
     }
-
     // 発見した地点のポップアップを開く
     questClearMarkers[
       `${currentQuest.id}_${index}`
     ].openPopup();
-
   });
 
   // 新しい地点を発見していなければ終了
@@ -3417,7 +3378,6 @@ alert(
   // ==========================================
   // 🦊 必須地点を全部発見したか確認
   // ==========================================
-
   const allRequiredFound =
     currentQuest.clearPoints
       .filter(point => point.required)
@@ -3482,8 +3442,6 @@ alert(
       "1"
     );
   }
-
-  
   const clearedQuest = currentQuest;
   
   // 🦊 クリアしたことを保存・画面にも反映
@@ -3513,10 +3471,8 @@ alert(
       `${clearedQuest.id}_${clearedQuest.clearPoints.length - 1}`
     ];
   
-  if (lastPointMarker) {
-  
+  if (lastPointMarker) { 
     lastPointMarker.once("popupclose", function () {
-  
       alert(
         "🎉 クエスト「" +
         clearedQuest.name +
@@ -3527,9 +3483,7 @@ alert(
       // 🧭 アラートを閉じたあとに方位磁石をドロン！
       if (clearedQuest.rewardKey === "key01") {
             alert("「方位磁石」をゲットしたから画面の左上を見て！");
-
         createCompass();
-      
         const compass =
           document.getElementById(
             'my-compass-wrapper'
@@ -3563,16 +3517,8 @@ alert(
           map.panBy([0, 0]);
         }, 100);
       }
-
-
-
-      
-    });
-  
+    });  
   }
-
-
-  
   return true;
 }
 
@@ -3581,60 +3527,44 @@ alert(
   
 
 
-function resetQuestClearData() {
-  quests.forEach(q => {
-    localStorage.removeItem(
-      "quest_clear_time_" + q.id
-    );
-  });
-  alert("🦊 クエストのクリア記録だけリセットしました！");
-}
-function checkQuestClearData() {
-
-  let result = "";
-
-  quests.forEach(q => {
-
-    const key = "quest_clear_time_" + q.id;
-    const value = localStorage.getItem(key);
-
-    result += q.id + " : " + (value || "なし") + "\n";
-  });
-
-  alert(result);
-}
-
-
+//function resetQuestClearData() {
+//  quests.forEach(q => {
+//    localStorage.removeItem(
+//      "quest_clear_time_" + q.id
+//    );
+//  });
+//  alert("🦊 クエストのクリア記録だけリセットしました！");
+//}  
+//function checkQuestClearData() {
+//  let result = "";
+//  quests.forEach(q => {
+//    const key = "quest_clear_time_" + q.id;
+//    const value = localStorage.getItem(key);
+//    result += q.id + " : " + (value || "なし") + "\n";
+//  });
+//  alert(result);
+//}
 
 
   
 // === 📍 現在地をチェック（位置表示のみに変更） ===
 function checkLocation() {
   alert("📍 現在地チェック開始");
-
   if (!navigator.geolocation) {
     alert("このブラウザは位置情報に対応していません");
     return;
   }
-
   navigator.geolocation.getCurrentPosition(
     pos => {
       // 取得した緯度経度を記憶する
       currentLat = pos.coords.latitude;
       currentLng = pos.coords.longitude;
-
-      
       //checkQuestClear();
-
-//alert("現在のcurrentQuest：" + (currentQuest ? currentQuest.id : "null"));
-//alert("checkQuestClear開始");
-
-const result = checkQuestClear();
-
-      //alert("checkQuestClear終了：" + result);
-      
+      //alert("現在のcurrentQuest：" + (currentQuest ? currentQuest.id : "null"));
+      //alert("checkQuestClear開始");   
+      const result = checkQuestClear();
+      //alert("checkQuestClear終了：" + result);   
       //alert("位置取得成功！"); 
-
       if (currentLocationMarker) {
         map.removeLayer(currentLocationMarker);
       }
@@ -3648,15 +3578,12 @@ const result = checkQuestClear();
         }
       ).addTo(map); 
       map.setView([currentLat, currentLng], 16);
-
-      
+  
       currentDisplayGroup = "all"; 
       updateMapMarkers();          
       
       const allRadio = document.querySelector('input[name="filter_opt"][onclick="handleFilterRadio(\'all\')"]');
-      if (allRadio) allRadio.checked = true;
-
-      
+      if (allRadio) allRadio.checked = true;   
       // 案内メッセージを変更（自動スタンプは無し）
       //document.getElementById("message").textContent = "📍 現在地を更新しました！下のスタンプ帳からボタンを押してね。";
       const foxMsg = document.getElementById('fox-message');
@@ -3664,7 +3591,6 @@ const result = checkQuestClear();
         foxMsg.innerHTML =
           `🦊　青い丸が現在地だよ！<br/>右の足跡ボタンを使うと常に現在地が更新されるよ！`;
       }
-
     },
     err => {
       alert("位置情報が取得できませんでした。\n理由: " + err.message);
@@ -3682,21 +3608,17 @@ const result = checkQuestClear();
 // ====================================================
 function tryGetStamp(id) {
   const foxMsg = document.getElementById('fox-message');
-
   // 対象のスポットデータを特定
   const s = spots.find(spot => spot.id === id);
-
   // もし足跡機能（myNewWatchId）がオフで、現在地データがまだ無い場合、
   // あるいは足跡はオフだけどいきなり押された場合は、その場で自動的に現在地をチェックする
   if (myNewWatchId === null) {
     if (foxMsg) foxMsg.innerHTML = ``;//あとでやる
-
     navigator.geolocation.getCurrentPosition(
       pos => {
         // 現在地を自動で更新
         currentLat = pos.coords.latitude;
         currentLng = pos.coords.longitude;
-
         // マップ上の青丸マークも自動で移動・表示
         if (currentLocationMarker) {
           currentLocationMarker.setLatLng([currentLat, currentLng]);
@@ -3705,7 +3627,6 @@ function tryGetStamp(id) {
             radius: 8, color: "blue", fillColor: "blue", fillOpacity: 0.8
           }).addTo(map);
         }
-
         // 位置が取れたので、そのまま即座に距離判定を実行！
         processStampVerification(s);
       },
@@ -3723,70 +3644,38 @@ function tryGetStamp(id) {
 }
 
 
-
 // ====================================================
 // 📅 日時を「令和八年八月二十七日 十四時三分」に変換
 // ====================================================
 function formatJapaneseDateTime(date) {
-
-  const kanjiNums = [
-    "零", "一", "二", "三", "四", "五", "六", "七", "八", "九",
-    "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七",
-    "十八", "十九", "二十", "二十一", "二十二", "二十三", "二十四",
-    "二十五", "二十六", "二十七", "二十八", "二十九", "三十", "三十一"
-  ];
-
-  const kanjiMinutes = [
-    "零", "一", "二", "三", "四", "五", "六", "七", "八", "九",
-    "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七",
-    "十八", "十九", "二十", "二十一", "二十二", "二十三", "二十四",
-    "二十五", "二十六", "二十七", "二十八", "二十九", "三十",
-    "三十一", "三十二", "三十三", "三十四", "三十五", "三十六",
-    "三十七", "三十八", "三十九", "四十", "四十一", "四十二",
-    "四十三", "四十四", "四十五", "四十六", "四十七", "四十八",
-    "四十九", "五十", "五十一", "五十二", "五十三", "五十四",
-    "五十五", "五十六", "五十七", "五十八", "五十九"
-  ];
-
+  const kanjiNums = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七","十八", "十九", "二十", "二十一", "二十二", "二十三", "二十四","二十五", "二十六", "二十七", "二十八", "二十九", "三十", "三十一"];
+  const kanjiMinutes = [ "零", "一", "二", "三", "四", "五", "六", "七", "八", "九","十", "十一", "十二", "十三", "十四", "十五", "十六", "十七","十八", "十九", "二十", "二十一", "二十二", "二十三", "二十四","二十五", "二十六", "二十七", "二十八", "二十九", "三十","三十一", "三十二", "三十三", "三十四", "三十五", "三十六","三十七", "三十八", "三十九", "四十", "四十一", "四十二", "四十三", "四十四", "四十五", "四十六", "四十七", "四十八","四十九", "五十", "五十一", "五十二", "五十三", "五十四","五十五", "五十六", "五十七", "五十八", "五十九"];
   const reiwaYear = date.getFullYear() - 2018;
-
   const kanjiYear = kanjiNums[reiwaYear];
   const kanjiMonth = kanjiNums[date.getMonth() + 1];
   const kanjiDay = kanjiNums[date.getDate()];
   const kanjiHour = kanjiNums[date.getHours()];
   const kanjiMin = kanjiMinutes[date.getMinutes()];
-
-  return (
-    "令和" +
-    kanjiYear + "年" +
-    kanjiMonth + "月" +
-    kanjiDay + "日 " +
-    kanjiHour + "時" +
-    kanjiMin + "分"
-  );
+  return ("令和" + kanjiYear + "年" +kanjiMonth + "月" +kanjiDay + "日 " + kanjiHour + "時" +kanjiMin + "分");
 }
 
 
-  
+// ====================================================
 // 実際に距離を測ってスタンプを付与する共通の処理
+// ====================================================
 function processStampVerification(s) {
   if (isNear(currentLat, currentLng, s.lat, s.lng, s.radius)) {
     localStorage.setItem("stamp_" + s.id, "true");
-
     //const now = new Date();
     //const timeStr = now.getFullYear() + "/" + String(now.getMonth() + 1).padStart(2, '0') + "/" + String(now.getDate()).padStart(2, '0') + " " + String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
-
     const now = new Date();
     const timeStr = formatJapaneseDateTime(now);    
-
-    localStorage.setItem("stamp_time_" + s.id, timeStr);
-          
-    alert("🎉 スタンプGET！：" + s.name);
-    
+    localStorage.setItem("stamp_time_" + s.id, timeStr);          
+    alert("🎉 スタンプGET！：" + s.name); 
     updateMapMarkers(); // マーカーのイラストを緑に変える
     showStamps();       // スタンプ帳の表示を更新
   } else {
-    alert("🥲 残念！まだ「" + s.name + "」の近くにいません。もっと近づいてからもう一度押してね。");
+    alert("残念🥲 まだ「" + s.name + "」の近くにいません。もっと近づいてからもう一度押してね。");
   }
 }
 
@@ -3798,20 +3687,15 @@ function processStampVerification(s) {
 //   'got' → 獲得済みだけ表示
 // ====================================================
 function showStamps(mode = 'all') {
-
   const div = document.getElementById("stamps");
-
   // スタンプ帳のタイトル
   div.innerHTML = `
     <h3 class="inventory-title">持ち物</h3>
-  
     <div class="stamp-category-title">
       クエストでゲットしたもの
-    </div>
-  
+    </div> 
     <div class="stamp-grid" id="quest-rewards">
     </div>
-  
     <h3 class="inventory-title">御集印帳</h3>
   `;
   // ====================================================
@@ -3840,38 +3724,28 @@ function showStamps(mode = 'all') {
     }
   ];
 
-
   // ====================================================
   // 分類ごとに表示
   // ====================================================
   categories.forEach(category => {
-
     // この分類に属するスポットだけ取り出す
     const categorySpots = spots.filter(s =>
       s.id && s.id.startsWith(category.prefix)
     );
-
     // 「獲得したスタンプ」の場合は、
     // 獲得済みだけに絞り込む
     const displaySpots = categorySpots.filter(s => {
-
       const got = localStorage.getItem("stamp_" + s.id);
-
       if (mode === "got") {
         return got;
       }
-
       return true;
     });
-
-
     // この分類に表示するものが1つもなければ、
     // 見出し自体を表示しない
     if (displaySpots.length === 0) {
       return;
     }
-
-
     // ==================================================
     // 分類タイトル
     // ==================================================
@@ -3880,8 +3754,6 @@ function showStamps(mode = 'all') {
         ${category.title}
       </h4>
     `;
-
-
     // ==================================================
     // この分類専用のグリッド
     // ==================================================
@@ -3889,260 +3761,191 @@ function showStamps(mode = 'all') {
       <div class="stamp-grid" id="stamp-grid-${category.prefix}">
       </div>
     `;
-
     const grid = document.getElementById(
       "stamp-grid-" + category.prefix
     );
-
-
     // ==================================================
     // スタンプを1個ずつ配置
     // ==================================================
     displaySpots.forEach(s => {
-
       const got = localStorage.getItem("stamp_" + s.id);
-
-
       // ----------------------------------------------
       // スタンプ画像
       // ----------------------------------------------
       let stampImageUrl;
-
       if (got) {
         stampImageUrl = s.imgOn ? s.imgOn : "stmpon.png";
       } else {
         stampImageUrl = s.imgOf ? s.imgOf : "stmpof.png";
       }
-
-
       // ----------------------------------------------
       // グリッドの1マス
       // ----------------------------------------------
       grid.innerHTML += `
         <div class="stamp-item" onclick="jumpToSpot('${s.id}')">
-
           <img
             src="${stampImageUrl}"
             alt="スタンプ"
             class="stamp-image"
           >
-
           <div class="stamp-name">
             ${s.name}
           </div>
 
         </div>
       `;
-
     });
-
   });
-
-
-
-
-
-// ====================================================
-// 🦊 クエスト
-// ====================================================
-
+  // ====================================================
+  // 🦊 ディスプレイ　クエスト
+  // ====================================================
   // 「獲得したスタンプ」の場合は、クリア済みだけ表示
   const displayQuests = quests;  
-  
   // 表示するクエストがある場合だけ表示
   if (displayQuests.length > 0) {
-
     const questGrid =
       document.getElementById("quest-rewards");
-  
     // 表示対象のクエストを1個ずつ配置
     displayQuests.forEach(q => {
-  
       // クリア日時が保存されているか確認
       const clearTime = localStorage.getItem(
         "quest_clear_time_" + q.id
-      );
-  
-  
+      ); 
       // クリア済みなら専用スタンプ
       // 未クリアなら「まだ」の画像
-  
       const isLocked =
         q.requiredKey &&
-        !localStorage.getItem("key_" + q.requiredKey);
-      
+        !localStorage.getItem("key_" + q.requiredKey);  
       let stampImageUrl;
-      
       if (isLocked) {
-      
         // まだ解放されていない
         stampImageUrl = "stmplock.png";
-      
       } else if (clearTime) {
-      
         // 解放済みでクリア済み
         stampImageUrl =
           q.stampImage ? q.stampImage : "stmpon.png";
-      
       } else {
-      
         // 解放済みだけど、まだクリアしていない
         stampImageUrl = "stmpof.png";
       }
-  
-  
-      
-  
       questGrid.innerHTML += `
         <div
           class="stamp-item"
           onclick="jumpToQuest('${q.id}')"
         >
-  
           <img
             src="${stampImageUrl}"
             alt="クエスト"
             class="stamp-image"
           >
-  
           <div class="stamp-name">
             ${q.name}
           </div>
-  
         </div>
       `;
-  
     });
   }
-  
-
-
-
-
-
-
-
-
-
-  
 } 
+
+  
 // ====================================================
 // 📖 スタンプ帳から地図のスポットへジャンプ
 // ====================================================
 function jumpToSpot(id) {
-
   // 対象スポットを探す
   const s = spots.find(spot => spot.id === id);
-
   if (!s) return;
-
   // --------------------------------
   // ① 目印フィルターを「全て表示」に戻す
   // --------------------------------
   currentDisplayGroup = "all";
-
   const allFilter = document.querySelector(
     'input[name="filter_opt"][onclick="handleFilterRadio(\'all\')"]'
   );
-
   if (allFilter) {
     allFilter.checked = true;
   }
-
   updateMapMarkers();
-
   // --------------------------------
   // ② 地図をその場所へ移動
   // --------------------------------
   map.setView([s.lat, s.lng], 18, {
     animate: true
   });
-
   // --------------------------------
   // ③ ページを地図まで自動スクロール
   // --------------------------------
   const mapElement = document.getElementById("map");
-
   if (mapElement) {
     mapElement.scrollIntoView({
       behavior: "smooth",
       //block: "start"
-   block: "center"
+      block: "center"
    });
   }
-
   // --------------------------------
   // ④ 少し待ってからピンの吹き出しを開く
   // --------------------------------
   setTimeout(() => {
-
     if (markers[s.id]) {
       markers[s.id].openPopup();
     }
-
   }, 500);
 }  
 
-
+// ====================================================
+// 📖 スタンプ帳から地図のクエストへジャンプ
+// ====================================================
 function jumpToQuest(id) {
-
   // 対象クエストを探す
   const q = quests.find(quest => quest.id === id);
-
   if (!q) return;
-
   // --------------------------------
   // ① このクエストを現在選択中にする
   // --------------------------------
   currentQuest = q;
-
   // クエストのラジオボタンも選択状態にする
   const questRadio = document.querySelector(
     'input[name="quest_opt"][onclick="handleQuestRadio(\'' + q.id + '\')"]'
   );
-
   if (questRadio) {
     questRadio.checked = true;
   }
-
   // --------------------------------
   // ② 地図をスタート地点へ移動
   // --------------------------------
   map.setView([q.startLat, q.startLng], 17, {
     animate: true
   });
-
   // --------------------------------
   // ③ ページを地図まで自動スクロール
   // --------------------------------
   const mapElement = document.getElementById("map");
-
   if (mapElement) {
     mapElement.scrollIntoView({
       behavior: "smooth",
       block: "center"
     });
   }
-
   // --------------------------------
   // ④ 少し待ってからクエストの吹き出しを開く
   // --------------------------------
   setTimeout(() => {
-
     if (questMarkers[q.id]) {
       questMarkers[q.id].openPopup();
     }
-
   }, 500);
 }
 
 
 
+  
 // 初期起動時の実行
 updateMapMarkers();
 showStamps();
 updateQuestMarkers();
 
+  
 // 画面読み込み時にLocalStorageから足跡を復活させる ===
 function restoreBreadcrumbs() {
   const savedData = localStorage.getItem("saved_breadcrumbs");
