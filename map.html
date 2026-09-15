@@ -679,7 +679,7 @@
     name: "藩主御殿",
     lat: 36.384274, lng: 140.259911,
     radius: 30,
-    info: "⚠️"
+    info: "下屋敷の藩庁の東側にある藩主御殿には藩主とその家族が住んでいました。普通、藩主御殿は本丸や二の丸に建てられるのですが、笠間城の場合は下屋敷に建てられています。"
   }
 ,{
     id: "bld33",
@@ -913,7 +913,7 @@
     name: "笠間時朝の伝説",
     lat: 36.383160, lng: 140.265887,
     radius: 50000,
-    info: ""
+    info: "宇都宮氏の一員の時朝は１２１９年に笠間城を作り始め１２３５年に完成したと言われていますが、当時は鎌倉時代だったので山に城を作るというのは考えられないため、その頃は麓城で、時代が進むに連れ、今の佐白山の城へと変化したと考えられています。"
   }
 
 
@@ -1365,43 +1365,43 @@ function handleFilterRadio(groupType) {
   const foxMsg = document.getElementById("fox-message");
   if(groupType=="all"){
     if (foxMsg) {
-      foxMsg.innerHTML =
-        "🦊 <span class='m-h-l'>全ての目印</span>を表示しているよ！";
+      foxMsg.innerHTML ="🦊 <span class='m-h-l'>全ての目印</span>を表示しているよ！";
+      typeFoxMessage(`<span class='m-h-l'>全ての目印</span>を表示しているよ！`);
     }
   }else if(groupType=="bld"){
     if (foxMsg) {
-      foxMsg.innerHTML =
-        "🦊 神社・寺・櫓・学校など<span class='m-h-l'>建造物の目印</span>を表示しているよ！";
+      //foxMsg.innerHTML ="🦊 神社・寺・櫓・学校など<span class='m-h-l'>建造物の目印</span>を表示しているよ！";
+      typeFoxMessage(`神社・寺・櫓・学校など<span class='m-h-l'>建造物の目印</span>を表示しているよ！`);
     }
   }else if(groupType=="dfc"){
     if (foxMsg) {
-      foxMsg.innerHTML =
-        "🦊 門や虎口など<span class='m-h-l'>防御施設の目印</span>を表示しているよ！";
+      //foxMsg.innerHTML = "🦊 門や虎口など<span class='m-h-l'>防御施設の目印</span>を表示しているよ！";
+      typeFoxMessage(`門や虎口など<span class='m-h-l'>防御施設の目印</span>を表示しているよ！`);
     }
   }else if(groupType=="twn"){
     if (foxMsg) {
-      foxMsg.innerHTML =
-        "🦊 <span class='m-h-l'>町名標示の目印</span>を表示しているよ！";
+      //foxMsg.innerHTML = "🦊 <span class='m-h-l'>町名標示の目印</span>を表示しているよ！";
+      typeFoxMessage(`<span class='m-h-l'>町名標示の目印</span>を表示しているよ！`);
     }
   }else if(groupType=="now"){
     if (foxMsg) {
-      foxMsg.innerHTML =
-        "🦊 昔と場所は違うけど<span class='m-h-l'>現存しているものの目印</span>を表示しているよ！";
+      //foxMsg.innerHTML ="🦊 昔と場所は違うけど<span class='m-h-l'>現存しているものの目印</span>を表示しているよ！";
+      typeFoxMessage(`昔と場所は違うけど<span class='m-h-l'>現存しているものの目印</span>を表示しているよ！`);
     }
   }else if(groupType=="rcm"){
     if (foxMsg) {
-      foxMsg.innerHTML =
-        "🦊 <span class='m-h-l'>言い伝えのある場所の目印</span>を表示しているよ！";
+      //foxMsg.innerHTML ="🦊 <span class='m-h-l'>言い伝えのある場所の目印</span>を表示しているよ！";
+      typeFoxMessage(`<span class='m-h-l'>言い伝えのある場所の目印</span>を表示しているよ！`);
     }
   }else if(groupType=="quest"){
     if (foxMsg) {
-      foxMsg.innerHTML =
-        "🦊 <span class='m-h-l'>クエストの目印</span>だけを表示しているよ！";
+      //foxMsg.innerHTML ="🦊 <span class='m-h-l'>クエストの目印</span>だけを表示しているよ！";
+      typeFoxMessage(`<span class='m-h-l'>クエストの目印</span>だけを表示しているよ！`);
     }
   }
   updateMapMarkers(); // 💡 記憶したルールに基づいて、地図のピンを一斉に描き直します！
 }
-
+// ====今日ここまで====
 
 // ========================================================================================================
 // ◽️ ボタン：足跡 切り替え🐾
