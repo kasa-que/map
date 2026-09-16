@@ -1890,7 +1890,7 @@ function handleStampBookRadio(type) {
   else if (type === 'all') {
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
-      //foxMsg.innerHTML = "🦊 <span class='m-h-l'>全ての印</span>を見られるよ！⚠️";
+      foxMsg.innerHTML = "🦊 <span class='m-h-l'>全ての印</span>を見られるよ！⚠️";
       typeFoxMessage(` <span class='m-h-l'>すべての印</span>を見られるよ！<br/>印をタップするとマップのどこにあるか見られるよ！`);
     }
     showStamps('all');
@@ -1904,7 +1904,7 @@ function handleStampBookRadio(type) {
   else if (type === 'reset') {
     const answer = confirm(
       "🦊 本当にいいの？\n\n" +
-      "これまでに集めた印が" +
+      "これまでに集めたスタンプが\n" +
       "ぜんぶ消えてしまうよ。\n\n" +
       "本当にリセットする？"
     );
@@ -1923,10 +1923,10 @@ function handleStampBookRadio(type) {
       const foxMsg = document.getElementById('fox-message');
 
       if (foxMsg) {
-        //foxMsg.innerHTML ="🦊 御集印帳をまっさらにしたよ！また集めに行こう！";
-        typeFoxMessage(`御集印帳をまっさらにしたよ！また集めに行こう！`);
+        foxMsg.innerHTML =
+          "🦊 御集印帳をまっさらにしたよ！また集めに行こう！";
       }
-      alert("🦊 御集印帳をリセットしました。");
+      alert("御集印帳をリセットしました。");
       
       // リセット後もスタンプ帳へ
       scrollToStampBook();
@@ -1936,10 +1936,9 @@ function handleStampBookRadio(type) {
       const foxMsg = document.getElementById('fox-message');
 
       if (foxMsg) {
-        //foxMsg.innerHTML ="🦊 今まで集めた印はちゃんと残っているよ！";    
-        typeFoxMessage(`リセットしなかったから、今まで集めた印はちゃんと残っているよ！`);
+        foxMsg.innerHTML ="🦊 スタンプはちゃんと残っているよ！";
+        
       }
-      alert("🦊 リセットしなかったから、今まで集めた印はちゃんと残っているよ！");
     }
   }
   // --------------------------------
@@ -1952,6 +1951,8 @@ function handleStampBookRadio(type) {
     panel.classList.add('collapsed');
   });
 }
+// ====今日ここまで====
+
 // ========================================================================================================
 // 📖 スタンプ帳まで自動スクロール
 function scrollToStampBook() {
@@ -1976,7 +1977,7 @@ function scrollToStampBook() {
 
 // ====================================================
 // 🐾 足跡の処理
-// ====================================================
+// ====================================================￥
 let myNewWatchId = null;
 let myNewTrackDots = [];
 let myNewLastDotTime = 0;
@@ -1999,14 +2000,10 @@ function handleTrackRadio(mode) {
   if (trackControl) {
     trackControl.classList.add('track-active');
   }
-
-  if (foxMsg) {
-    //foxMsg.innerHTML ="🦊 今まで集めた印はちゃんと残っているよ！";    
-    typeFoxMessage(`歩いたら<span class='m-h-l'>地図にてんてんの足跡</span>がつくよ！笠間城や城下町を探検していこう！`);
-  }
-  alert("🦊 足跡が記録されはじめました。");
-
-    
+  if (foxMsg) foxMsg.innerHTML = `歩いたら地図に足跡がつくよ！笠間城や城下町を探検していこう！`;
+    alert("🦊 足跡が記録されはじめました。");
+  } 
+  
   else if (mode === 'pause') {
     pauseNewTracking();
     if (iconStatus) {
@@ -2015,18 +2012,13 @@ function handleTrackRadio(mode) {
     if (trackControl) {
       trackControl.classList.remove('track-active');
     }
-  
-    if (foxMsg) {
-      //foxMsg.innerHTML ="";    
-      typeFoxMessage(`<span class='m-h-l'>ひとやすみ中は足跡がつかないよ。</span>また足跡をつけたくなったら、足跡をつけはじめるのを忘れないでね！`);
-    }
-    alert("🦊 足跡をつけるのをひとやすみします。");
-    
+    if (foxMsg) foxMsg.innerHTML = `ひとやすみ中は足跡がつかないよ。また足跡をつけたくなったら、足跡をつけるのを忘れないでね！`;
+    alert("🦊 足跡をひとやすみしました");
   } 
   
   else if (mode === 'stop') {
     if (myNewTrackDots.length > 0) {
-      if (confirm("🦊 これまでに記録した歩いたてんてんの足跡をすべて消去しますか？")) {
+      if (confirm("これまでに記録した歩いた足跡（てんてん）をすべて消去しますか？")) {
         myNewTrackDots.forEach(dot => map.removeLayer(dot));
         myNewTrackDots = [];
         myNewLastDotTime = 0;
@@ -2042,13 +2034,8 @@ function handleTrackRadio(mode) {
         if (trackControl) {
           trackControl.classList.remove('track-active');
         }
-
-        if (foxMsg) {
-          //foxMsg.innerHTML ="";    
-          typeFoxMessage(`今までの足跡を消したよ！もう一回探検してみてね！`);
-        }
+        if (foxMsg) foxMsg.innerHTML = `足跡を消したよ！もう一回探検してみてね！`;
         alert("🦊 足跡をリセットしました");
-
       } else {
         // キャンセルされたらボタンのチェックを戻す
         if (myNewWatchId !== null) {
@@ -2083,9 +2070,7 @@ function handleTrackRadio(mode) {
     }
   }
 }
-
-// ====今日ここまで====
-
+  
 // 足跡スタート（30秒おき）
 function startNewTracking() {
   if (!navigator.geolocation) {
