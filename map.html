@@ -3241,13 +3241,13 @@ function checkQuestClear() {
       point.lng,
       point.radius
     );    
-    alert(
-      "currentQuest：" + currentQuest.id +
-      "\n現在地：" + currentLat + ", " + currentLng +
-      "\nポイント：" + point.lat + ", " + point.lng +
-      "\nradius：" + point.radius +
-      "\nnear：" + near
-    );
+//    alert(
+//      "currentQuest：" + currentQuest.id +
+//      "\n現在地：" + currentLat + ", " + currentLng +
+//      "\nポイント：" + point.lat + ", " + point.lng +
+//      "\nradius：" + point.radius +
+//      "\nnear：" + near
+//    );
     // まだ近づいていなければ何もしない
     if (!near) {
       return;
@@ -3538,7 +3538,7 @@ function checkLocation() {
       //alert("checkQuestClear開始");   
       const result = checkQuestClear();
 
-      alert("checkQuestClearの結果：" + result);
+//      alert("checkQuestClearの結果：" + result);
       //alert("checkQuestClear終了：" + result);   
       //alert("位置取得成功！"); 
       if (currentLocationMarker) {
