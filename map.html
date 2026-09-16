@@ -2174,7 +2174,6 @@ function pauseNewTracking() {
 
 
 
-// ====今日ここまで====
   
 
 
@@ -3035,8 +3034,8 @@ updateQuestPinImage(q);
   const foxMsg = document.getElementById('fox-message');
 
   if (foxMsg) {
-    foxMsg.innerHTML =
-      `クエスト<span class='m-h-l'>「${q.name}」</span>に挑戦中だよ！<br/>ここかなと思ったら、地図左下の「🧭現在地をチェック」してね。`;
+   //foxMsg.innerHTML =`クエスト<span class='m-h-l'>「${q.name}」</span>に挑戦中だよ！<br/>ここかなと思ったら、地図左下の「🧭現在地をチェック」してね。`;
+    typeFoxMessage(`クエスト<span class='m-h-l'>「${q.name}」</span>に挑戦中だよ！<br/>ここかなと思ったら、地図左下の「🧭現在地をチェック」してね。`);
   }
 
   // クエスト開始のお知らせ
@@ -3049,6 +3048,11 @@ updateQuestPinImage(q);
   updateQuestPopup(q);
 }
 
+
+// ====今日ここまで====
+
+
+  
 function stopQuestFromPopup(id) {
 
   const q = quests.find(quest => quest.id === id);
