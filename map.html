@@ -1065,49 +1065,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
   let currentQuest = null;
   const quests = [
 
-  {
-      id: "quest00",
-      name: "三つのポイントを探せ！",
-      rewardIKey: "key00",
-    
-      info: "三つのポイントを順番に見つけて、クエストをクリアしよう！",
-    
-      // クエスト開始地点
-      startLat: 36.375948,
-      startLng: 140.279177,
-    
-      // クエストクリア地点
-      clearPoints: [
-        {
-          name: "関",
-          lat: 36.376054, lng: 140.279185,
-          radius: 5,
-          required: true,
-          info: "近！"
-        },
-        {
-          name: "P",
-          lat: 36.376030, lng: 140.279057,
-          radius: 5,
-          required: true,
-          info: "中！"
-        },
-        {
-          name: "道",
-          lat: 36.376101, lng: 140.279073 ,
-          radius: 5,
-          required: true,
-          info: "遠！"
-        }
-      ],
-    
-      //stampImage: "qst04_cl.png",
-      clearInfo: "三つ全て見つけることができたね！"
-    }
-    
- ,
-
-
+ 
     
 
 
@@ -3032,7 +2990,7 @@ function startQuestFromPopup(id) {
 if (currentQuest && currentQuest.id !== q.id) {
 
   const ok = confirm(
-    `現在「${currentQuest.name}」に挑戦中だよ。\n\n` +
+    `🦊 今は「${currentQuest.name}」に挑戦中だよ。\n\n` +
     `「${q.name}」に切り替える？\n\n` +
     `OK → 切り替える\n` +
     `キャンセル → 今のクエストを続ける`
