@@ -3487,7 +3487,7 @@ function checkQuestClear() {
   if (lastPointMarker) { 
     lastPointMarker.once("popupclose", function () {
       alert(
-        "🎉 クエスト「" +
+        "🦊 クエスト「" +
         clearedQuest.name +
         "」をクリアしたよ！\n\n" +
         "「" + clearedQuest.keyName + "」を手に入れたよ！"
@@ -3597,7 +3597,7 @@ function checkLocation() {
       const foxMsg = document.getElementById('fox-message');
       if (foxMsg) {
         //foxMsg.innerHTML =`🦊　青い丸が現在地だよ！<br/>右の「足跡ボタン」を使うと常に現在地が更新されるよ！`;
-        typeFoxMessage(`<span class='m-h-l'>青い丸が現在地だよ！</span><br/>右の「足跡ボタン」を使うと常に現在地が更新されるよ！`);
+        //typeFoxMessage(`<span class='m-h-l'>青い丸が現在地だよ！</span><br/>右の「足跡ボタン」を使うと常に現在地が更新されるよ！`);
       }
     },
     err => {
