@@ -1375,7 +1375,7 @@ function handleFilterRadio(groupType) {
   }else if(groupType=="dfc"){
     if (foxMsg) {
       //foxMsg.innerHTML = "🦊 門や虎口や曲輪や堀など<span class='m-h-l'>防御施設の目印</span>を表示しているよ！";
-      typeFoxMessage(`門や虎口など<span class='m-h-l'>防御施設の目印</span>を表示しているよ！`);
+      typeFoxMessage(`門や虎口や曲輪や堀などの<span class='m-h-l'>防御施設の目印</span>を表示しているよ！`);
     }
   }else if(groupType=="twn"){
     if (foxMsg) {
@@ -2010,7 +2010,7 @@ function handleTrackRadio(mode) {
 
   if (foxMsg) {
     //foxMsg.innerHTML ="";    
-    typeFoxMessage(`歩いたら地図に足跡がつくよ！笠間城や城下町を探検していこう！`);
+    typeFoxMessage(`歩いたら<span class='m-h-l'>地図にてんてんの足跡</span>がつくよ！笠間城や城下町を探検していこう！`);
   }
   alert("🦊 足跡が記録されはじめました。");
 
@@ -2025,8 +2025,19 @@ function handleTrackRadio(mode) {
     if (trackControl) {
       trackControl.classList.remove('track-active');
     }
-    if (foxMsg) foxMsg.innerHTML = `ひとやすみ中は足跡がつかないよ。また足跡をつけたくなったら、足跡をつけるのを忘れないでね！`;
-    alert("🦊 足跡をひとやすみしました");
+    //if (foxMsg) foxMsg.innerHTML = `ひとやすみ中は足跡がつかないよ。また足跡をつけたくなったら、足跡をつけるのを忘れないでね！`;
+    //alert("🦊 足跡をひとやすみしました");
+
+    if (foxMsg) {
+      //foxMsg.innerHTML ="";    
+      typeFoxMessage(`<span class='m-h-l'>ひとやすみ中は足跡がつかないよ。</span>また足跡をつけたくなったら、足跡をつけるのを忘れないでね！`);
+    }
+    alert("🦊 足跡をつけるのをひとやすみします。");
+
+
+
+
+    
   } 
   
   else if (mode === 'stop') {
