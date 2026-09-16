@@ -2134,6 +2134,8 @@ function startNewTracking() {
     return;
   }
   if (myNewWatchId !== null) return; 
+  
+  let firstLocation = true;
 
   myNewWatchId = navigator.geolocation.watchPosition(
     (pos) => {
@@ -2156,7 +2158,11 @@ function startNewTracking() {
      //   }    
      // });
       
-      map.setView([uLat, uLng], 16);
+      if (firstLocation) {
+        map.setView([uLat, uLng], 16);
+        firstLocation = false;
+      }
+
       
       // 現在地マーク（青丸）を自動移動
       if (currentLocationMarker) {
