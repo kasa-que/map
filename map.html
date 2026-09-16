@@ -1951,7 +1951,6 @@ function handleStampBookRadio(type) {
     panel.classList.add('collapsed');
   });
 }
-// ====今日ここまで====
 
 // ========================================================================================================
 // 📖 スタンプ帳まで自動スクロール
@@ -2022,16 +2021,12 @@ function handleTrackRadio(mode) {
       typeFoxMessage(`<span class='m-h-l'>ひとやすみ中は足跡がつかないよ。</span>また足跡をつけたくなったら、足跡をつけるのを忘れないでね！`);
     }
     alert("🦊 足跡をつけるのをひとやすみします。");
-
-
-
-
     
   } 
   
   else if (mode === 'stop') {
     if (myNewTrackDots.length > 0) {
-      if (confirm("これまでに記録した歩いた足跡（てんてん）をすべて消去しますか？")) {
+      if (confirm("🦊 これまでに記録した歩いたてんてんの足跡をすべて消去しますか？")) {
         myNewTrackDots.forEach(dot => map.removeLayer(dot));
         myNewTrackDots = [];
         myNewLastDotTime = 0;
@@ -2047,8 +2042,15 @@ function handleTrackRadio(mode) {
         if (trackControl) {
           trackControl.classList.remove('track-active');
         }
-        if (foxMsg) foxMsg.innerHTML = `足跡を消したよ！もう一回探検してみてね！`;
-        alert("🦊 足跡をリセットしました");
+        //if (foxMsg) foxMsg.innerHTML = `足跡を消したよ！もう一回探検してみてね！`;
+        //alert("🦊 足跡をリセットしました");
+
+        if (foxMsg) {
+          typeFoxMessage(`<span class='m-h-l'>今までの足跡を消したよ！</span>もう一回探検してみてね！`);
+        }
+        alert("🦊 足跡をリセットしました。");
+        
+        
       } else {
         // キャンセルされたらボタンのチェックを戻す
         if (myNewWatchId !== null) {
@@ -2067,7 +2069,6 @@ function handleTrackRadio(mode) {
             if (trackControl) {
               trackControl.classList.remove('track-active');
             }
-
         }
       }
     } else {
@@ -2079,7 +2080,10 @@ function handleTrackRadio(mode) {
       if (iconStatus) {
         iconStatus.innerHTML = `<img src="icon_track.png" alt="足跡" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
       }
-      if (foxMsg) foxMsg.innerHTML = `足跡の記録は「🐾」からつけられるよ！」`;
+      if (foxMsg) {
+        typeFoxMessage(`足跡の記録はまだないよ！「🐾」からつけられるよ！`);
+      }
+
     }
   }
 }
@@ -2176,7 +2180,7 @@ function pauseNewTracking() {
 
 
 
-
+// ====今日ここまで====
   
 
 
