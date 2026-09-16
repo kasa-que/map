@@ -1374,7 +1374,7 @@ function handleFilterRadio(groupType) {
     }
   }else if(groupType=="dfc"){
     if (foxMsg) {
-      //foxMsg.innerHTML = "🦊 門や虎口など<span class='m-h-l'>防御施設の目印</span>を表示しているよ！";
+      //foxMsg.innerHTML = "🦊 門や虎口や曲輪や堀など<span class='m-h-l'>防御施設の目印</span>を表示しているよ！";
       typeFoxMessage(`門や虎口など<span class='m-h-l'>防御施設の目印</span>を表示しているよ！`);
     }
   }else if(groupType=="twn"){
@@ -1400,7 +1400,6 @@ function handleFilterRadio(groupType) {
   }
   updateMapMarkers(); // 💡 記憶したルールに基づいて、地図のピンを一斉に描き直します！
 }
-// ====今日ここまで====
 
 // ========================================================================================================
 // ◽️ ボタン：足跡 切り替え🐾
@@ -1611,14 +1610,11 @@ function updateQuestMenuIcon() {
 
   if (currentQuest) {
     icon.src = "quest_active.png";
-
     if (control) {
       control.classList.add("quest-active");
     }
-
   } else {
     icon.src = "quest_menu.png";
-
     if (control) {
       control.classList.remove("quest-active");
     }
@@ -1630,11 +1626,9 @@ function handleQuestRadio(id) {
 
   // 今クリックする前に、現在挑戦中のラジオを覚えておく
   const activeQuestId = currentQuest ? currentQuest.id : null;
-
   // クエストを探す
   const q = quests.find(quest => quest.id === id);
   if (!q) return;
-
   // 必要なクエストキーを持っているか確認
   if (
     q.requiredKey &&
@@ -1655,10 +1649,9 @@ function handleQuestRadio(id) {
   if (questMarkers[q.id]) {
     questMarkers[q.id].openPopup();
   }
-
   // 挑戦中のクエストがあれば、そのラジオをONに戻す
   if (activeQuestId) {
-  
+
     const activeRadio = document.querySelector(
       `input[name="quest_opt"][onclick="handleQuestRadio('${activeQuestId}')"]`
     );
@@ -1688,6 +1681,9 @@ function handleQuestRadio(id) {
   });
 }
 
+
+
+  
 // =====================================================================================================
 // 🦊 クエストのクリア記録だけリセット========================================================================================================
 function resetQuestData() {
@@ -1752,18 +1748,11 @@ if (currentQuest) {
 
   const foxMsg = document.getElementById("fox-message");
   if (foxMsg) {
-    foxMsg.innerHTML =
-      "🦊 クエストの記録をリセットしたよ！また冒険に出かけよう！";
+    //foxMsg.innerHTML = "クエストの記録をリセットしたよ！また冒険に出かけよう！";
+    typeFoxMessage(`クエストの記録をリセットしたよ！また冒険に出かけよう！`);
   }
   alert("🦊 クエストのクリア記録をリセットしました！");
 }
-
-
-
-
-
-
-
 
 
 
@@ -1857,7 +1846,7 @@ const CustomBottomLeftControl = L.Control.extend({
               type="radio"
               name="stampbook_opt"
               onclick="handleStampBookRadio('all')">
-            全ての印
+            すべての印
           </label>
 
           <label>
@@ -1888,8 +1877,8 @@ function handleStampBookRadio(type) {
   if (type === 'got') {
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
-      foxMsg.innerHTML =
-      "🦊 <span class='m-h-l'>ゲットした印</span>を見られるよ！⚠️";
+      //foxMsg.innerHTML ="🦊 <span class='m-h-l'>ゲットした印</span>を見られるよ！⚠️";
+      typeFoxMessage(`今までに<span class='m-h-l'>ゲットした印</span>を見られるよ！<br/>印をタップするとマップのどこにあるか見られるよ！`);
     }
     showStamps('got');
     // スタンプ帳までスクロール
@@ -1901,10 +1890,9 @@ function handleStampBookRadio(type) {
   else if (type === 'all') {
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
-      foxMsg.innerHTML =
-      "🦊 <span class='m-h-l'>全ての印</span>を見られるよ！⚠️";
+      foxMsg.innerHTML = "🦊 <span class='m-h-l'>全ての印</span>を見られるよ！⚠️";
+      typeFoxMessage(` <span class='m-h-l'>すべての印</span>を見られるよ！<br/>印をタップするとマップのどこにあるか見られるよ！`);
     }
-
     showStamps('all');
 
     // スタンプ帳までスクロール
@@ -1963,6 +1951,8 @@ function handleStampBookRadio(type) {
     panel.classList.add('collapsed');
   });
 }
+// ====今日ここまで====
+
 // ========================================================================================================
 // 📖 スタンプ帳まで自動スクロール
 function scrollToStampBook() {
