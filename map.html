@@ -3601,7 +3601,7 @@ function tryGetStamp(id) {
       err => {
         // 位置情報自体がスマホの設定等で完全にブロックされている場合のアラート
         alert("位置情報の取得に失敗しました。右上の『🐾』で足跡スタートをオンにするか、端末のGPS設定をご確認してください");
-        if (foxMsg) foxMsg.innerHTML = `GPSの電波が届かないみたいだよ。端末の位置情報設定を確認してね。`;
+        if (foxMsg) foxMsg.innerHTML = `GPSの電波が届かないみたいだよ。端末の位置情報設定を確認してね。」`;
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
@@ -3640,19 +3640,11 @@ function processStampVerification(s) {
     const timeStr = formatJapaneseDateTime(now);    
     localStorage.setItem("stamp_time_" + s.id, timeStr);          
     //alert("🎉 スタンプGET！：" + s.name); 
-    if (foxMsg) {
-      //foxMsg.innerHTML ="";    
-      typeFoxMessage(`${s.name}あああ`);
-    }    
-    alert("🦊 おめでとう！\n「" + s.name + "」の印を手に入れたよ！"); 
+    alert("🦊「" + s.name + "」の印を手に入れました"); 
     updateMapMarkers(); // マーカーのイラストを緑に変える
     showStamps();       // スタンプ帳の表示を更新
   } else {
-    if (foxMsg) {
-      //foxMsg.innerHTML ="";    
-      typeFoxMessage(`いいい`);
-    }
-    alert("🦊 残念、まだ「" + s.name + "」の近くにいません。\nもっと近づいてからもう一度押してね！");
+    alert("🦊 残念、まだ「" + s.name + "」の近くにいません。もっと近づいてからもう一度押してね。");
   }
 }
 
