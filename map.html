@@ -1081,7 +1081,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
         {
           name: "関",
           lat: 36.376054, lng: 140.279185,
-          radius: 5,
+          radius: 15,
           required: true,
           info: "近！"
         },
@@ -3595,9 +3595,9 @@ function checkLocation() {
       // 案内メッセージを変更（自動スタンプは無し）
       //document.getElementById("message").textContent = "📍 現在地を更新しました！下のスタンプ帳からボタンを押してね。";
       const foxMsg = document.getElementById('fox-message');
-      if (foxMsg) {
+      if  (foxMsg && !result) {
         //foxMsg.innerHTML =`🦊　青い丸が現在地だよ！<br/>右の「足跡ボタン」を使うと常に現在地が更新されるよ！`;
-        //typeFoxMessage(`<span class='m-h-l'>青い丸が現在地だよ！</span><br/>右の「足跡ボタン」を使うと常に現在地が更新されるよ！`);
+        typeFoxMessage(`<span class='m-h-l'>青い丸が現在地だよ！</span><br/>右の「足跡ボタン」を使うと常に現在地が更新されるよ！`);
       }
     },
     err => {
