@@ -3555,8 +3555,8 @@ function checkLocation() {
       //document.getElementById("message").textContent = "📍 現在地を更新しました！下のスタンプ帳からボタンを押してね。";
       const foxMsg = document.getElementById('fox-message');
       if (foxMsg) {
-        //foxMsg.innerHTML =`🦊　青い丸が現在地だよ！<br/>右の足跡ボタンを使うと常に現在地が更新されるよ！`;
-        typeFoxMessage(`<span class='m-h-l'>青い丸が現在地だよ！</span><br/>右の足跡ボタンを使うと常に現在地が更新されるよ！`);
+        //foxMsg.innerHTML =`🦊　青い丸が現在地だよ！<br/>右の「足跡ボタン」を使うと常に現在地が更新されるよ！`;
+        typeFoxMessage(`<span class='m-h-l'>青い丸が現在地だよ！</span><br/>右の「足跡ボタン」を使うと常に現在地が更新されるよ！`);
       }
     },
     err => {
@@ -3569,7 +3569,7 @@ function checkLocation() {
     }
   );
 }
- // ====今日ここまで====
+
 
 // ====================================================
 // 🚶 スタンプ判定の処理
@@ -3639,15 +3639,16 @@ function processStampVerification(s) {
     const now = new Date();
     const timeStr = formatJapaneseDateTime(now);    
     localStorage.setItem("stamp_time_" + s.id, timeStr);          
-    alert("🎉 スタンプGET！：" + s.name); 
+    //alert("🎉 スタンプGET！：" + s.name); 
+    alert("🦊「" + s.name + "」の印を手に入れました"); 
     updateMapMarkers(); // マーカーのイラストを緑に変える
     showStamps();       // スタンプ帳の表示を更新
   } else {
-    alert("残念🥲 まだ「" + s.name + "」の近くにいません。もっと近づいてからもう一度押してね。");
+    alert("🦊 残念、まだ「" + s.name + "」の近くにいません。もっと近づいてからもう一度押してね。");
   }
 }
 
-  
+   // ====今日ここまで====
 // ====================================================
 // 📖 スタンプ帳表示
 // mode:
