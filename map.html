@@ -2156,6 +2156,8 @@ function startNewTracking() {
      //   }    
      // });
       
+      map.setView([uLat, uLng], 16);
+      
       // 現在地マーク（青丸）を自動移動
       if (currentLocationMarker) {
         currentLocationMarker.setLatLng([uLat, uLng]);
