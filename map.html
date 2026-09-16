@@ -1065,7 +1065,50 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
   let currentQuest = null;
   const quests = [
 
+  {
+      id: "quest00",
+      name: "三つのポイントを探せ！",
+      rewardIKey: "key00",
+    
+      info: "三つのポイントを順番に見つけて、クエストをクリアしよう！",
+    
+      // クエスト開始地点
+      startLat: 36.375948,
+      startLng: 140.279177,
+    
+      // クエストクリア地点
+      clearPoints: [
+        {
+          name: "関",
+          lat: 36.376054, lng: 140.279185,
+          radius: 5,
+          required: true,
+          info: "近！"
+        },
+        {
+          name: "P",
+          lat: 36.376030, lng: 140.279057,
+          radius: 5,
+          required: true,
+          info: "中！"
+        },
+        {
+          name: "道",
+          lat: 36.376101, lng: 140.279073 ,
+          radius: 5,
+          required: true,
+          info: "遠！"
+        }
+      ],
+    
+      //stampImage: "qst04_cl.png",
+      clearInfo: "三つ全て見つけることができたね！"
+    }
+    
+ ,
 
+
+    
 
 
 {
@@ -1082,7 +1125,7 @@ lat:  36.386903,  lng: 140.253678,      radius: 30,
         {
           name: "小野友五郎の顕彰碑",
           lat: 36.384596, lng: 140.256542,
-          radius:10,
+          radius:1000000,
           required: true,
           image: "q01-1.png",
           info: "小野友五郎は笠間藩で生まれた人で、算術を学んだ結果、よくできたため幕府の命で本を翻訳してと頼まれそれは航海術の本で航海のしかたも学び、星の高度でどこにいるのかが分かるようになったので太平洋を横断したり小笠原を測量したりなど様々なことを成し遂げた人です。"
@@ -1358,7 +1401,7 @@ function handleFilterRadio(groupType) {
   const foxMsg = document.getElementById("fox-message");
   if(groupType=="all"){
     if (foxMsg) {
-      foxMsg.innerHTML ="🦊 <span class='m-h-l'>全ての目印</span>を表示しているよ！";
+      //foxMsg.innerHTML ="🦊 <span class='m-h-l'>全ての目印</span>を表示しているよ！";
       typeFoxMessage(`<span class='m-h-l'>全ての目印</span>を表示しているよ！`);
     }
   }else if(groupType=="bld"){
@@ -3091,7 +3134,7 @@ function stopQuestFromPopup(id) {
   // フォックスメッセージ
   const foxMsg = document.getElementById('fox-message');
   if (foxMsg) {
-    foxMsg.innerHTML ="🦊 クエストを選んで、冒険を始めよう！";
+    //foxMsg.innerHTML ="🦊 クエストを選んで、冒険を始めよう！";
     typeFoxMessage(`🦊 クエストを選んで、冒険を始めよう！`);
   }
 
@@ -3387,9 +3430,8 @@ function checkQuestClear() {
       document.getElementById('fox-message');
 
     if (foxMsg) {
-      foxMsg.innerHTML =
-        `🦊 ポイント発見！<br/>` +
-        `${foundCount} / ${totalCount} のポイントを見つけたよ！`;
+      //foxMsg.innerHTML =`🦊 ポイント発見！<br/>` +`${foundCount} / ${totalCount} のポイントを見つけたよ！`;
+      typeFoxMessage(`ポイント発見！<br/>${foundCount} / ${totalCount} のポイントを見つけたよ！`);
     }
 
     // 🦊 ポイント発見数をクエストメニューに反映
@@ -3421,9 +3463,8 @@ function checkQuestClear() {
     document.getElementById('fox-message');
   
     if (foxMsg) {
-      foxMsg.innerHTML =
-        `🦊「${clearedQuest.name}」クリア！🎉<br>` +
-        `🔑「${clearedQuest.keyName}」を手に入れたよ！`;
+      //foxMsg.innerHTML =`🦊「${clearedQuest.name}」クリア！🎉<br>` +`🔑「${clearedQuest.keyName}」を手に入れたよ！`;
+      typeFoxMessage(`${clearedQuest.name}」クリア！<br>「${clearedQuest.keyName}」を手に入れたよ！`);
     }  
   updateQuestMarkers();
   showStamps();
@@ -4147,8 +4188,8 @@ agreeSafety = function() {
           if (localStorage.getItem("key_key01")) {
             const foxMsg = document.getElementById('fox-message');
             if (foxMsg) {
-              foxMsg.innerHTML =
-                `左上の方位磁石が使えるよ！画面を縦にして使ってね！針の赤い方を北に合わせてね！`;
+              //foxMsg.innerHTML =`左上の方位磁石が使えるよ！画面を縦にして使ってね！針の赤い方を北に合わせてね！`;
+              typeFoxMessage(`左上の方位磁石が使えるよ！画面を縦にして使ってね！針の赤い方を北に合わせてね！`);
             }
           }
         }       
