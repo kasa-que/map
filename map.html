@@ -27,7 +27,7 @@
 
     .jump-pin{color:#e6b422; font-weight:bold; text-decoration:underline;}
 
-    .cl-point{margin: 10px 0; padding-left: 10px;}
+    .cl-point{margin: 5px 0; padding-left: 10px;}
 
 
        /* =================================
@@ -3028,7 +3028,7 @@ if (currentQuest && currentQuest.id !== q.id) {
   updateQuestMenuIcon();
 
   // クエストピンを「挑戦中」に変更
-updateQuestPinImage(q);
+  updateQuestPinImage(q);
 
   // フォックスメッセージ
   const foxMsg = document.getElementById('fox-message');
@@ -3060,7 +3060,7 @@ function stopQuestFromPopup(id) {
 
   // 本当にやめるか確認
   const ok = confirm(
-    "「" + q.name + "」への挑戦をやめますか？"
+    "🦊 「" + q.name + "」への挑戦をやめますか？"
   );
 
   if (!ok) {
@@ -3091,8 +3091,8 @@ function stopQuestFromPopup(id) {
   // フォックスメッセージ
   const foxMsg = document.getElementById('fox-message');
   if (foxMsg) {
-    foxMsg.innerHTML =
-      "🦊 クエストを選んで、冒険を始めよう！";
+    foxMsg.innerHTML ="🦊 クエストを選んで、冒険を始めよう！";
+    typeFoxMessage(`🦊 クエストを選んで、冒険を始めよう！`);
   }
 
   // ポップアップを最新状態に更新
@@ -3139,6 +3139,7 @@ function updateQuestPinImage(q) {
 
 
 
+  
 // ====================================================
 // 📌 「行きたい」ボタンの処理
 // ====================================================
@@ -3149,23 +3150,23 @@ function toggleWish(id) {
     localStorage.removeItem("wish_" + id); // すでに登録されていれば解除（赤に戻す）
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
-      foxMsg.innerHTML =
-      "🦊 「行ってみたい」を解除したよ！⚠️";
+      //foxMsg.innerHTML ="🦊 「行ってみたい」を解除したよ！⚠️";
+      typeFoxMessage(`「行ってみたい」を解除したよ！目印の色が戻ったよ！`);
     }
 
   } else {
     localStorage.setItem("wish_" + id, "true"); // なければ登録（黄色にする）
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
-      foxMsg.innerHTML =
-      "🦊 「行ってみたい」を覚えたよ！⚠️";
+      //foxMsg.innerHTML ="🦊 「行ってみたい」を覚えたよ！⚠️";
+      typeFoxMessage(`「行ってみたい」を覚えたよ！目印が黄色になったよ！`);
     }
 
   }
   updateMapMarkers(); // 地図のピンの色と、吹き出し内のボタン表示を即座に更新
 }
 
-
+// ====今日ここまで====
   
 // ====================================================
 // 🚶 距離計算の処理
