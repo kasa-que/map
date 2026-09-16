@@ -1977,7 +1977,7 @@ function scrollToStampBook() {
 
 // ====================================================
 // 🐾 足跡の処理
-// ====================================================￥
+// ====================================================
 let myNewWatchId = null;
 let myNewTrackDots = [];
 let myNewLastDotTime = 0;
@@ -2000,9 +2000,22 @@ function handleTrackRadio(mode) {
   if (trackControl) {
     trackControl.classList.add('track-active');
   }
-  if (foxMsg) foxMsg.innerHTML = `歩いたら地図に足跡がつくよ！笠間城や城下町を探検していこう！`;
-    alert("🦊 足跡が記録されはじめました。");
-  } 
+
+
+    
+  //if (foxMsg) foxMsg.innerHTML = `歩いたら地図に足跡がつくよ！笠間城や城下町を探検していこう！`;
+  //  alert("🦊 足跡が記録されはじめました。");
+  //} 
+
+
+  if (foxMsg) {
+    //foxMsg.innerHTML ="";    
+    typeFoxMessage(`歩いたら地図に足跡がつくよ！笠間城や城下町を探検していこう！`);
+  }
+  alert("🦊 足跡が記録されはじめました。");
+
+
+    
   
   else if (mode === 'pause') {
     pauseNewTracking();
