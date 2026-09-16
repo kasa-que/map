@@ -66,38 +66,31 @@
     }
     
     /* クエスト選択中：赤ピコ */
-    .custom-map-control.quest-active {
-      animation: questGlow 2s ease-in-out infinite;
-    }  
-    @keyframes questGlow {
-      0%, 100% {
-        box-shadow:
-          0 1px 5px rgba(0,0,0,0.3),
-          0 0 3px rgba(190,30,40,0.25);
-      }  
-      50% {
-        box-shadow:
-          0 1px 5px rgba(0,0,0,0.3),
-          0 0 7px rgba(190,30,40,0.65);
-      }
-    }
-    /* 足跡記録中：赤ピコ */
-    .custom-map-control.track-active {
-      animation: trackGlow 2s ease-in-out infinite;
-    }
+.custom-map-control.quest-active {
+  animation: questGlow 1.6s ease-in-out infinite;
+}
+@keyframes questGlow {
+  0%, 100% {
+    box-shadow: 0 1px 5px rgba(0,0,0,0.3), 0 0 5px rgba(190,30,40,0.35), 0 0 10px rgba(190,30,40,0.20);
+  }
+  50% {
+    box-shadow: 0 1px 5px rgba(0,0,0,0.3), 0 0 9px rgba(190,30,40,0.75), 0 0 18px rgba(190,30,40,0.40);
+  }
+}
+
+/* 足跡記録中：赤ピコ */
+.custom-map-control.track-active {
+  animation: trackGlow 1.6s ease-in-out infinite;
+}
+@keyframes trackGlow {
+  0%, 100% {
+    box-shadow: 0 1px 5px rgba(0,0,0,0.3), 0 0 5px rgba(190,30,40,0.35), 0 0 10px rgba(190,30,40,0.20);
+  }
+  50% {
+    box-shadow: 0 1px 5px rgba(0,0,0,0.3), 0 0 9px rgba(190,30,40,0.75), 0 0 18px rgba(190,30,40,0.40);
+  }
+}
     
-    @keyframes trackGlow {
-      0%, 100% {
-        box-shadow:
-          0 1px 5px rgba(0,0,0,0.3),
-          0 0 3px rgba(190,30,40,0.25);
-      } 
-      50% {
-        box-shadow:
-          0 1px 5px rgba(0,0,0,0.3),
-          0 0 7px rgba(190,30,40,0.65);
-      }
-    }
     
     /* すべての四角パネルの最小高さを「36px」に固定 */
     .custom-map-control.collapsed,
