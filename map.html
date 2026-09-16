@@ -1890,7 +1890,7 @@ function handleStampBookRadio(type) {
   else if (type === 'all') {
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
-      foxMsg.innerHTML = "🦊 <span class='m-h-l'>全ての印</span>を見られるよ！⚠️";
+      //foxMsg.innerHTML = "🦊 <span class='m-h-l'>全ての印</span>を見られるよ！⚠️";
       typeFoxMessage(` <span class='m-h-l'>すべての印</span>を見られるよ！<br/>印をタップするとマップのどこにあるか見られるよ！`);
     }
     showStamps('all');
@@ -1904,7 +1904,7 @@ function handleStampBookRadio(type) {
   else if (type === 'reset') {
     const answer = confirm(
       "🦊 本当にいいの？\n\n" +
-      "これまでに集めたスタンプが\n" +
+      "これまでに集めた印が" +
       "ぜんぶ消えてしまうよ。\n\n" +
       "本当にリセットする？"
     );
@@ -1923,10 +1923,10 @@ function handleStampBookRadio(type) {
       const foxMsg = document.getElementById('fox-message');
 
       if (foxMsg) {
-        foxMsg.innerHTML =
-          "🦊 御集印帳をまっさらにしたよ！また集めに行こう！";
+        //foxMsg.innerHTML = "🦊 御集印帳をまっさらにしたよ！また集めに行こう！";
+        typeFoxMessage(`御集印帳をまっさらにしたよ！また集めに行こう！`);
       }
-      alert("御集印帳をリセットしました。");
+      alert("🦊 御集印帳をリセットしました。");
       
       // リセット後もスタンプ帳へ
       scrollToStampBook();
@@ -1936,8 +1936,8 @@ function handleStampBookRadio(type) {
       const foxMsg = document.getElementById('fox-message');
 
       if (foxMsg) {
-        foxMsg.innerHTML ="🦊 スタンプはちゃんと残っているよ！";
-        
+        //foxMsg.innerHTML ="🦊 スタンプはちゃんと残っているよ！";
+        typeFoxMessage(`スタンプはちゃんと残っているよ！`);
       }
     }
   }
