@@ -1993,30 +1993,20 @@ function handleTrackRadio(mode) {
 
   if (mode === 'start') {
     startNewTracking(); 
-  if (iconStatus) {
-    iconStatus.innerHTML = `<img src="icon_track_start.png" alt="足跡(記録中)" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
-  }
-  
-  if (trackControl) {
-    trackControl.classList.add('track-active');
-  }
-
-
+    if (iconStatus) {
+      iconStatus.innerHTML = `<img src="icon_track_start.png" alt="足跡(記録中)" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
+    }
     
-  //if (foxMsg) foxMsg.innerHTML = `歩いたら地図に足跡がつくよ！笠間城や城下町を探検していこう！`;
-  //  alert("🦊 足跡が記録されはじめました。");
-  //} 
+    if (trackControl) {
+      trackControl.classList.add('track-active');
+    }
+    if (foxMsg) {    
+      typeFoxMessage(`歩いたら<span class='m-h-l'>地図にてんてんの足跡</span>がつくよ！笠間城や城下町を探検していこう！`);
+    }
+    alert("🦊 足跡が記録されはじめました。");
 
 
-  if (foxMsg) {
-    //foxMsg.innerHTML ="";    
-    typeFoxMessage(`歩いたら<span class='m-h-l'>地図にてんてんの足跡</span>がつくよ！笠間城や城下町を探検していこう！`);
   }
-  alert("🦊 足跡が記録されはじめました。");
-
-
-    
-  
   else if (mode === 'pause') {
     pauseNewTracking();
     if (iconStatus) {
@@ -2029,7 +2019,6 @@ function handleTrackRadio(mode) {
     //alert("🦊 足跡をひとやすみしました");
 
     if (foxMsg) {
-      //foxMsg.innerHTML ="";    
       typeFoxMessage(`<span class='m-h-l'>ひとやすみ中は足跡がつかないよ。</span>また足跡をつけたくなったら、足跡をつけるのを忘れないでね！`);
     }
     alert("🦊 足跡をつけるのをひとやすみします。");
