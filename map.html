@@ -3644,12 +3644,16 @@ function processStampVerification(s) {
     //alert("🎉 スタンプGET！：" + s.name); 
     if (foxMsg) {
       //foxMsg.innerHTML ="";    
-      typeFoxMessage(`こおんこん`);
+      typeFoxMessage(`${s.name}こおんこん`);
     }
     alert("🦊「" + s.name + "」の印を手に入れました"); 
     updateMapMarkers(); // マーカーのイラストを緑に変える
     showStamps();       // スタンプ帳の表示を更新
   } else {
+    if (foxMsg) {
+      //foxMsg.innerHTML ="";    
+      typeFoxMessage(`こおんこん`);
+    }
     alert("🦊 残念、まだ「" + s.name + "」の近くにいません。もっと近づいてからもう一度押してね。");
   }
 }
