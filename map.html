@@ -1354,37 +1354,29 @@ function updateQuestMenu() {
   const content = document.getElementById('quest-list');
 
   if (!content) return;
-
   let questListHTML = '';
 
   quests.forEach(q => {
-
     const isActive =
       currentQuest && currentQuest.id === q.id;
-
     const isLocked =
       q.requiredKey &&
       !localStorage.getItem("key_" + q.requiredKey);
-    
-
     const foundCount =
       q.clearPoints.filter((point, index) =>
         localStorage.getItem(
           "quest_point_found_" + q.id + "_" + index
         )
       ).length;
-
     const questClearTime =
       localStorage.getItem(
         "quest_clear_time_" + q.id
       );
-
     let questName = q.name;
     
     if (questClearTime) {
       questName = `<s>${questName}</s>`;
     }
-    
     if (isLocked) {
       questName = `<span class="quest-locked">🔒 ${questName}</span>`;
     }
@@ -1393,11 +1385,9 @@ function updateQuestMenu() {
       foundCount > 0
         ? "🔑".repeat(foundCount)
         : "";
-
     if (isActive) {
       questName = `<strong>${questName}</strong>`;
     }
-
     questListHTML += `
       <label>
         <input
@@ -1421,101 +1411,87 @@ function updateQuestMenu() {
       クエストをリセット
     </label>
   `;
-
   content.innerHTML = questListHTML;
 }
-
-
   
 const CustomQuestControl = L.Control.extend({
   options: { position: 'topright' },
   onAdd: function () {
     const container = L.DomUtil.create('div');
     // クエスト一覧を自動生成
-
     
-  let questListHTML = ``;
-  
-  quests.forEach(q => {
+    let questListHTML = ``;
+    quests.forEach(q => {
 
-  // 現在挑戦中か
-  const isActive =
-    currentQuest && currentQuest.id === q.id;
-    
-  const isLocked =
-    q.requiredKey &&
-    !localStorage.getItem("key_" + q.requiredKey);
-
-  // クリアしたポイント数
-  const foundCount =
-    q.clearPoints.filter((point, index) =>
+    // 現在挑戦中か
+    const isActive =
+      currentQuest && currentQuest.id === q.id;   
+    const isLocked =
+      q.requiredKey &&
+      !localStorage.getItem("key_" + q.requiredKey);
+    // クリアしたポイント数
+    const foundCount =
+      q.clearPoints.filter((point, index) =>
+        localStorage.getItem(
+          "quest_point_found_" + q.id + "_" + index
+        )
+      ).length;
+    // クエスト全体をクリア済みか
+    const questClearTime =
       localStorage.getItem(
-        "quest_point_found_" + q.id + "_" + index
-      )
-    ).length;
-
-  // クエスト全体をクリア済みか
-  const questClearTime =
-    localStorage.getItem(
-      "quest_clear_time_" + q.id
-    );
-
-  // クエスト名の表示
-  let questName = q.name;
-  
-  if (questClearTime) {
-    questName = `<s>${questName}</s>`;
-  }
-  
-  if (isLocked) {
-    questName = `<span class="quest-locked">🔒 ${questName}</span>`;
-  }
-    
-  // クリアしたポイント数だけ🎉
-  const clearMarks =
-    foundCount > 0
-      ? "🔑".repeat(foundCount) + " "
-      : "";
-
-  // 挑戦中なら太字
-  if (isActive) {
-    questName = `<strong>${questName}</strong>`;
-  }
-
-  questListHTML += `
-    <label>
-      <input
-        type="radio"
-        name="quest_opt"
-        onclick="handleQuestRadio('${q.id}')"
-      >
-      ${questName}${clearMarks}
-  </label>
-  `;
-});
-    
-    
-    // 🗑️ クエストのクリア記録をリセット
+        "quest_clear_time_" + q.id
+      );
+    // クエスト名の表示
+    let questName = q.name; 
+    if (questClearTime) {
+      questName = `<s>${questName}</s>`;
+    }  
+    if (isLocked) {
+      questName = `<span class="quest-locked">🔒 ${questName}</span>`;
+    }    
+    // クリアしたポイント数だけ🔑
+    const clearMarks =
+      foundCount > 0
+        ? "🔑".repeat(foundCount) + " "
+        : "";
+    // 挑戦中なら太字
+    if (isActive) {
+      questName = `<strong>${questName}</strong>`;
+    }
     questListHTML += `
       <label>
-        <input type="radio" name="quest_opt" onclick="resetQuestData()">
-        クエストをリセット
-      </label>
-    `;
-    container.innerHTML = `
-      <div class="control-icon control-icon-toggle">
-        <img id="quest-menu-icon" src="quest_menu.png" alt="クエスト" style="width:100%;height:100%;object-fit:contain;display:block;">
-      </div>
+        <input
+          type="radio"
+          name="quest_opt"
+          onclick="handleQuestRadio('${q.id}')"
+        >
+        ${questName}${clearMarks}
+    </label>
+    `;  
+  });
+    
+    
+  // 🗑️ クエストのクリア記録をリセット
+  questListHTML += `
+    <label>
+      <input type="radio" name="quest_opt" onclick="resetQuestData()">
+      クエストをリセット
+    </label>
+  `;
+  container.innerHTML = `
+    <div class="control-icon control-icon-toggle">
+      <img id="quest-menu-icon" src="quest_menu.png" alt="クエスト" style="width:100%;height:100%;object-fit:contain;display:block;">
+    </div>
 
-      <div class="control-content">
-        <h4>🦊 クエスト</h4>
-        <div id="quest-list">
-          ${questListHTML}
-        </div>
+    <div class="control-content">
+      <h4>🦊 クエスト</h4>
+      <div id="quest-list">
+        ${questListHTML}
       </div>
-    `;
-    setupControlToggle(container);
-    return container;
+    </div>
+  `;
+  setupControlToggle(container);
+  return container;
   }
 });
 map.addControl(new CustomQuestControl());
