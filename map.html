@@ -286,12 +286,14 @@
       transition: transform 0.1s ease-out; 
     } 
     /* =========================================
-   方位磁石・ゲット
+   方位磁石・ゲット演出
    ========================================= */
+
     #my-compass-wrapper.compass-doron {
       animation: compassDoron 1s ease-out;
     }
-    /* 方位磁石のドロン煙*/
+    /* 方位磁石のドロン煙 */
+    /* 方位磁石のドロン煙・大きい煙 */
     #my-compass-wrapper.compass-doron::before {
       content: "💭";
       position: absolute;
@@ -302,6 +304,7 @@
       animation: smokeBigDoron 1s ease-out;
       pointer-events: none;
     }
+    
     @keyframes smokeBigDoron {
       0% {opacity: 0;transform: scale(0.4);}
       30% {opacity: 1;transform: scale(1.2);}
@@ -317,6 +320,7 @@
       animation: smokeDoron 1s ease-out;
       pointer-events: none;
     }
+    
     @keyframes smokeDoron {
       0% {opacity: 0;transform: scale(0.5);}
       30% {opacity: 1;transform: scale(1.2);}
