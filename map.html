@@ -1803,11 +1803,8 @@ function handleStampBookRadio(type) {
       
       // リセット後もスタンプ帳へ
       scrollToStampBook();
-
     } else {
-
       const foxMsg = document.getElementById('fox-message');
-
       if (foxMsg) {
         //foxMsg.innerHTML ="🦊 スタンプはちゃんと残っているよ！";
         typeFoxMessage(`スタンプはちゃんと残っているよ！`);
@@ -1828,11 +1825,8 @@ function handleStampBookRadio(type) {
 // ========================================================================================================
 // 📖 スタンプ帳まで自動スクロール
 function scrollToStampBook() {
-
   const stampBook = document.getElementById("stamps");
-
   if (!stampBook) return;
-
   // 少し待ってからスクロール
   // → showStamps() で内容を書き換えたあとに確実に移動するため
   setTimeout(() => {
@@ -1843,10 +1837,6 @@ function scrollToStampBook() {
   }, 100);
 }
   
-
-
-
-
 // ====================================================
 // 🐾 足跡の処理
 // ====================================================
@@ -1860,15 +1850,13 @@ function handleTrackRadio(mode) {
     ? iconStatus.closest('.custom-map-control')
     : null;
   const foxMsg = document.getElementById('fox-message');
-
   const getFoxMsgEl = () => document.getElementById('fox-message');
 
   if (mode === 'start') {
     startNewTracking(); 
     if (iconStatus) {
       iconStatus.innerHTML = `<img src="icon_track_start.png" alt="足跡(記録中)" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
-    }
-    
+    }   
     if (trackControl) {
       trackControl.classList.add('track-active');
     }
@@ -1876,8 +1864,6 @@ function handleTrackRadio(mode) {
       typeFoxMessage(`歩いたら<span class='m-h-l'>地図にてんてんの足跡</span>がつくよ！笠間城や城下町を探検してみよう！`);
     }
     alert("🦊 足跡が記録されはじめました。");
-
-
   }
   else if (mode === 'pause') {
     pauseNewTracking();
@@ -1887,16 +1873,11 @@ function handleTrackRadio(mode) {
     if (trackControl) {
       trackControl.classList.remove('track-active');
     }
-    //if (foxMsg) foxMsg.innerHTML = `ひとやすみ中は足跡がつかないよ。また足跡をつけたくなったら、足跡をつけるのを忘れないでね！`;
-    //alert("🦊 足跡をひとやすみしました");
-
     if (foxMsg) {
       typeFoxMessage(`<span class='m-h-l'>ひとやすみ中は足跡がつかないよ。</span>また足跡をつけたくなったら、足跡をつけるのを忘れないでね！`);
     }
     alert("🦊 足跡をつけるのをひとやすみします。");
-    
   } 
-  
   else if (mode === 'stop') {
     if (myNewTrackDots.length > 0) {
       if (confirm("🦊 これまでに記録した歩いたてんてんの足跡をすべて消去しますか？")) {
@@ -1908,22 +1889,16 @@ function handleTrackRadio(mode) {
           navigator.geolocation.clearWatch(myNewWatchId);
           myNewWatchId = null;
         }
-        
         if (iconStatus) {
           iconStatus.innerHTML = `<img src="icon_track.png" alt="足跡" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
         }
         if (trackControl) {
           trackControl.classList.remove('track-active');
         }
-        //if (foxMsg) foxMsg.innerHTML = `足跡を消したよ！もう一回探検してみてね！`;
-        //alert("🦊 足跡をリセットしました");
-
         if (foxMsg) {
           typeFoxMessage(`<span class='m-h-l'>今までの足跡を消したよ！</span>もう一回探検してみてね！`);
         }
         alert("🦊 足跡をリセットしました。");
-        
-        
       } else {
         // キャンセルされたらボタンのチェックを戻す
         if (myNewWatchId !== null) {
@@ -1956,7 +1931,6 @@ function handleTrackRadio(mode) {
       if (foxMsg) {
         typeFoxMessage(`足跡の記録はまだないよ！「🐾」からつけられるよ！`);
       }
-
     }
   }
 }
@@ -1970,9 +1944,7 @@ function startNewTracking() {
     return;
   }
   if (myNewWatchId !== null) return; 
-  
   let firstLocation = true;
-
   myNewWatchId = navigator.geolocation.watchPosition(
     (pos) => {
       const uLat = pos.coords.latitude;
@@ -1983,23 +1955,10 @@ function startNewTracking() {
       // ====================================================
       // 🦊 クエストのクリア地点チェック
       // ====================================================
-      //quests.forEach(q => {
-        // すでにクリアしているクエストはチェックしない
-      //  if (getQuestClearTime(q.id)) {
-      //    return;
-      //  }
-        // クリア地点に到着しているか確認
-     //   if (q)) {
-     //     console.log("🦊 クエストクリア地点に到着！", q.name);
-     //   }    
-     // });
-      
       if (firstLocation) {
         map.setView([uLat, uLng], 16);
         firstLocation = false;
-      }
-
-      
+      }  
       // 現在地マーク（青丸）を自動移動
       if (currentLocationMarker) {
         currentLocationMarker.setLatLng([uLat, uLng]);
@@ -2023,7 +1982,6 @@ function startNewTracking() {
         myNewTrackDots.push(dot); 
         myNewLastDotTime = now;
 
-        
         // 足跡データをLocalStorageにテキストとして保存
         const rawCoords = myNewTrackDots.map(d => {
           const ll = d.getLatLng();
@@ -2053,17 +2011,6 @@ function pauseNewTracking() {
   myNewWatchId = null;
 }  
 
-
-
-
-
-
-
-
-
-  
-
-
 // ====================================================
 // 📖 目印の処理
 // ====================================================
@@ -2080,12 +2027,10 @@ function updateMapMarkers() {
 
     if (currentDisplayGroup === "all") {
       // 「全て表示」なら全部表示
-      isMatched = true;
-    
+      isMatched = true;  
     } else if (currentDisplayGroup === "quest") {
       // 「クエストのみ」なら通常の目印は全部非表示
       isMatched = false;
-    
     } else {
       // 「dfc」「twn」「now」「rcm」「bld」など、
       // IDの先頭が選択グループと一致するか確認
@@ -2116,7 +2061,6 @@ function updateMapMarkers() {
 
     if (s.id && s.id.startsWith("okn")) {  //rcm
       myIconUrl = "str_blue.png";
-
       if (got) {
         myIconUrl = "str_red.png";
       } else if (wish) {
@@ -2159,14 +2103,13 @@ function updateMapMarkers() {
 
     let popupContent =
       `<div style="text-align: center; font-family: sans-serif; min-width: 140px;">`;
-
     if (got) {
       // ------------------------------
       // 獲得済み
       // ------------------------------
       const savedTime =
         localStorage.getItem("stamp_time_" + s.id) || "日時データなし";
-
+      
       popupContent += `
         <img
           src="${stampImageUrl}"
@@ -2212,7 +2155,6 @@ function updateMapMarkers() {
         </div>`;
 
     } else {
-
       // ------------------------------
       // 未獲得
       // ------------------------------
@@ -2277,12 +2219,8 @@ function updateMapMarkers() {
           </button>
         </div>`;
     }
-
     popupContent += `</div>`;
 
-
-
-    
     // ====================================================
     // ドット表示グループ
     // ====================================================
@@ -2298,19 +2236,16 @@ function updateMapMarkers() {
       // 基本となる線の色
       // ------------------------------
       let dotColor = "#7f756b"; //#3c6382
-
       //if (isNow|| isRcm) {
       if (isMrk) {
         dotColor = "#0a3d62";   //#33302e
       }
-
       // 行きたい・スタンプ獲得による色変更
       if (got) {
         dotColor = "#b71540";
       } else if (wish) {
         dotColor = "#c89932";
       }
-
       // ------------------------------
       // 透過率と枠線
       // ------------------------------
@@ -2318,7 +2253,6 @@ function updateMapMarkers() {
       let strokeOpt = false;
       let borderWeight = 3;
       let strokeOpacityOpt = 1.0;
-
       //if (isNow|| isRcm) {
       if (isMrk) {
         fillOpt = 0.0;
@@ -2326,7 +2260,6 @@ function updateMapMarkers() {
         strokeOpacityOpt = 0.6;
         borderWeight = 4;
       }
-    
       const dotOptions = {
         radius: 10,
         color: dotColor,
@@ -2335,24 +2268,20 @@ function updateMapMarkers() {
         fillColor: dotColor,
         fillOpacity: fillOpt,
         stroke: strokeOpt,
- 
       };
 
       // ------------------------------
       // 既存マーカーを更新
       // ------------------------------
       if (markers[s.id]) {
-
         if (
           typeof markers[s.id].setLatLng === "function" &&
           typeof markers[s.id].setStyle === "function"
         ) {
           markers[s.id].setStyle(dotOptions);
           markers[s.id].setPopupContent(popupContent);
-
         } else {
           map.removeLayer(markers[s.id]);
-
           markers[s.id] =
             L.circleMarker(
               L.latLng(s.lat, s.lng),
@@ -2360,11 +2289,8 @@ function updateMapMarkers() {
             )
             .addTo(map)
             .bindPopup(popupContent);
-            //
         }
-
       } else {
-
         markers[s.id] =
           L.circleMarker(
             L.latLng(s.lat, s.lng),
@@ -2373,23 +2299,17 @@ function updateMapMarkers() {
           .addTo(map)
           .bindPopup(popupContent);
       }
-
     } else {
 
       // ====================================================
       // 通常・rcmスポット（画像ピン）
       // ====================================================
       if (markers[s.id]) {
-
         if (typeof markers[s.id].setIcon === "function") {
-
           markers[s.id].setIcon(myHandmadeIcon);
           markers[s.id].setPopupContent(popupContent);
-
         } else {
-
           map.removeLayer(markers[s.id]);
-
           markers[s.id] =
             L.marker(
               L.latLng(s.lat, s.lng),
@@ -2398,9 +2318,7 @@ function updateMapMarkers() {
             .addTo(map)
             .bindPopup(popupContent);
         }
-
       } else {
-
         markers[s.id] =
           L.marker(
             L.latLng(s.lat, s.lng),
@@ -2412,7 +2330,6 @@ function updateMapMarkers() {
     }
   });
 }  
-
 
 // ========================================================================================================
 // 🦊 クエストマーカーを表示
@@ -2434,7 +2351,6 @@ function updateQuestMarkers() {
     ) {
       return;
     }
-
    // すでにピンがあれば、内容だけ最新状態に更新
     if (questMarkers[q.id]) {
       updateQuestPopup(q);
@@ -2448,76 +2364,75 @@ function updateQuestMarkers() {
     });
     
     // ピンを押したときに出る内容
-  // 🦊 クエストのクリア状況を確認
-  const questClearTime = localStorage.getItem(
-    "quest_clear_time_" + q.id
-  );
-  const stampImageUrl =
-    q.stampImage ? q.stampImage : "stmpon.png";
-      
-  const popupStamp = questClearTime
-    ? `
-      <img
-        src="${stampImageUrl}"
-        alt="クエストクリアスタンプ"
-        style="
-          width: 80px;
-          height: 80px;
-          object-fit: contain;
-          margin-bottom: 5px;
-        "
-      >
-    <div style="
-      font-size: 13px;
-      color: #7f756b;
-      margin-bottom: 8px;
-    ">
-      ＼クエストクリア／
-      <br>
-      <span style="font-size: 11px;">
-        ${formatJapaneseDateTime(new Date(questClearTime))}
-      </span>
-  </div>
-    `
-  : `
-    <div style="
-      font-size: 12px;
-      color: #999;
-      margin-bottom: 8px;
-    ">
-      ＼まだクリアしていないよ／
-    </div>
-  `;
+    // 🦊 クエストのクリア状況を確認
+    const questClearTime = localStorage.getItem(
+      "quest_clear_time_" + q.id
+    );
+    const stampImageUrl =
+      q.stampImage ? q.stampImage : "stmpon.png";
+        
+    const popupStamp = questClearTime
+      ? `
+        <img
+          src="${stampImageUrl}"
+          alt="クエストクリアスタンプ"
+          style="
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 5px;
+          "
+        >
+        <div style="
+          font-size: 13px;
+          color: #7f756b;
+          margin-bottom: 8px;
+        ">
+          ＼クエストクリア／
+          <br>
+          <span style="font-size: 11px;">
+            ${formatJapaneseDateTime(new Date(questClearTime))}
+          </span>
+        </div>
+        `
+      : `
+        <div style="
+          font-size: 12px;
+          color: #999;
+          margin-bottom: 8px;
+        ">
+          ＼まだクリアしていないよ／
+        </div>
+      `;
 
-  const popupContent = `
-    <div style="
-      text-align: center;
-      font-family: sans-serif;
-      min-width: 140px;
-    ">
-  
-      ${popupStamp}
-  
+    const popupContent = `
       <div style="
-        font-size: 16px;
-        font-weight: bold;
-        margin-bottom: 8px;
+        text-align: center;
+        font-family: sans-serif;
+        min-width: 140px;
       ">
-        ${q.name}
+    
+        ${popupStamp}
+    
+        <div style="
+          font-size: 16px;
+          font-weight: bold;
+          margin-bottom: 8px;
+        ">
+          ${q.name}
+        </div>
+    
+        <div style="
+          font-size: 13px;
+          color: #666;
+          text-align: left;
+          line-height: 1.8;
+        ">
+          ${q.info}
+        </div>
+    
       </div>
-  
-      <div style="
-        font-size: 13px;
-        color: #666;
-        text-align: left;
-        line-height: 1.8;
-      ">
-        ${q.info}
-      </div>
-  
-    </div>
-  `;
-
+    `;
     
     // 開始地点にクエストピンを立てる
     questMarkers[q.id] = L.marker(
@@ -2529,8 +2444,7 @@ function updateQuestMarkers() {
     updateQuestPopup(q);
   });
   
-  
-   // ==========================================
+  // ==========================================
   // 🦊 クリア済みクエストだけピンを変更
   // ==========================================
    quests.forEach(q => {
@@ -2538,45 +2452,34 @@ function updateQuestMarkers() {
     const clearTime = localStorage.getItem(
       "quest_clear_time_" + q.id
     );
-
     if (clearTime || (currentQuest && currentQuest.id === q.id)) {
       updateQuestPinImage(q);
     }
-
   });
 
-
-
-
-
-  
   // 🦊 発見済みのクリアポイントを復元
   quests.forEach(q => {
-
     q.clearPoints.forEach((point, index) => {
-
       const foundKey =
         "quest_point_found_" + q.id + "_" + index;
 
       const foundTime = localStorage.getItem(foundKey);
-
       // 発見していないポイントは何もしない
       if (!foundTime) {
         return;
       }
-
-    const stampImageUrl =
-      point.image
-        ? point.image
-        : q.stampImage
-          ? q.stampImage
-          : "stmpon.png";
-
+      const stampImageUrl =
+        point.image
+          ? point.image
+          : q.stampImage
+            ? q.stampImage
+            : "stmpon.png";
+  
       const pointInfo =
         point.info
           ? point.info
           : q.clearInfo;
-//🦊 ポイント発見！
+      //🦊 ポイント発見！
       const clearPopupContent = `
         <div style="
           text-align:center;
@@ -2628,62 +2531,41 @@ function updateQuestMarkers() {
             line-height:1.6;
             color:#555;
           ">
-            
-            
-            ${pointInfo || ""}
+           ${pointInfo || ""}
           </div>
-
         </div>
       `;
 
       const markerKey = q.id + "_" + index;
-
       // まだマーカーがなければ復元
       if (!questClearMarkers[markerKey]) {
-
-      const clearMarker = L.marker(
-        [point.lat, point.lng],
-        {
-          icon: questPointIcon
-        }
-      ).addTo(map);
-        
-        clearMarker.bindPopup(clearPopupContent);
-
-        questClearMarkers[markerKey] = clearMarker;
-
+        const clearMarker = L.marker(
+          [point.lat, point.lng],
+          {
+            icon: questPointIcon
+          }
+        ).addTo(map);
+          clearMarker.bindPopup(clearPopupContent);
+          questClearMarkers[markerKey] = clearMarker;
       } else {
-
         questClearMarkers[markerKey]
           .setPopupContent(clearPopupContent);
-
       }
-
     });
-
   });
-
 }
-
-
 
 //クエストマーカー
 function updateQuestPopup(q) {
-
   if (!questMarkers[q.id]) {
     return;
   }
-
   // 最新のクリア状況を確認
   const questClearTime = localStorage.getItem(
     "quest_clear_time_" + q.id
   );
-
   const stampImageUrl =
     q.stampImage ? q.stampImage : "stmpon.png";
-
-
-
   const popupClearStatus = questClearTime
     ? `
       <div style="
@@ -2703,7 +2585,6 @@ function updateQuestPopup(q) {
         ＼まだクリアしていないよ／
       </div>
     `;
-
   const popupImage = questClearTime
     ? `
       <img
@@ -2718,7 +2599,6 @@ function updateQuestPopup(q) {
       >
     `
     : "";
-
   const popupDate = questClearTime
     ? `
       <div style="
@@ -2732,9 +2612,7 @@ function updateQuestPopup(q) {
       </div>
     `
     : "";
-
-  
-    // クエスト未クリアならスタートボタンを表示
+  // クエスト未クリアならスタートボタンを表示
   const startButton =
     !questClearTime &&
     (!currentQuest || currentQuest.id !== q.id)
@@ -2758,10 +2636,7 @@ function updateQuestPopup(q) {
         </button>
       `
       : "";
-    
-
-
-  
+ 
     // 挑戦中のクエストなら「クエストをやめる」を表示
     const stopButton =
       !questClearTime && currentQuest && currentQuest.id === q.id
@@ -2784,19 +2659,14 @@ function updateQuestPopup(q) {
           </button>
         `
         : "";
-
-
-
-  
+ 
   const popupContent = `
     <div style="
       text-align: center;
       font-family: sans-serif;
       min-width: 140px;
     ">
-
     ${popupClearStatus}
-    
     <div style="
       font-size: 16px;
       font-weight: bold;
@@ -2820,9 +2690,7 @@ function updateQuestPopup(q) {
         margin-top: 12px;
         padding-top: 10px;
       "></div>
-       
-
-
+ 
       ${popupImage}
       ${popupDate}
     
@@ -2832,19 +2700,15 @@ function updateQuestPopup(q) {
         line-height: 1.6;
         color: #555;
       ">
-
         ${q.clearInfo || ""}
       </div>
     ` : ""}
-
-
-
-        
+   
       ${startButton}
       ${stopButton}
     </div>
   `;
-
+  
   // ポップアップの中身だけ更新
   questMarkers[q.id].setPopupContent(popupContent);
 }
@@ -2864,43 +2728,34 @@ function startQuestFromPopup(id) {
     return;
   }
 
-// すでに別のクエストに挑戦中なら、切り替えるか確認
-if (currentQuest && currentQuest.id !== q.id) {
-
-  const ok = confirm(
-    `🦊 今は「${currentQuest.name}」に挑戦中だよ。\n\n` +
-    `「${q.name}」に切り替える？\n\n` +
-    `OK → 切り替える\n` +
-    `キャンセル → 今のクエストを続ける`
-  );
-
-  if (!ok) {
-    return;
+  // すでに別のクエストに挑戦中なら、切り替えるか確認
+  if (currentQuest && currentQuest.id !== q.id) {
+  
+    const ok = confirm(
+      `🦊 今は「${currentQuest.name}」に挑戦中だよ。\n\n` +
+      `「${q.name}」に切り替える？\n\n` +
+      `OK → 切り替える\n` +
+      `キャンセル → 今のクエストを続ける`
+    );
+    if (!ok) {
+      return;
+    }
+    // 今まで挑戦していたクエストを保存
+    const oldQuest = currentQuest;
+    // 新しいクエストに切り替える
+    currentQuest = q;
+    // 前のクエストを通常表示に戻す
+    updateQuestPinImage(oldQuest);
+    updateQuestPopup(oldQuest);
+  
+  } else { 
+    // 何も挑戦していない場合
+    currentQuest = q;
   }
-
-  // 今まで挑戦していたクエストを保存
-  const oldQuest = currentQuest;
-
-  // 新しいクエストに切り替える
-  currentQuest = q;
-
-  // 前のクエストを通常表示に戻す
-  updateQuestPinImage(oldQuest);
-  updateQuestPopup(oldQuest);
-
-} else {
-
-  // 何も挑戦していない場合
-  currentQuest = q;
-}
-
-
-
 
   // 🦊 挑戦中のクエストを保存
   localStorage.setItem("current_quest_id", q.id);
   updateQuestMenu();
-  
 
   // 右側のクエスト選択も、挑戦中のクエストに合わせる
   const questRadio = document.querySelector(
@@ -2909,37 +2764,27 @@ if (currentQuest && currentQuest.id !== q.id) {
   if (questRadio) {
     questRadio.checked = true;
   }
-  
 
   // 右上のクエストアイコンを「挑戦中」に変更
   updateQuestMenuIcon();
-
   // クエストピンを「挑戦中」に変更
   updateQuestPinImage(q);
-
   // フォックスメッセージ
   const foxMsg = document.getElementById('fox-message');
-
   if (foxMsg) {
-   //foxMsg.innerHTML =`クエスト<span class='m-h-l'>「${q.name}」</span>に挑戦中だよ！<br/>ここかなと思ったら、地図左下の「🧭現在地をチェック」してね。`;
     typeFoxMessage(`クエスト<span class='m-h-l'>「${q.name}」</span>に挑戦中だよ！<br/>ここかなと思ったら、地図左下の「🧭現在地をチェック」してね。<br/>右の「🐾 足跡」機能をつけていると便利だよ！`);
   }
-
   // クエスト開始のお知らせ
   alert(
     "🦊 クエスト「" + q.name + "」がはじまるよ！\n\n" +
     "ここかなと思ったら、地図左下の「🧭現在地をチェック」してね。"
   );
-
   // ポップアップを最新状態に更新
   updateQuestPopup(q);
 }
 
-
 // ====今日ここまで====
 
-
-  
 function stopQuestFromPopup(id) {
 
   const q = quests.find(quest => quest.id === id);
