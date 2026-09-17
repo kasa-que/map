@@ -2788,17 +2788,14 @@ function startQuestFromPopup(id) {
 function stopQuestFromPopup(id) {
 
   const q = quests.find(quest => quest.id === id);
-  if (!q) return;
-
+  if (!q) return
   // 本当にやめるか確認
   const ok = confirm(
     "🦊 「" + q.name + "」への挑戦をやめますか？"
   );
-
   if (!ok) {
     return;
   }
-
   // クエストを終了
   currentQuest = null;
   localStorage.removeItem("current_quest_id");
@@ -2816,7 +2813,6 @@ function stopQuestFromPopup(id) {
   // クエストメニューアイコンを通常状態に戻す
   updateQuestMenuIcon();
 
-
   // クエストピンを通常状態に戻す
   updateQuestPinImage(q);
 
@@ -2833,24 +2829,20 @@ function stopQuestFromPopup(id) {
 
   
 function updateQuestPinImage(q) {
-
   // クエストピンが存在しなければ何もしない
   if (!questMarkers[q.id]) {
     return;
   }
-
   // 最新のクリア状況を確認
   const clearTime = localStorage.getItem(
     "quest_clear_time_" + q.id
   );
-
   // クエストの状態によってピン画像を変更
   let iconUrl = "quest_pin.png";
 
   if (clearTime) {
     // クリア済み
     iconUrl = "quest_clear_pin.png";
-
   } else if (currentQuest && currentQuest.id === q.id) {
     // 現在挑戦中
     iconUrl = "quest_active_pin.png";
@@ -2868,9 +2860,6 @@ function updateQuestPinImage(q) {
     questMarkers[q.id].setIcon(questIcon);
   }
 }  
-
-
-
   
 // ====================================================
 // 📌 「行きたい」ボタンの処理
@@ -2882,7 +2871,6 @@ function toggleWish(id) {
     localStorage.removeItem("wish_" + id); // すでに登録されていれば解除（赤に戻す）
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
-      //foxMsg.innerHTML ="🦊 「行ってみたい」を解除したよ！⚠️";
       typeFoxMessage(`「行ってみたい」を解除したよ！目印の色が戻ったよ！`);
     }
 
@@ -2890,15 +2878,12 @@ function toggleWish(id) {
     localStorage.setItem("wish_" + id, "true"); // なければ登録（黄色にする）
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
-      //foxMsg.innerHTML ="🦊 「行ってみたい」を覚えたよ！⚠️";
-      typeFoxMessage(`「行ってみたい」を覚えたよ！目印が黄色になったよ！`);
+       typeFoxMessage(`「行ってみたい」を覚えたよ！目印が黄色になったよ！`);
     }
 
   }
   updateMapMarkers(); // 地図のピンの色と、吹き出し内のボタン表示を即座に更新
 }
-
-
   
 // ====================================================
 // 🚶 距離計算の処理
@@ -2915,7 +2900,6 @@ function isNear(lat1, lng1, lat2, lng2, radius) {
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c < radius;
 }
-
 
 // ====================================================
 // 🦊 クエストのクリア地点に到着したか判定
@@ -2964,13 +2948,6 @@ function checkQuestClear() {
       point.lng,
       point.radius
     );    
-//    alert(
-//      "currentQuest：" + currentQuest.id +
-//      "\n現在地：" + currentLat + ", " + currentLng +
-//      "\nポイント：" + point.lat + ", " + point.lng +
-//      "\nradius：" + point.radius +
-//      "\nnear：" + near
-//    );
     // まだ近づいていなければ何もしない
     if (!near) {
       return;
@@ -2979,7 +2956,6 @@ function checkQuestClear() {
     // ==========================================
     // 🎉 新しい地点を発見！
     // ==========================================
-
     const now = new Date();
     localStorage.setItem(
       foundKey,
@@ -3073,12 +3049,6 @@ function checkQuestClear() {
     ].openPopup();
   });
 
-  // 新しい地点を発見していなければ終了
-  //if (!foundNewPoint) {
-  //alert("foundNewPoint は FALSE");
-  //return false;
-  //}
-
   // ==========================================
   // 🦊 必須地点を全部発見したか確認
   // ==========================================
@@ -3119,7 +3089,6 @@ function checkQuestClear() {
       document.getElementById('fox-message');
 
     if (foxMsg) {
-      //foxMsg.innerHTML =`🦊 ポイント発見！<br/>` +`${foundCount} / ${totalCount} のポイントを見つけたよ！`;
       typeFoxMessage(`ポイント発見！<br/>${foundCount} / ${totalCount} のポイントを見つけたよ！`);
     }
 
@@ -3152,7 +3121,6 @@ function checkQuestClear() {
     document.getElementById('fox-message');
   
     if (foxMsg) {
-      //foxMsg.innerHTML =`🦊「${clearedQuest.name}」クリア！🎉<br>` +`🔑「${clearedQuest.keyName}」を手に入れたよ！`;
       typeFoxMessage(`${clearedQuest.name}」クリア！<br>「${clearedQuest.keyName}」を手に入れたよ！`);
     }  
   updateQuestMarkers();
@@ -3224,25 +3192,6 @@ function checkQuestClear() {
   return true;
 }
 
-//function resetQuestClearData() {
-//  quests.forEach(q => {
-//    localStorage.removeItem(
-//      "quest_clear_time_" + q.id
-//    );
-//  });
-//  alert("🦊 クエストのクリア記録だけリセットしました！");
-//}  
-//function checkQuestClearData() {
-//  let result = "";
-//  quests.forEach(q => {
-//    const key = "quest_clear_time_" + q.id;
-//    const value = localStorage.getItem(key);
-//    result += q.id + " : " + (value || "なし") + "\n";
-//  });
-//  alert(result);
-//}
-
-
   
 // === 📍 現在地をチェック（位置表示のみに変更） ===
 function checkLocation() {
@@ -3256,14 +3205,8 @@ function checkLocation() {
       // 取得した緯度経度を記憶する
       currentLat = pos.coords.latitude;
       currentLng = pos.coords.longitude;
-      //checkQuestClear();
-      //alert("現在のcurrentQuest：" + (currentQuest ? currentQuest.id : "null"));
-      //alert("checkQuestClear開始");   
       const result = checkQuestClear();
 
-//      alert("checkQuestClearの結果：" + result);
-      //alert("checkQuestClear終了：" + result);   
-      //alert("位置取得成功！"); 
       if (currentLocationMarker) {
         map.removeLayer(currentLocationMarker);
       }
@@ -3283,11 +3226,8 @@ function checkLocation() {
       
       const allRadio = document.querySelector('input[name="filter_opt"][onclick="handleFilterRadio(\'all\')"]');
       if (allRadio) allRadio.checked = true;   
-      // 案内メッセージを変更（自動スタンプは無し）
-      //document.getElementById("message").textContent = "📍 現在地を更新しました！下のスタンプ帳からボタンを押してね。";
       const foxMsg = document.getElementById('fox-message');
       if  (foxMsg && result === false){
-        //foxMsg.innerHTML =`🦊　青い丸が現在地だよ！<br/>右の「足跡ボタン」を使うと常に現在地が更新されるよ！`;
         typeFoxMessage(`<span class='m-h-l'>青い丸が現在地だよ！</span><br/>右の「足跡ボタン」を使うと常に現在地が更新されるよ！`);
       }
     },
@@ -3327,7 +3267,7 @@ function tryGetStamp(id) {
             radius: 8, color: "blue", fillColor: "blue", fillOpacity: 0.8
           }).addTo(map);
         }
-        // 位置が取れたので、そのまま即座に距離判定を実行！
+        // 位置が取れたので、そのまま即座に距離判定を実行
         processStampVerification(s);
       },
       err => {
@@ -3368,12 +3308,9 @@ function processStampVerification(s) {
   
   if (isNear(currentLat, currentLng, s.lat, s.lng, s.radius)) {
     localStorage.setItem("stamp_" + s.id, "true");
-    //const now = new Date();
-    //const timeStr = now.getFullYear() + "/" + String(now.getMonth() + 1).padStart(2, '0') + "/" + String(now.getDate()).padStart(2, '0') + " " + String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
     const now = new Date();
     const timeStr = formatJapaneseDateTime(now);    
     localStorage.setItem("stamp_time_" + s.id, timeStr);          
-    //alert("🎉 スタンプGET！：" + s.name); 
     if (foxMsg) {
       //foxMsg.innerHTML ="";    
       typeFoxMessage(`「${s.name}」にたどり着いたね！おめでとう！`);
@@ -3383,7 +3320,6 @@ function processStampVerification(s) {
     showStamps();       // スタンプ帳の表示を更新
   } else {
     if (foxMsg) {
-      //foxMsg.innerHTML ="";    
       typeFoxMessage(`「🧭現在地をチェック」か「🐾足跡をつける」で今いる場所を確認して、近くに行ってからもう一度押してみてね。`);
     }
     alert("🦊 残念、まだ「" + s.name + "」の近くにいません。もっと近づいてからもう一度押してね。");
@@ -3443,8 +3379,7 @@ function showStamps(mode = 'all') {
     const categorySpots = spots.filter(s =>
       s.id && s.id.startsWith(category.prefix)
     );
-    // 「獲得したスタンプ」の場合は、
-    // 獲得済みだけに絞り込む
+    // 「獲得したスタンプ」の場合は、獲得済みだけに絞り込む
     const displaySpots = categorySpots.filter(s => {
       const got = localStorage.getItem("stamp_" + s.id);
       if (mode === "got") {
@@ -3452,8 +3387,7 @@ function showStamps(mode = 'all') {
       }
       return true;
     });
-    // この分類に表示するものが1つもなければ、
-    // 見出し自体を表示しない
+    // この分類に表示するものが1つもなければ、見出し自体を表示しない
     if (displaySpots.length === 0) {
       return;
     }
@@ -3647,15 +3581,11 @@ function jumpToQuest(id) {
     }
   }, 500);
 }
-
-
-
   
 // 初期起動時の実行
 updateMapMarkers();
 showStamps();
 updateQuestMarkers();
-
   
 // 画面読み込み時にLocalStorageから足跡を復活させる ===
 function restoreBreadcrumbs() {
@@ -3858,13 +3788,11 @@ function createCompass() {
     true
   );
 }
-// ページ読み込み時
-// すでに方位磁石を持っていれば表示
+// ページ読み込み時すでに方位磁石を持っていれば表示
 if (localStorage.getItem("key_key01")) {
   createCompass();
 }
 
-  
 // 門番画面の「同意して始める」ボタン（agreeSafety）が押された瞬間に、センサーの許可をスマホに申請
 const originalAgreeSafety = agreeSafety; // 以前作った関数を一旦バックアップ
 agreeSafety = function() {
@@ -3879,7 +3807,6 @@ agreeSafety = function() {
           if (localStorage.getItem("key_key01")) {
             const foxMsg = document.getElementById('fox-message');
             if (foxMsg) {
-              //foxMsg.innerHTML =`左上の方位磁石が使えるよ！画面を縦にして使ってね！針の赤い方を北に合わせてね！`;
               typeFoxMessage(`左上の方位磁石が使えるよ！画面を縦にして使ってね！針の赤い方を北に合わせてね！`);
             }
           }
@@ -3919,7 +3846,6 @@ const originalAgreeSafetyForLink = agreeSafety;
 
 agreeSafety = function() {
   originalAgreeSafetyForLink(); // 門番画面を消す・センサー許可の元の処理を実行
-
   //URLの末尾に「?spot=11」の調べ
   const urlParams = new URLSearchParams(window.location.search);
   const targetSpotId = urlParams.get('spot'); // 'spot' の後ろのIDを取得
@@ -3955,8 +3881,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 });
-//checkQuestClearData();
-//resetQuestClearData(); 
 </script>
 </body>
 </html>
