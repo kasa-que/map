@@ -286,13 +286,12 @@
       transition: transform 0.1s ease-out; 
     } 
     /* =========================================
-   方位磁石・ゲット演出
+   方位磁石・ゲット
    ========================================= */
     #my-compass-wrapper.compass-doron {
       animation: compassDoron 1s ease-out;
     }
-    /* 方位磁石のドロン煙 */
-    /* 方位磁石のドロン煙・大きい煙 */
+    /* 方位磁石のドロン煙*/
     #my-compass-wrapper.compass-doron::before {
       content: "💭";
       position: absolute;
@@ -443,7 +442,7 @@
     /* =================================
        追加
        ================================= */
-    /* 📱 スマホ：吹き出しが横に広がりすぎないようにする */
+    /* 📱 スマホ：吹き出しの幅 */
     @media (max-width: 600px) {
       .leaflet-popup-content-wrapper {
         max-width: 300px;
@@ -601,8 +600,7 @@
     radius: 30,
     info: "笠間城にあるいちばん西にある櫓で、城下町がひと目で見渡せるような場所に建っています。地面に今でも礎石が見られます。"
   }
-
-
+    
 // ====================================================
 // 🏯 建物　bld　🏯　時習館
 // ====================================================
@@ -623,6 +621,7 @@
 //,{ id: "bld23",name: "五騎町時習館",lat: 36, lng: 140,radius: 30,info: "⚠️"}
 //,{id: "bld24", name: "桜町時習館",lat: 36, lng: 140,radius: 30,info: "⚠️"}
 //,{id: "bld25",name: "大和田時習館",lat: 36, lng: 140,radius: 30,info: "⚠️"}
+    
 // ====================================================
 // 🏯 建物　bld　🏯　下屋敷
 // ====================================================
@@ -647,9 +646,6 @@
     radius: 100,
     info: "下屋敷は役所で、下屋敷ができる前は笠間城が政治の場所だったのが、役人が毎日登ったり下ったりするから大変だということで、1643年藩主浅野長直の頃に下屋敷がつくられました。広さは総畳数769畳。"
   }
-
-    
- 
 
 // ====================================================
 // 🛡️ 防御　dfc　🛡️　門
@@ -716,6 +712,7 @@
     radius: 30,
     info: "的場丸門は笠間城に入る時に最初にたちはだかる門です。"
   }
+    
 // ====================================================
 // 🛡️ 防御　dfc　🛡️　虎口
 // ====================================================
@@ -770,6 +767,7 @@
     radius: 30,
     info: "城下町に入るところの虎口です。土塁で囲まれていて、敵が早く本丸へ行けないようにした防御施設です。山居近くの桝形は縦百ｍくらいもの大きさがあり、絶対、城や上級家臣のところに行かせないような姿勢が感じられます。"
   }
+    
 // ====================================================
 // 🛡️ 防御　dfc　🏯　曲輪
 // ====================================================
@@ -797,6 +795,7 @@
     lat: 36.382671, lng: 140.267301,    radius: 30,
     info: "天守曲輪は蒲生の時代に周りを塀で囲んでいて一番高いところにある曲輪でこの曲輪はどの曲輪よりも高い石垣が積んであります。地震での倒壊で見れないところがあります。"
   }
+    
 // ====================================================
 // 🌊 防御　dfc　🛡️　堀
 // ====================================================
@@ -806,8 +805,6 @@
     lat: 36.378163, lng: 140.253828,    radius: 30,
     info: "桜町時習館のまわりにある堀は今でも暗渠の形になって残っています。暗渠は今でも水が流れているけれど塞いで見えなくなっているところのことです。"
   }
-  
-
     
 // ====================================================
 // ✨ 現存　now　✨　
@@ -819,7 +816,6 @@
     lat: 36.390546, lng: 140.258482,    radius: 30,
     info: "明治時代の「廃城令」によって悲しんだ侍が、笠間城の状態のいい櫓をここ真浄寺に許可をもらって移して、これは<a class='jump-pin' href='javascript:void(0)' onclick='jumpToMapMarker(\"bld_11\")' >八幡台櫓</a>だと言われていますが本当かどうかはわかっていません。"
   }
-
 
 // ====================================================
 // ⭐️ 言い伝え　rcm　⭐️
@@ -862,8 +858,6 @@
     info: "宇都宮氏の一員の時朝は１２１９年に笠間城を作り始め１２３５年に完成したと言われていますが、当時は鎌倉時代だったので山に城を作るというのは考えられないため、その頃は麓城で、時代が進むに連れ、今の佐白山の城へと変化したと考えられています。"
   }
 
-
-  
 // ====================================================
 // 町名　twn
 // ====================================================
@@ -1010,19 +1004,13 @@
     
 ];
 
-
-
   // ====================================================
   // 🦊 クエストデータ　🦊
   // ====================================================
   let currentQuest = null;
   const quests = [
 
- 
-    
-
-
-{
+    {
       id: "quest01",
       name: "井筒屋で小野友五郎を探そう！",
       rewardKey: "key01",
@@ -1030,8 +1018,8 @@
       // クエスト開始地点
       startLat:  36.384688, 
       startLng: 140.256419, 
-      // クエストクリア地点
 
+      // クエストクリア地点
       clearPoints: [
         {
           name: "小野友五郎の顕彰碑",
@@ -1041,6 +1029,7 @@
           image: "q01-1.png",
           info: "小野友五郎は笠間藩で生まれた人で、算術を学んだ結果、よくできたため幕府の命で本を翻訳してと頼まれそれは航海術の本で航海のしかたも学び、星の高度でどこにいるのかが分かるようになったので太平洋を横断したり小笠原を測量したりなど様々なことを成し遂げた人です。"
         }
+        
       ],
       keyName: "方位磁石",
       stampImage: "q01-key.png",
@@ -1075,15 +1064,16 @@
           image: "q02-2.png",
           info: "加藤先生は18歳で時習館（桜町）の儒学の先生になったよ！高杉晋作が会いに来たすごい先生だよ！"
         }
+        
      ],
       
       //stampImage: "qst02_cl.png",
       clearInfo: "大和田時習館は「桜町時習館」「博采館」「講武館」が統合されて1859年に作られた藩校だったんだよ！<br/>小野友五郎が学んだり加藤桜老先生が教えたり吉田松陰がきた桜町時習館など、他の時習館あとにもぜひ行ってみてね！"
     }
 
-
     
   ];
+  
   // 🦊 再読み込み時に挑戦中クエストを復元
   const savedQuestId =
     localStorage.getItem("current_quest_id");
@@ -1093,9 +1083,7 @@
       quests.find(q => q.id === savedQuestId) || null;
   }
 
-
-
-
+  
 // ========================================================================================================
 // 🗺️　地図の登録　🗺️
 // ========================================================================================================
@@ -1126,7 +1114,7 @@ const elevationMap = L.tileLayer("https://cyberjapandata.gsi.go.jp/xyz/hillshade
     maxNativeZoom: 16
 });  
   
-// 4. オリジナルマップ レイヤー
+// 4. クエストマップ レイヤー
 const originalMapGroup = L.layerGroup();
 // 【1枚目：joka.png】のカバーする範囲
 const boundsMeiji = [
@@ -1150,8 +1138,7 @@ L.imageOverlay("shiro5.webp", boundsShiro, {
   alt: "shiro"
 }).addTo(originalMapGroup);
 
-
-// 最初は「オリジナルマップ」を画面に表示しておく
+// 最初は「クエストマップ」を画面に表示しておく
 originalMapGroup.addTo(map);
 
 
@@ -1240,15 +1227,13 @@ function handleLayerRadio(type) {
     originalMapGroup.addTo(map);
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
-      //foxMsg.innerHTML ="🦊 <span class='m-h-l'>クエストマップ</span>に切り替えたよ！⚠️";
-      typeFoxMessage(`<span class='m-h-l'>クエストマップ</span>に切り替えたよ！<br/>クエストマップは江戸時代の文政の頃の道を今でも歩けるようにしたマップのことだよ！`);
+      typeFoxMessage(`<span class='m-h-l'>クエストマップ</span>に切り替えたよ！<br/>クエストマップは江戸時代の文政の頃の道を現代で歩けるようにしたマップのことだよ！`);
     }
   }
   if (type === 'base') {
     baseMap.addTo(map);
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
-      //foxMsg.innerHTML ="🦊 <span class='m-h-l'>現代の地図</span>に切り替えたよ！⚠️";
       typeFoxMessage(`<span class='m-h-l'>現代の地図</span>に切り替えたよ！<br/>現代のどのあたりか確認してみてね！`);
     }
   }
@@ -1256,21 +1241,16 @@ function handleLayerRadio(type) {
     satelliteMap.addTo(map);
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
-      //foxMsg.innerHTML ="🦊 <span class='m-h-l'>航空写真</span>に切り替えたよ！⚠️";
-      typeFoxMessage(`<span class='m-h-l'>航空写真</span>に切り替えたよ！<br/>家や駐車場などの様子が見れるからどこなのか場所が見当をつけやすくなるよ！`);
+      typeFoxMessage(`<span class='m-h-l'>航空写真</span>に切り替えたよ！<br/>家や地面の様子が写真で見れるからどこなのか場所が見当をつけやすくなるよ！`);
     }
   }
   if (type === 'elevation') {
     elevationMap.addTo(map); 
     const foxMsg = document.getElementById("fox-message");
     if (foxMsg) {
-      //foxMsg.innerHTML = "🦊 <span class='m-h-l'>陰影起伏図</span>に切り替えたよ！⚠️";
       typeFoxMessage(`<span class='m-h-l'>陰影起伏図</span>に切り替えたよ！<br/>北西から光を当てた時にどう見えるか想定した地図で、堀や土塁などの凸凹を見つけることのできる地図だよ！`);
     }
   }
-  //if (type === 'base') baseMap.addTo(map);
-  //if (type === 'satellite') satelliteMap.addTo(map);
-  //if (type === 'elevation') elevationMap.addTo(map);  
 }
 
 // ========================================================================================================
@@ -1305,48 +1285,41 @@ map.addControl(new CustomFilterControl());
 
 
 // =====================================================================================================
-//ラジオボタンが押されたときに、表示をパッと切り替える処理
+//ラジオボタンが押されたときに、表示を切り替える処理
 function handleFilterRadio(groupType) {
   currentDisplayGroup = groupType; // 選ばれたグループ（all, dfc, twnなど）を記憶
 
   const foxMsg = document.getElementById("fox-message");
   if(groupType=="all"){
     if (foxMsg) {
-      //foxMsg.innerHTML ="🦊 <span class='m-h-l'>全ての目印</span>を表示しているよ！";
       typeFoxMessage(`<span class='m-h-l'>全ての目印</span>を表示しているよ！`);
     }
   }else if(groupType=="bld"){
     if (foxMsg) {
-      //foxMsg.innerHTML ="🦊 神社・寺・櫓・学校など<span class='m-h-l'>建造物の目印</span>を表示しているよ！";
       typeFoxMessage(`神社・寺・櫓・学校など<span class='m-h-l'>建造物の目印</span>を表示しているよ！`);
     }
   }else if(groupType=="dfc"){
     if (foxMsg) {
-      //foxMsg.innerHTML = "🦊 門や虎口や曲輪や堀など<span class='m-h-l'>防御施設の目印</span>を表示しているよ！";
       typeFoxMessage(`門や虎口や曲輪や堀などの<span class='m-h-l'>防御施設の目印</span>を表示しているよ！`);
     }
   }else if(groupType=="twn"){
     if (foxMsg) {
-      //foxMsg.innerHTML = "🦊 <span class='m-h-l'>町名標示の目印</span>を表示しているよ！";
       typeFoxMessage(`<span class='m-h-l'>町名標示の目印</span>を表示しているよ！`);
     }
   }else if(groupType=="now"){
     if (foxMsg) {
-      //foxMsg.innerHTML ="🦊 昔と場所は違うけど<span class='m-h-l'>現存しているものの目印</span>を表示しているよ！";
       typeFoxMessage(`昔と場所は違うけど<span class='m-h-l'>現存しているものの目印</span>を表示しているよ！`);
     }
   }else if(groupType=="rcm"){
     if (foxMsg) {
-      //foxMsg.innerHTML ="🦊 <span class='m-h-l'>言い伝えのある場所の目印</span>を表示しているよ！";
       typeFoxMessage(`<span class='m-h-l'>言い伝えのある場所の目印</span>を表示しているよ！`);
     }
   }else if(groupType=="quest"){
     if (foxMsg) {
-      //foxMsg.innerHTML ="🦊 <span class='m-h-l'>クエストの目印</span>だけを表示しているよ！";
       typeFoxMessage(`<span class='m-h-l'>クエストの目印</span>だけを表示しているよ！`);
     }
   }
-  updateMapMarkers(); // 💡 記憶したルールに基づいて、地図のピンを一斉に描き直します！
+  updateMapMarkers(); 
 }
 
 // ========================================================================================================
