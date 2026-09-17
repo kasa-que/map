@@ -1024,7 +1024,7 @@
         {
           name: "小野友五郎の顕彰碑",
           lat: 36.384596, lng: 140.256542,
-          radius:1000000,
+          radius:100000,
           required: true,
           image: "q01-1.png",
           info: "小野友五郎は笠間藩で生まれた人で、算術を学んだ結果、よくできたため幕府の命で本を翻訳してと頼まれそれは航海術の本で航海のしかたも学び、星の高度でどこにいるのかが分かるようになったので太平洋を横断したり小笠原を測量したりなど様々なことを成し遂げた人です。"
@@ -1520,7 +1520,6 @@ function updateQuestMenuIcon() {
 // =====================================================================================================
 // 🦊 クエスト選択時の処理========================================================================================================
 function handleQuestRadio(id) {
-
   // 今クリックする前に、現在挑戦中のラジオを覚えておく
   const activeQuestId = currentQuest ? currentQuest.id : null;
   // クエストを探す
@@ -1541,35 +1540,28 @@ function handleQuestRadio(id) {
     [q.startLat, q.startLng],
     17
   );
-
   // クエストのピンを開く
   if (questMarkers[q.id]) {
     questMarkers[q.id].openPopup();
   }
   // 挑戦中のクエストがあれば、そのラジオをONに戻す
   if (activeQuestId) {
-
     const activeRadio = document.querySelector(
       `input[name="quest_opt"][onclick="handleQuestRadio('${activeQuestId}')"]`
     );
-  
     if (activeRadio) {
       activeRadio.checked = true;
     }
-  
   } else {
-  
     // まだクエストに挑戦していないなら、
     // 今クリックしたラジオもOFFに戻す
     const clickedRadio = document.querySelector(
       `input[name="quest_opt"][onclick="handleQuestRadio('${id}')"]`
     );
-  
     if (clickedRadio) {
       clickedRadio.checked = false;
     }
   }
-
   // クエストパネルを閉じる
   const panels = document.querySelectorAll('.custom-map-control');
   panels.forEach(panel => {
@@ -1578,14 +1570,12 @@ function handleQuestRadio(id) {
   });
 }
 
-
-
   
 // =====================================================================================================
 // 🦊 クエストのクリア記録だけリセット========================================================================================================
 function resetQuestData() {
   const ok = confirm(
-    "これまでにクリアしたクエストの記録をすべて消去しますか？"
+    "🦊 これまでにクリアしたクエストの記録をすべて消去しますか？"
   );
   // キャンセルなら何もしない
   if (!ok) {
@@ -1597,7 +1587,6 @@ function resetQuestData() {
       "quest_clear_time_" + q.id
     );
   });
-
   // 🔑 クエスト報酬の鍵もリセット
   quests.forEach(q => {
     if (q.rewardKey) {
@@ -1606,7 +1595,6 @@ function resetQuestData() {
       );
     }
   });
-
   // ①-2 各クリアポイントの発見記録も削除
   quests.forEach(q => {
     q.clearPoints.forEach((point, index) => {
@@ -1616,46 +1604,34 @@ function resetQuestData() {
     });
   });
 
-
-  
   currentQuest = null;
   localStorage.removeItem("current_quest_id");
   updateQuestMenuIcon();
   updateQuestMenu();
-
   // ②-2 表示中のクリア地点ピンをすべて削除
   Object.keys(questClearMarkers).forEach(key => {
     map.removeLayer(questClearMarkers[key]);
     delete questClearMarkers[key];
   });
-
   // ③ クエストピンを通常状態に戻す
   quests.forEach(q => {
     updateQuestPinImage(q);
   });
-  
   // クエストの吹き出しも最新状態に更新
   updateQuestMarkers();
-if (currentQuest) {
-  updateQuestPinImage(currentQuest);
-  updateQuestPopup(currentQuest);
-}
+  if (currentQuest) {
+    updateQuestPinImage(currentQuest);
+    updateQuestPopup(currentQuest);
+  }
   // ④ スタンプ帳を更新
   showStamps();
 
   const foxMsg = document.getElementById("fox-message");
   if (foxMsg) {
-    //foxMsg.innerHTML = "クエストの記録をリセットしたよ！また冒険に出かけよう！";
     typeFoxMessage(`クエストの記録をリセットしたよ！また冒険に出かけよう！`);
   }
   alert("🦊 クエストのクリア記録をリセットしました！");
 }
-
-
-
-
-
-
 
 // === 現在地 🧭 ＆ 📕 スタンプ帳 横並びパネル ================================================
 const CustomBottomLeftControl = L.Control.extend({
@@ -1701,7 +1677,6 @@ const CustomBottomLeftControl = L.Control.extend({
     locContainer.classList.add('expanded');
     setupControlToggle(locContainer);
     locContainer.classList.remove('collapsed');
-
 
     // ========================================================================================================
     // ◽️ ボタン：スタンプ 📕
