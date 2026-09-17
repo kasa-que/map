@@ -24,9 +24,7 @@
     #panel { padding: 10px; }
     button { font-size: 16px; padding: 8px 12px; cursor: pointer; }
     .stamp { font-size: 20px; margin-bottom: 10px; }
-
     .jump-pin{color:#e6b422; font-weight:bold; text-decoration:underline;}
-
     .cl-point{margin: 5px 0; padding-left: 10px;}
 
 
@@ -71,27 +69,16 @@
       animation: questGlow 1.6s ease-in-out infinite;
     }
     @keyframes questGlow {
-      0%, 100% {
-        box-shadow: 0 1px 5px rgba(0,0,0,0.3), 0 0 5px rgba(190,30,40,0.35), 0 0 10px rgba(190,30,40,0.20);
-      }
-      50% {
-        box-shadow: 0 1px 5px rgba(0,0,0,0.3), 0 0 9px rgba(190,30,40,0.75), 0 0 18px rgba(190,30,40,0.40);
-      }
+      0%, 100% {box-shadow: 0 1px 5px rgba(0,0,0,0.3), 0 0 5px rgba(190,30,40,0.35), 0 0 10px rgba(190,30,40,0.20);}
+      50% { box-shadow: 0 1px 5px rgba(0,0,0,0.3), 0 0 9px rgba(190,30,40,0.75), 0 0 18px rgba(190,30,40,0.40);}
     }
     
     /* 足跡記録中：赤ピコ */
-    .custom-map-control.track-active {
-      animation: trackGlow 1.6s ease-in-out infinite;
-    }
+    .custom-map-control.track-active {animation: trackGlow 1.6s ease-in-out infinite;}
     @keyframes trackGlow {
-      0%, 100% {
-        box-shadow: 0 1px 5px rgba(0,0,0,0.3), 0 0 5px rgba(190,30,40,0.35), 0 0 10px rgba(190,30,40,0.20);
-      }
-      50% {
-        box-shadow: 0 1px 5px rgba(0,0,0,0.3), 0 0 9px rgba(190,30,40,0.75), 0 0 18px rgba(190,30,40,0.40);
-      }
+      0%, 100% { box-shadow: 0 1px 5px rgba(0,0,0,0.3), 0 0 5px rgba(190,30,40,0.35), 0 0 10px rgba(190,30,40,0.20);}
+      50% { box-shadow: 0 1px 5px rgba(0,0,0,0.3), 0 0 9px rgba(190,30,40,0.75), 0 0 18px rgba(190,30,40,0.40); }
     }
-    
     
     /* すべての四角パネルの最小高さを「36px」に固定 */
     .custom-map-control.collapsed,
@@ -453,8 +440,6 @@
        スタンプ帳ここまで
        ================================= */
 
-
-
     /* =================================
        追加
        ================================= */
@@ -467,8 +452,6 @@
 
   </style>
 </head>
-
-
 
   
   
@@ -536,11 +519,8 @@
 
 
 
-
-
   
 <script>
-
   const CORRECT_PASSWORD = "ともごろう";
   let userInput = prompt("パスワード");
   if (userInput !== CORRECT_PASSWORD) {
@@ -562,12 +542,6 @@
   // ====================================================
   const questMarkers = {};
   const questClearMarkers = {};
-  // ====================================================
-  // 🦊 クエストクリア情報
-  // ====================================================
-  //function getQuestClearTime(id) {
-  //  return localStorage.getItem("quest_clear_" + id);
-  //}
   // ====================================================
   // 🦊 データ　🦊
   // ====================================================
